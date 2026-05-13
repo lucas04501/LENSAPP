@@ -1,0 +1,220 @@
+// LENS — Prisma Schema
+// PostgreSQL / Supabase
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── RANKS ────────────────────────────────────────────────────────────────────
+model Rank {
+  id          String   @id @default(cuid())
+  name        String   // "ARCHITECT OF FLOW", "GHOST MODE", etc.
+  minXP       Int
+  maxXP       Int
+  color       String   // hex color
+  icon        String   // icon name
+  users       User[]
+  createdAt   DateTime @default(now())
+}
+
+// ─── USER ─────────────────────────────────────────────────────────────────────
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  username      String    @unique
+  email         String    @unique
+  avatarUrl     String?
+  bio           String?
+
+  // Gamification
+  xp            Int       @default(0)
+  level         Int       @default(1)
+  totalStreak   Int       @default(0)
+  longestStreak Int       @default(0)
+  rankId        String?
+  rank          Rank?     @relation(fields: [rankId], references: [id])
+
+  // Relations
+  habits        Habit[]
+  habitLogs     HabitLog[]
+  posts         Post[]
+  likes         Like[]
+  comments      Comment[]
+  sessions      FocusSession[]
+  following     Follow[]  @relation("following")
+  followers     Follow[]  @relation("followers")
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+// ─── HABIT ────────────────────────────────────────────────────────────────────
+model Habit {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  icon        String?     // emoji or icon name
+  color       String      @default("#A855F7")
+  category    HabitCategory @default(HEALTH)
+
+  // Frequency
+  frequency   Frequency   @default(DAILY)
+  targetDays  Int[]       @default([1,2,3,4,5,6,7]) // 1=Mon ... 7=Sun
+  targetCount Int         @default(1) // times per day
+
+  // XP reward
+  xpReward    Int         @default(10)
+
+  // Status
+  isActive    Boolean     @default(true)
+  isArchived  Boolean     @default(false)
+
+  // Stats
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  totalCompletions Int    @default(0)
+
+  logs        HabitLog[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("habits")
+}
+
+// ─── HABIT LOG (check-in diário) ─────────────────────────────────────────────
+model HabitLog {
+  id          String    @id @default(cuid())
+  habitId     String
+  habit       Habit     @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  completedAt DateTime  @default(now())
+  note        String?
+  xpEarned    Int       @default(10)
+
+  @@unique([habitId, userId, completedAt])
+  @@map("habit_logs")
+}
+
+// ─── FOCUS SESSION ────────────────────────────────────────────────────────────
+model FocusSession {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title       String?
+  durationMin Int       // minutos
+  type        SessionType @default(DEEP_WORK)
+  xpEarned    Int
+
+  startedAt   DateTime
+  endedAt     DateTime
+
+  @@map("focus_sessions")
+}
+
+// ─── POST (Gym Rats social feed) ─────────────────────────────────────────────
+model Post {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content     String
+  imageUrls   String[]
+  tags        String[]
+
+  type        PostType  @default(PROGRESS)
+
+  likes       Like[]
+  comments    Comment[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("posts")
+}
+
+// ─── LIKE ─────────────────────────────────────────────────────────────────────
+model Like {
+  id        String  @id @default(cuid())
+  postId    String
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@map("likes")
+}
+
+// ─── COMMENT ──────────────────────────────────────────────────────────────────
+model Comment {
+  id        String  @id @default(cuid())
+  postId    String
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+
+  createdAt DateTime @default(now())
+
+  @@map("comments")
+}
+
+// ─── FOLLOW ───────────────────────────────────────────────────────────────────
+model Follow {
+  id          String @id @default(cuid())
+  followerId  String
+  follower    User   @relation("following", fields: [followerId], references: [id])
+  followingId String
+  following   User   @relation("followers", fields: [followingId], references: [id])
+
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+enum HabitCategory {
+  HEALTH
+  MIND
+  WORK
+  SOCIAL
+  FINANCE
+  CREATIVE
+  OTHER
+}
+
+enum Frequency {
+  DAILY
+  WEEKLY
+  CUSTOM
+}
+
+enum SessionType {
+  DEEP_WORK
+  POMODORO
+  FLOW
+  STUDY
+}
+
+enum PostType {
+  PROGRESS
+  MILESTONE
+  CHALLENGE
+  REFLECTION
+}

@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #050505;
+    --surface: #0D0D0D;
+    --surface-2: #111111;
+    --purple: #A855F7;
+    --red: #EF4444;
+    --text: #F8F8F8;
+    --text-muted: #A0A0A0;
+    --border: #1A1A1A;
+  }
+
+  * {
+    border-color: var(--border);
+    scrollbar-width: thin;
+    scrollbar-color: #1A1A1A transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: #1A1A1A;
+    border-radius: 99px;
+  }
+  *::-webkit-scrollbar-thumb:hover { background: #A855F730; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: #050505;
+    color: #F8F8F8;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Selection */
+  ::selection {
+    background: #A855F730;
+    color: #F8F8F8;
+  }
+}
+
+@layer components {
+  /* ── GLASS CARD ─── */
+  .glass {
+    background: rgba(13, 13, 13, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-purple {
+    background: rgba(168, 85, 247, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+  }
+
+  .glass-red {
+    background: rgba(239, 68, 68, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+  }
+
+  /* ── NEON BORDERS ─── */
+  .border-neon-purple {
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.1);
+  }
+
+  .border-neon-red {
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
+  }
+
+  /* ── GRADIENT TEXT ─── */
+  .text-gradient {
+    background: linear-gradient(135deg, #A855F7, #EF4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #C084FC, #A855F7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── BUTTONS ─── */
+  .btn-primary {
+    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-medium text-sm
+           bg-purple hover:bg-purple-dark text-white
+           transition-all duration-200
+           shadow-neon-purple hover:shadow-neon-purple;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 rounded-xl font-medium text-sm text-text-secondary
+           hover:text-text-primary hover:bg-surface-2
+           border border-transparent hover:border-border
+           transition-all duration-200;
+  }
+
+  .btn-outline-purple {
+    @apply px-4 py-2 rounded-xl font-medium text-sm text-purple
+           border border-purple/30 hover:border-purple/60
+           hover:bg-purple/5 transition-all duration-200;
+  }
+
+  /* ── XP BAR ─── */
+  .xp-bar {
+    @apply h-1.5 rounded-full bg-surface-3 overflow-hidden;
+  }
+
+  .xp-bar-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-purple to-red
+           transition-all duration-700 ease-out;
+  }
+
+  /* ── HEATMAP CELL ─── */
+  .heatmap-cell {
+    @apply w-3 h-3 rounded-sm transition-all duration-200;
+  }
+
+  /* ── STAT CARD ─── */
+  .stat-card {
+    @apply glass rounded-2xl p-5 border border-white/5
+           hover:border-purple/20 transition-all duration-300
+           cursor-default;
+  }
+
+  /* ── INPUT ─── */
+  .lens-input {
+    @apply w-full bg-surface-2 border border-border rounded-xl px-4 py-3
+           text-text-primary placeholder:text-text-muted
+           focus:outline-none focus:border-purple/50 focus:ring-1 focus:ring-purple/20
+           transition-all duration-200 text-sm;
+  }
+}
+
+@layer utilities {
+  /* Noise texture overlay */
+  .noise-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Glow effects */
+  .glow-purple { box-shadow: 0 0 30px rgba(168, 85, 247, 0.3); }
+  .glow-red    { box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); }
+
+  /* Neon text */
+  .neon-purple {
+    color: #A855F7;
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+  }
+  .neon-red {
+    color: #EF4444;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  }
+
+  /* Scrollable without scrollbar */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
