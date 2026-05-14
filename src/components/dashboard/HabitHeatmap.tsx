@@ -2,18 +2,12 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { format, subDays, startOfWeek, addDays, differenceInDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { format, subDays, startOfWeek, addDays } from "date-fns";
+import { Skeleton } from "../layout/Skeleton";
 
-// Generate mock data — replace with real API
-function generateMockData() {
-  const data: Record<string, number> = {};
-  for (let i = 365; i >= 0; i--) {
-    const date = format(subDays(new Date(), i), "yyyy-MM-dd");
-    const rand = Math.random();
-    data[date] = rand < 0.25 ? 0 : rand < 0.45 ? 1 : rand < 0.65 ? 2 : rand < 0.82 ? 3 : 4;
-  }
-  return data;
+interface HabitHeatmapProps {
+  data?: { date: string; count: number }[];
+  loading?: boolean;
 }
 
 const INTENSITY_COLORS = [
@@ -27,13 +21,24 @@ const INTENSITY_COLORS = [
 const MONTHS = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 const DAYS   = ["Dom","","Ter","","Qui","","Sáb"];
 
-export function HabitHeatmap() {
-  const data = useMemo(() => generateMockData(), []);
+export function HabitHeatmap({ data: heatmapData, loading }: HabitHeatmapProps) {
+  const dataMap = useMemo(() => {
+    if (loading || !heatmapData) return {};
+    const map: Record<string, number> = {};
+    heatmapData.forEach(item => {
+      // Map counts to intensity 0-4
+      map[item.date] = Math.min(item.count, 4);
+    });
+    return map;
+  }, [heatmapData, loading]);
+
+  if (loading || !heatmapData) {
+    return <Skeleton className="w-full h-40 rounded-2xl" />;
+  }
 
   // Build grid: 53 weeks × 7 days
   const today = new Date();
   const startDate = startOfWeek(subDays(today, 364), { weekStartsOn: 0 });
-  const totalDays = differenceInDays(today, startDate) + 1;
   const weeks: string[][] = [];
 
   for (let w = 0; w < 53; w++) {
@@ -56,40 +61,29 @@ export function HabitHeatmap() {
     }
   });
 
-  const totalCompleted = Object.values(data).filter(v => v > 0).length;
-  const currentStreak = (() => {
-    let streak = 0;
-    for (let i = 0; i < 365; i++) {
-      const d = format(subDays(today, i), "yyyy-MM-dd");
-      if ((data[d] ?? 0) > 0) streak++;
-      else break;
-    }
-    return streak;
-  })();
+  const totalCompleted = heatmapData.length;
 
   return (
     <div>
       {/* Summary */}
       <div className="flex gap-6 mb-4 text-xs text-text-muted">
-        <span><span className="text-purple font-semibold">{totalCompleted}</span> dias ativos</span>
-        <span><span className="text-red font-semibold">{currentStreak}</span> streak atual</span>
+        <span><span className="text-purple font-semibold">{totalCompleted}</span> dias ativos nos últimos 12 meses</span>
       </div>
 
       <div className="overflow-x-auto no-scrollbar">
-        <div className="min-w-max">
+        <div className="min-w-max relative">
           {/* Month labels */}
-          <div className="flex mb-1 ml-8">
+          <div className="flex mb-1 ml-8 relative h-4">
             {monthLabels.map(({ label, col }) => (
               <div
                 key={label + col}
                 className="text-[10px] text-text-muted absolute"
-                style={{ marginLeft: col * 14 }}
+                style={{ left: col * 14 }}
               >
                 {label}
               </div>
             ))}
           </div>
-          <div className="h-3" />
 
           <div className="flex gap-1">
             {/* Day labels */}
@@ -105,7 +99,7 @@ export function HabitHeatmap() {
             {weeks.map((week, wi) => (
               <div key={wi} className="flex flex-col gap-1">
                 {week.map((date, di) => {
-                  const intensity = data[date] ?? 0;
+                  const intensity = dataMap[date] ?? 0;
                   const isFuture = new Date(date) > today;
                   return (
                     <motion.div
@@ -113,8 +107,8 @@ export function HabitHeatmap() {
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: (wi * 7 + di) * 0.0005, duration: 0.2 }}
-                      title={`${date}: ${intensity === 0 ? "Nenhum" : intensity === 4 ? "Perfeito" : intensity + " hábitos"}`}
-                      className="heatmap-cell cursor-pointer hover:scale-125 hover:z-10 relative"
+                      title={`${date}: ${intensity === 0 ? "Nenhum" : intensity + " hábitos"}`}
+                      className="w-3 h-3 rounded-sm cursor-pointer hover:scale-125 hover:z-10 relative"
                       style={{
                         backgroundColor: isFuture ? "transparent" : INTENSITY_COLORS[intensity],
                         border: isFuture ? "1px solid rgba(255,255,255,0.04)" : intensity > 0 ? `1px solid rgba(168,85,247,${intensity * 0.1})` : "1px solid rgba(255,255,255,0.06)",

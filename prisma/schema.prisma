@@ -50,6 +50,7 @@ model User {
   sessions      FocusSession[]
   following     Follow[]  @relation("following")
   followers     Follow[]  @relation("followers")
+  notifications Notification[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -190,7 +191,29 @@ model Follow {
   @@map("follows")
 }
 
+// ─── NOTIFICATION ─────────────────────────────────────────────────────────────
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@map("notifications")
+}
+
 // ─── ENUMS ────────────────────────────────────────────────────────────────────
+enum NotificationType {
+  HABIT_REMINDER
+  RANK_UP
+  STREAK_RISK
+  ACHIEVEMENT
+}
+
 enum HabitCategory {
   HEALTH
   MIND

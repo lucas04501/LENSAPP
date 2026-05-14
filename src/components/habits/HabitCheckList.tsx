@@ -2,37 +2,51 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Flame, Plus } from "lucide-react";
-import { useHabitsStore } from "@/store";
+import { Check, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { completeHabit } from "@/lib/actions/habits";
+import { toast } from "react-hot-toast";
+import { AddHabitModal } from "./AddHabitModal";
+import { Skeleton } from "../layout/Skeleton";
 
-const MOCK_HABITS = [
-  { id: "1", title: "Meditação 10min",   icon: "🧘", color: "#A855F7", xpReward: 10, currentStreak: 12 },
-  { id: "2", title: "Exercício",          icon: "🏋️", color: "#EF4444", xpReward: 20, currentStreak: 8  },
-  { id: "3", title: "Leitura 30min",      icon: "📚", color: "#3B82F6", xpReward: 15, currentStreak: 5  },
-  { id: "4", title: "Sem redes sociais",  icon: "🧠", color: "#22C55E", xpReward: 25, currentStreak: 3  },
-  { id: "5", title: "Água 2L",            icon: "💧", color: "#06B6D4", xpReward: 10, currentStreak: 15 },
-  { id: "6", title: "Planejamento noturno",icon: "📝",color: "#F59E0B", xpReward: 10, currentStreak: 7  },
-];
+interface HabitCheckListProps {
+  habits?: any[];
+  userId: string;
+  loading?: boolean;
+}
 
-export function HabitCheckList() {
-  const [completed, setCompleted] = useState<string[]>(["1", "3", "5"]);
+export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps) {
   const [justCompleted, setJustCompleted] = useState<string | null>(null);
 
-  const toggle = (id: string) => {
-    if (completed.includes(id)) {
-      setCompleted(c => c.filter(x => x !== id));
-    } else {
-      setCompleted(c => [...c, id]);
-      setJustCompleted(id);
+  if (loading || !habits) {
+    return (
+      <div className="space-y-2">
+        {[0, 1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-[52px] rounded-xl" />
+        ))}
+      </div>
+    );
+  }
+
+  const handleComplete = async (habitId: string, isCompleted: boolean) => {
+    if (isCompleted) return;
+
+    setJustCompleted(habitId);
+    
+    try {
+      await completeHabit(habitId, userId);
+      toast.success("Hábito concluído! +XP");
       setTimeout(() => setJustCompleted(null), 1000);
+    } catch (error) {
+      toast.error("Erro ao concluir hábito");
+      setJustCompleted(null);
     }
   };
 
   return (
     <div className="space-y-2">
-      {MOCK_HABITS.map((habit, i) => {
-        const isDone = completed.includes(habit.id);
+      {habits.map((habit, i) => {
+        const isDone = habit.isCompleted;
         const isBurst = justCompleted === habit.id;
 
         return (
@@ -41,7 +55,7 @@ export function HabitCheckList() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            onClick={() => toggle(habit.id)}
+            onClick={() => handleComplete(habit.id, isDone)}
             className={cn(
               "flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group",
               isDone
@@ -122,15 +136,7 @@ export function HabitCheckList() {
         );
       })}
 
-      {/* Add button */}
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className="w-full flex items-center gap-2 p-3 rounded-xl border border-dashed border-border text-text-muted hover:border-purple/30 hover:text-purple transition-all text-sm mt-2"
-      >
-        <Plus className="w-4 h-4" />
-        <span>Adicionar hábito</span>
-      </motion.button>
+      <AddHabitModal userId={userId} />
     </div>
   );
 }

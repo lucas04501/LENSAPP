@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
@@ -12,17 +12,40 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "LENS — Hiper-Produtividade Neuro-Orientada",
-  description: "Rastreie seus hábitos, domine seu tempo, eleve seu nível.",
+  description: "Rastreie seus hábitos, domine seu tempo, eleve seu nível. A rede neural para sua melhor versão.",
+  openGraph: {
+    title: "LENS — Hiper-Produtividade Neuro-Orientada",
+    description: "Domine sua rotina com o poder da neurociência e gamificação.",
+    url: "https://lens.app",
+    siteName: "LENS",
+    images: [
+      {
+        url: "https://lens.app/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LENS — Hiper-Produtividade",
+    description: "Eleve seu nível com LENS.",
+    images: ["https://lens.app/og-image.png"],
+  },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: "#050505",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={inter.variable} suppressHydrationWarning>
-      <body className="bg-background text-text-primary antialiased">
+      <body className="bg-background text-text-primary antialiased selection:bg-purple/30">
         <Providers>
           {children}
         </Providers>

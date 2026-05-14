@@ -4,10 +4,11 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
-    const { name, username, email, password } = await req.json();
+    const body = await req.json();
+    const { name, username, email, password } = body;
 
     if (!name || !username || !email || !password) {
-      return new NextResponse("Missing fields", { status: 400 });
+      return new NextResponse("Campos obrigatórios ausentes", { status: 400 });
     }
 
     const userExists = await prisma.user.findFirst({
@@ -20,7 +21,10 @@ export async function POST(req: Request) {
     });
 
     if (userExists) {
-      return new NextResponse("User already exists", { status: 400 });
+      const message = userExists.email === email 
+        ? "Este email já está em uso" 
+        : "Este nome de usuário já está em uso";
+      return new NextResponse(message, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -34,9 +38,17 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(user);
+    return NextResponse.json({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      name: user.name
+    });
   } catch (error: any) {
-    console.log(error, "REGISTRATION_ERROR");
-    return new NextResponse("Internal Error", { status: 500 });
+    console.error("REGISTRATION_ERROR:", error);
+    return new NextResponse(
+      `Erro no servidor: ${error.message || "Erro desconhecido"}`, 
+      { status: 500 }
+    );
   }
 }

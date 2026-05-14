@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import {
   LayoutDashboard, Flame, Users, BarChart3,
   Settings, ChevronLeft, Zap, Timer, Brain,
-  Target, Trophy
+  Target, Trophy, User, X
 } from "lucide-react";
 import { useUIStore } from "@/store";
 import { cn } from "@/lib/utils";
@@ -18,19 +19,41 @@ const NAV_ITEMS = [
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
   { href: "/dashboard/social",    icon: Users,           label: "Gym Rats",    group: "community" },
   { href: "/dashboard/ranks",     icon: Trophy,          label: "Ranks",       group: "community" },
+  { href: "/dashboard/profile",   icon: User,            label: "Perfil",      group: "community" },
   { href: "/dashboard/settings",  icon: Settings,        label: "Settings",    group: "bottom" },
 ];
 
 export function Sidebar() {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const { sidebarOpen, toggleSidebar } = useUIStore();
 
   return (
-    <AnimatePresence initial={false}>
+    <>
+      {/* Mobile Backdrop */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={toggleSidebar}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
       <motion.aside
-        animate={{ width: sidebarOpen ? 240 : 72 }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-        className="relative flex flex-col h-full glass border-r border-white/5 overflow-hidden shrink-0"
+        initial={false}
+        animate={{ 
+          width: sidebarOpen ? 240 : 72,
+          x: 0,
+          left: 0
+        }}
+        className={cn(
+          "fixed lg:relative flex flex-col h-full glass border-r border-white/5 overflow-hidden shrink-0 z-[70] transition-all duration-300",
+          !sidebarOpen && "max-lg:-translate-x-full"
+        )}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 h-16 border-b border-white/5">
@@ -49,6 +72,42 @@ export function Sidebar() {
               </motion.span>
             )}
           </AnimatePresence>
+
+          {/* Mobile Close Button */}
+          {sidebarOpen && (
+            <button 
+              onClick={toggleSidebar}
+              className="lg:hidden ml-auto p-1.5 rounded-lg hover:bg-white/5 text-text-muted"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Streak Indicator */}
+        <div className="px-4 py-4">
+          <div className={cn(
+            "flex items-center gap-3 p-3 rounded-2xl transition-all duration-300",
+            sidebarOpen ? "bg-surface-2 border border-white/5 shadow-xl" : "justify-center"
+          )}>
+            <div className="relative">
+              <Flame className={cn(
+                "w-5 h-5 transition-colors",
+                (session?.user as any)?.totalStreak > 0 ? "text-red animate-pulse" : "text-text-muted opacity-20"
+              )} />
+              {(session?.user as any)?.totalStreak > 0 && (
+                <div className="absolute inset-0 bg-red/40 blur-lg rounded-full animate-pulse" />
+              )}
+            </div>
+            {sidebarOpen && (
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none">Streak</span>
+                <span className="text-sm font-black text-white italic tracking-tighter">
+                  {(session?.user as any)?.totalStreak || 0} DIAS
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Navigation */}
@@ -63,7 +122,7 @@ export function Sidebar() {
               {NAV_ITEMS.filter((i) => i.group === group).map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link key={item.href} href={item.href}>
+                  <Link key={item.href} href={item.href} onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
                     <motion.div
                       whileHover={{ x: 2 }}
                       className={cn(
@@ -108,7 +167,7 @@ export function Sidebar() {
 
         {/* Bottom */}
         <div className="p-2 border-t border-white/5">
-          <Link href="/dashboard/settings">
+          <Link href="/dashboard/settings" onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-text-muted hover:text-text-primary hover:bg-surface-2 transition-all">
               <Settings className="w-4.5 h-4.5 shrink-0" />
               {sidebarOpen && <span>Settings</span>}
@@ -116,16 +175,16 @@ export function Sidebar() {
           </Link>
         </div>
 
-        {/* Collapse toggle */}
+        {/* Collapse toggle (Desktop only) */}
         <button
           onClick={toggleSidebar}
-          className="absolute top-[72px] -right-3 w-6 h-6 rounded-full glass border border-white/10 flex items-center justify-center hover:border-purple/30 hover:text-purple transition-all z-10"
+          className="hidden lg:flex absolute top-[72px] -right-3 w-6 h-6 rounded-full glass border border-white/10 items-center justify-center hover:border-purple/30 hover:text-purple transition-all z-10"
         >
           <motion.div animate={{ rotate: sidebarOpen ? 0 : 180 }}>
             <ChevronLeft className="w-3 h-3 text-text-muted" />
           </motion.div>
         </button>
       </motion.aside>
-    </AnimatePresence>
+    </>
   );
 }
