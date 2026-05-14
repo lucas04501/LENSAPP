@@ -62,14 +62,14 @@ export function XPCard({ xp }: XPCardProps) {
           </div>
           <div className="flex items-center gap-2 mb-3">
             <Zap className="w-3.5 h-3.5 text-purple" />
-            <span className="text-2xl font-bold text-text-primary">{xp.toLocaleString()}</span>
+            <span className="text-2xl font-bold text-text-primary">{xp.toLocaleString('en-US')}</span>
             <span className="text-sm text-text-muted">XP total</span>
           </div>
 
           {/* XP bar */}
           <div className="space-y-1">
             <div className="flex justify-between text-[11px] text-text-muted">
-              <span>{progress.current.toLocaleString()} / {progress.next.toLocaleString()} XP</span>
+              <span>{progress.current.toLocaleString('en-US')} / {progress.next.toLocaleString('en-US')} XP</span>
               <span>{progress.percentage}% para LVL {level + 1}</span>
             </div>
             <div className="xp-bar">
@@ -91,7 +91,7 @@ export function XPCard({ xp }: XPCardProps) {
               <p className="text-[10px] text-text-muted uppercase tracking-wider mb-1">Próximo rank</p>
               <p className="text-xs font-bold" style={{ color: nextRank.color }}>{nextRank.name}</p>
               <p className="text-[10px] text-text-muted mt-1">
-                faltam {(nextRank.minXP - xp).toLocaleString()} XP
+                faltam {(nextRank.minXP - xp).toLocaleString('en-US')} XP
               </p>
             </div>
           </div>

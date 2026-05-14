@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
+import { Providers } from "@/components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,6 +13,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "LENS — Hiper-Produtividade Neuro-Orientada",
   description: "Rastreie seus hábitos, domine seu tempo, eleve seu nível.",
+};
+
+export const viewport = {
   themeColor: "#050505",
 };
 
@@ -19,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={inter.variable} suppressHydrationWarning>
       <body className="bg-background text-text-primary antialiased">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         <Toaster
           position="bottom-right"
           toastOptions={{

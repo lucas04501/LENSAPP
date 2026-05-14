@@ -43,10 +43,10 @@ export function Header() {
           <div className="flex items-center gap-1.5">
             <Zap className="w-3 h-3 text-purple" />
             <span className="text-xs font-semibold text-purple">
-              {MOCK_USER.xp.toLocaleString()} XP
+              {MOCK_USER.xp.toLocaleString('en-US')} XP
             </span>
             <span className="text-[10px] text-text-muted">
-              · {xpProgress.current}/{xpProgress.next} para LVL {level + 1}
+              · {xpProgress.current.toLocaleString('en-US')}/{xpProgress.next.toLocaleString('en-US')} para LVL {level + 1}
             </span>
           </div>
           <div className="w-32 h-1 rounded-full bg-surface-3 overflow-hidden">
