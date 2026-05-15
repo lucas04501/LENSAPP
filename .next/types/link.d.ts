@@ -35,7 +35,10 @@ declare namespace __next_route_internal_types__ {
     | `/api/auth/register`
     | `/dashboard`
     | `/dashboard/analytics`
+    | `/dashboard/calendar`
     | `/dashboard/focus`
+    | `/dashboard/goals`
+    | `/dashboard/journal`
     | `/dashboard/habits`
     | `/dashboard/profile`
     | `/dashboard/ranks`
