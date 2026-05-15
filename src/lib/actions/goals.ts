@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { checkAndUnlockAchievements } from "./achievements";
 
 export async function getGoals(userId: string) {
   try {
@@ -79,7 +79,8 @@ export async function updateProgress(goalId: string, progress: number, userId: s
 
     revalidatePath("/dashboard/goals");
     revalidatePath("/dashboard");
-    return { success: true, data: updatedGoal };
+    const unlockedAchievements = await checkAndUnlockAchievements(userId);
+    return { success: true, data: updatedGoal, unlockedAchievements };
   } catch (error) {
     console.error("Error updating goal progress:", error);
     return { success: false, error: "Falha ao atualizar progresso" };

@@ -86,30 +86,30 @@ export default function SocialPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8 px-1 sm:px-0">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">Gym Rats 💪</h1>
-        <p className="text-text-muted text-sm mt-1">Compartilhe sua evolução. Inspire quem está começando.</p>
+      <div className="px-3 sm:px-0">
+        <h1 className="text-2xl sm:text-3xl font-black text-white italic uppercase tracking-tighter">Gym Rats 💪</h1>
+        <p className="text-text-muted text-xs sm:text-sm mt-1 uppercase font-bold tracking-widest">Compartilhe sua evolução. Inspire a tribo.</p>
       </div>
 
       {/* Compose */}
-      <div className="glass rounded-2xl border border-white/5 p-4">
-        <div className="flex gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple to-red flex items-center justify-center text-sm font-bold text-white shrink-0">
+      <div className="glass rounded-[2rem] border border-white/5 p-4 sm:p-6 bg-[#050505]">
+        <div className="flex gap-3 sm:gap-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple to-red flex items-center justify-center text-sm font-bold text-white shrink-0">
             L
           </div>
           <div className="flex-1">
             <textarea
               value={newPost}
               onChange={e => setNewPost(e.target.value)}
-              placeholder="Como foi sua sessão hoje? Compartilhe com a tribo..."
+              placeholder="Como foi sua sessão hoje? Compartilhe..."
               rows={3}
-              className="lens-input resize-none text-sm"
+              className="w-full bg-[#080808] border border-white/5 rounded-2xl p-4 text-sm text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/30 transition-all resize-none"
             />
-            <div className="flex items-center justify-between mt-3">
+            <div className="flex items-center justify-between mt-4">
               <div className="flex gap-2">
-                <button className="btn-ghost text-xs gap-1.5">
+                <button className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black text-text-muted uppercase tracking-widest hover:bg-white/5 transition-all">
                   <Image className="w-3.5 h-3.5" /> Foto
                 </button>
               </div>
@@ -119,7 +119,7 @@ export default function SocialPage() {
                 onClick={handlePost}
                 disabled={!newPost.trim() || posting}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
+                  "flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
                   newPost.trim()
                     ? "bg-purple text-white shadow-neon-purple"
                     : "bg-surface-2 text-text-muted cursor-not-allowed"
@@ -134,7 +134,7 @@ export default function SocialPage() {
       </div>
 
       {/* Feed */}
-      <div className="space-y-4">
+      <div className="space-y-6 sm:space-y-8">
         {posts.map((post, i) => {
           const typeStyle = POST_TYPE_STYLES[post.type];
           return (
@@ -143,49 +143,51 @@ export default function SocialPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07 }}
-              className="glass rounded-2xl border border-white/5 p-5 hover:border-purple/10 transition-all"
+              className="glass rounded-[2rem] border border-white/5 p-5 sm:p-8 bg-[#050505] hover:border-white/10 transition-all group"
             >
               {/* Header */}
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple/60 to-red/60 flex items-center justify-center font-bold text-white">
+              <div className="flex items-start justify-between mb-4 sm:mb-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-purple/40 to-red/40 flex items-center justify-center font-black text-white italic tracking-tighter sm:text-lg">
                     {post.user.avatar}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-sm text-text-primary">{post.user.name}</span>
-                      <span className="text-xs text-text-muted">@{post.user.username}</span>
+                      <span className="font-black text-sm sm:text-base text-white uppercase italic tracking-tighter">{post.user.name}</span>
+                      <span className="text-[10px] text-text-muted font-bold tracking-widest">@{post.user.username}</span>
                     </div>
-                    <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex items-center gap-3 mt-1">
                       <span
-                        className="text-[10px] font-bold"
+                        className="text-[9px] font-black uppercase tracking-widest"
                         style={{ color: post.user.rankColor }}
                       >
                         {post.user.rank}
                       </span>
-                      <span className="text-[10px] text-text-muted">LVL {post.user.level}</span>
+                      <span className="text-[9px] text-text-muted font-bold uppercase tracking-widest">LVL {post.user.level}</span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col items-end gap-1.5">
                   <span
-                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                    style={{ backgroundColor: `${typeStyle.color}15`, color: typeStyle.color }}
+                    className="text-[8px] font-black px-2 py-0.5 rounded bg-white/5 border border-white/5 uppercase tracking-[0.2em]"
+                    style={{ color: typeStyle.color }}
                   >
                     {typeStyle.label}
                   </span>
-                  <span className="text-[10px] text-text-muted">{post.time}</span>
+                  <span className="text-[8px] text-text-muted font-bold uppercase tracking-widest">{post.time}</span>
                 </div>
               </div>
 
               {/* Content */}
-              <p className="text-sm text-text-primary leading-relaxed mb-3">{post.content}</p>
+              <p className="text-sm sm:text-base text-text-primary leading-relaxed mb-4 sm:mb-6 font-medium italic">
+                "{post.content}"
+              </p>
 
               {/* Tags */}
               {post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mb-3">
+                <div className="flex flex-wrap gap-2 mb-6">
                   {post.tags.map(tag => (
-                    <span key={tag} className="text-[11px] text-purple/70 hover:text-purple cursor-pointer transition-colors">
+                    <span key={tag} className="text-[9px] font-black text-purple/60 hover:text-purple cursor-pointer transition-colors uppercase tracking-widest px-2 py-1 rounded-lg bg-purple/5 border border-purple/10">
                       {tag}
                     </span>
                   ))}
@@ -193,25 +195,25 @@ export default function SocialPage() {
               )}
 
               {/* Actions */}
-              <div className="flex items-center gap-1 pt-3 border-t border-white/5">
+              <div className="flex items-center gap-2 pt-4 sm:pt-6 border-t border-white/5">
                 <motion.button
                   whileTap={{ scale: 0.85 }}
                   onClick={() => handleLike(post.id)}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all",
+                    "flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
                     post.isLiked
-                      ? "text-red bg-red/10"
-                      : "text-text-muted hover:text-red hover:bg-red/5"
+                      ? "text-red bg-red/10 border border-red/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+                      : "text-text-muted hover:text-red hover:bg-red/5 border border-transparent"
                   )}
                 >
                   <Heart className={cn("w-3.5 h-3.5", post.isLiked && "fill-current")} />
                   {post.likes}
                 </motion.button>
-                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs text-text-muted hover:text-purple hover:bg-purple/5 transition-all">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-purple hover:bg-purple/5 transition-all">
                   <MessageCircle className="w-3.5 h-3.5" />
                   {post.comments}
                 </button>
-                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs text-text-muted hover:text-purple hover:bg-purple/5 transition-all ml-auto">
+                <button className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-white transition-all ml-auto">
                   <Share2 className="w-3.5 h-3.5" />
                   Compartilhar
                 </button>

@@ -44,7 +44,6 @@ export default function RegisterPage() {
       if (response.ok) {
         toast.success("Conta criada com sucesso!");
         
-        // Auto sign in after registration
         const callback = await signIn("credentials", {
           email: data.email,
           password: data.password,
@@ -68,70 +67,70 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Crie sua conta</h1>
-        <p className="text-gray-400 text-sm mt-1">Junte-se à elite da produtividade</p>
+        <h1 className="text-2xl sm:text-3xl font-black text-white uppercase italic tracking-tighter">Criar Conta</h1>
+        <p className="text-text-muted text-xs sm:text-sm mt-1 uppercase font-bold tracking-widest">Junte-se à Elite da Produtividade</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-300 ml-1">Nome completo</label>
+          <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Identidade</label>
           <input
             type="text"
             required
             value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
-            placeholder="Seu Nome"
-            className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50 transition-colors"
+            placeholder="Seu Nome Real"
+            className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-300 ml-1">Username</label>
+          <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Codinome</label>
           <input
             type="text"
             required
             value={data.username}
             onChange={(e) => setData({ ...data, username: e.target.value.toLowerCase().replace(/\s/g, "") })}
             placeholder="username"
-            className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-300 ml-1">Email</label>
+          <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Contato</label>
           <input
             type="email"
             required
             value={data.email}
             onChange={(e) => setData({ ...data, email: e.target.value })}
             placeholder="seu@email.com"
-            className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 ml-1">Senha</label>
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Senha</label>
             <input
               type="password"
               required
               value={data.password}
               onChange={(e) => setData({ ...data, password: e.target.value })}
-              placeholder="••••••••"
-              className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50 transition-colors"
+              placeholder="••••"
+              className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 ml-1">Confirmar</label>
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Confirmar</label>
             <input
               type="password"
               required
               value={data.confirmPassword}
               onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
-              placeholder="••••••••"
-              className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50 transition-colors"
+              placeholder="••••"
+              className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
             />
           </div>
         </div>
@@ -139,16 +138,16 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-purple-600 to-red-500 hover:from-purple-500 hover:to-red-400 text-white font-semibold py-3 rounded-xl shadow-lg shadow-purple-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-purple to-red hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-[0.2em] text-xs mt-2"
         >
-          {loading ? "Criando conta..." : "Criar minha conta"}
+          {loading ? "Processando..." : "Criar Minha Identidade"}
         </button>
       </form>
 
       <div className="text-center">
-        <p className="text-sm text-gray-400">
-          Já tem conta?{" "}
-          <Link href="/login" className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
+        <p className="text-xs font-bold text-text-muted uppercase tracking-widest">
+          Já faz parte?{" "}
+          <Link href="/login" className="text-purple hover:text-purple-light transition-colors">
             Entrar
           </Link>
         </p>

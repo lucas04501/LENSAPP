@@ -31,6 +31,11 @@ export default async function DashboardPage() {
     );
   }
 
+  // ONBOARDING REDIRECT
+  if (habitsRes.data.length === 0) {
+    redirect("/onboarding");
+  }
+
   return (
     <DashboardContent 
       user={session.user as any}

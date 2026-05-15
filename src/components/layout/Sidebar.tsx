@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
   { href: "/dashboard/social",    icon: Users,           label: "Gym Rats",    group: "community" },
   { href: "/dashboard/profile",   icon: User,            label: "Perfil",      group: "community" },
+  { href: "/dashboard/achievements", icon: Trophy,       label: "Conquistas",  group: "community" },
   { href: "/dashboard/ranks",     icon: Trophy,          label: "Ranks",       group: "community" },
   { href: "/dashboard/settings",  icon: Settings,        label: "Settings",    group: "bottom" },
 ];
@@ -41,7 +42,7 @@ export function Sidebar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={toggleSidebar}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] lg:hidden"
           />
         )}
       </AnimatePresence>
@@ -53,13 +54,14 @@ export function Sidebar() {
           x: 0,
           left: 0
         }}
+        transition={{ type: "spring", damping: 20, stiffness: 150 }}
         className={cn(
           "fixed lg:relative flex flex-col h-full glass border-r border-white/5 overflow-hidden shrink-0 z-[70] transition-all duration-300",
           !sidebarOpen && "max-lg:-translate-x-full"
         )}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 h-16 border-b border-white/5">
+        <div className="flex items-center gap-3 px-4 h-16 border-b border-white/5 shrink-0">
           <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-purple to-red shrink-0">
             <Brain className="w-5 h-5 text-white" />
           </div>
@@ -80,7 +82,7 @@ export function Sidebar() {
           {sidebarOpen && (
             <button 
               onClick={toggleSidebar}
-              className="lg:hidden ml-auto p-1.5 rounded-lg hover:bg-white/5 text-text-muted"
+              className="lg:hidden ml-auto p-2 rounded-xl bg-surface-2 border border-white/5 text-text-muted active:scale-95"
             >
               <X className="w-4 h-4" />
             </button>
@@ -88,7 +90,7 @@ export function Sidebar() {
         </div>
 
         {/* Streak Indicator */}
-        <div className="px-4 py-4">
+        <div className="px-4 py-4 shrink-0">
           <div className={cn(
             "flex items-center gap-3 p-3 rounded-2xl transition-all duration-300",
             sidebarOpen ? "bg-surface-2 border border-white/5 shadow-xl" : "justify-center"
@@ -129,7 +131,7 @@ export function Sidebar() {
                     <motion.div
                       whileHover={{ x: 2 }}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative",
+                        "flex items-center gap-3 px-3 py-3 lg:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative min-h-[44px]",
                         isActive
                           ? "bg-purple/10 text-purple border border-purple/20"
                           : "text-text-muted hover:text-text-primary hover:bg-surface-2"
@@ -144,7 +146,7 @@ export function Sidebar() {
                       )}
                       <item.icon
                         className={cn(
-                          "w-4.5 h-4.5 shrink-0 relative z-10",
+                          "w-5 h-5 lg:w-4.5 lg:h-4.5 shrink-0 relative z-10",
                           isActive ? "text-purple" : "text-text-muted group-hover:text-text-primary"
                         )}
                       />
@@ -169,10 +171,10 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom */}
-        <div className="p-2 border-t border-white/5">
+        <div className="p-2 border-t border-white/5 shrink-0">
           <Link href="/dashboard/settings" onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-text-muted hover:text-text-primary hover:bg-surface-2 transition-all">
-              <Settings className="w-4.5 h-4.5 shrink-0" />
+            <div className="flex items-center gap-3 px-3 py-3 lg:py-2.5 rounded-xl text-sm text-text-muted hover:text-text-primary hover:bg-surface-2 transition-all min-h-[44px]">
+              <Settings className="w-5 h-5 lg:w-4.5 lg:h-4.5 shrink-0" />
               {sidebarOpen && <span>Settings</span>}
             </div>
           </Link>

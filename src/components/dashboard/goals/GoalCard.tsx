@@ -10,6 +10,7 @@ import { differenceInDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { updateProgress, deleteGoal } from "@/lib/actions/goals";
 import { toast } from "react-hot-toast";
+import { showAchievementToast } from "../../gamification/AchievementToast";
 import { cn } from "@/lib/utils";
 
 interface GoalCardProps {
@@ -40,6 +41,7 @@ export function GoalCard({ goal, userId }: GoalCardProps) {
         if (newProgress === 100 && !goal.isCompleted) {
           setShowConfetti(true);
           toast.success("META CONCLUÍDA! ✨ +XP");
+          res.unlockedAchievements?.forEach(showAchievementToast);
           setTimeout(() => setShowConfetti(false), 3000);
         } else {
           toast.success(`Progresso atualizado: ${newProgress}%`);

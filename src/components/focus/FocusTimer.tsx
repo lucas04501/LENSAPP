@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, RotateCcw, CheckCircle2, Timer as TimerIcon, Brain, Zap, Coffee, Target } from "lucide-react";
 import { saveFocusSession } from "@/lib/actions/focus";
 import { toast } from "react-hot-toast";
+import { showAchievementToast } from "../gamification/AchievementToast";
 import { cn } from "@/lib/utils";
 
 interface FocusTimerProps {
@@ -92,7 +93,7 @@ export function FocusTimer({ userId }: FocusTimerProps) {
     const duration = SESSION_TYPES[type].duration;
     
     try {
-      await saveFocusSession({
+      const res = await saveFocusSession({
         userId,
         durationMin: duration,
         type,
@@ -101,6 +102,7 @@ export function FocusTimer({ userId }: FocusTimerProps) {
         endedAt: new Date(),
       });
       toast.success(`Sessão concluída! +${duration} XP`);
+      res.unlockedAchievements?.forEach(showAchievementToast);
       setTitle("");
     } catch (error) {
       toast.error("Erro ao salvar sessão");

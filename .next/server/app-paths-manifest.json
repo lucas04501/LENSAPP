@@ -1,1 +1,10 @@
-{}
+{
+  "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
+  "/dashboard/ranks/page": "app/dashboard/ranks/page.js",
+  "/dashboard/calendar/page": "app/dashboard/calendar/page.js",
+  "/dashboard/focus/page": "app/dashboard/focus/page.js",
+  "/dashboard/profile/page": "app/dashboard/profile/page.js",
+  "/dashboard/journal/page": "app/dashboard/journal/page.js",
+  "/dashboard/social/page": "app/dashboard/social/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}

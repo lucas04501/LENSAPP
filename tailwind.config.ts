@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        "xs": "400px",
+      },
       colors: {
         // LENS Design System
         background: "#050505",

@@ -50,6 +50,7 @@ model User {
   sessions      FocusSession[]
   goals         Goal[]
   journalEntries JournalEntry[]
+  userAchievements UserAchievement[]
   following     Follow[]  @relation("following")
   followers     Follow[]  @relation("followers")
   notifications Notification[]
@@ -245,6 +246,31 @@ model JournalEntry {
 
   @@unique([userId, date])
   @@map("journal_entries")
+}
+
+// ─── ACHIEVEMENT ──────────────────────────────────────────────────────────────
+model Achievement {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  title       String
+  description String
+  icon        String
+  xpReward    Int
+  rarity      String   // COMMON | RARE | EPIC | LEGENDARY
+  
+  users       UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  unlockedAt    DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
 }
 
 // ─── ENUMS ────────────────────────────────────────────────────────────────────

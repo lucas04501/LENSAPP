@@ -9,6 +9,7 @@ import { RadarChart } from "@/components/dashboard/RadarChart";
 import { HabitCheckList } from "@/components/habits/HabitCheckList";
 import { XPCard } from "@/components/gamification/XPCard";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface DashboardContentProps {
   user: any;
@@ -34,16 +35,16 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-6"
+      className="space-y-6 sm:space-y-8"
     >
       {/* ── Greeting ── */}
       <motion.div variants={item}>
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-text-muted text-sm mb-1">
+            <p className="text-text-muted text-xs sm:text-sm mb-1">
               {getGreeting()}, <span className="text-purple font-semibold">{user.name || user.username}</span>
             </p>
-            <h1 className="text-2xl font-bold text-text-primary">
+            <h1 className="text-xl sm:text-2xl font-black text-white italic uppercase tracking-tighter">
               Seu painel de controle 🧠
             </h1>
           </div>
@@ -68,17 +69,17 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
       </motion.div>
 
       {/* ── Grid: Habits + Charts ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 
         {/* Habits today */}
-        <motion.div variants={item} className="lg:col-span-1">
-          <div className="glass rounded-2xl border border-white/5 p-5 h-full">
-            <div className="flex items-center justify-between mb-4">
+        <motion.div variants={item} className="lg:col-span-1 order-2 lg:order-1">
+          <div className="glass rounded-[2rem] border border-white/5 p-5 sm:p-6 h-full bg-[#050505]">
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <Flame className="w-4 h-4 text-red" />
-                <h2 className="font-semibold text-sm text-text-primary">Hábitos de hoje</h2>
+                <Flame className="w-4.5 h-4.5 text-red" />
+                <h2 className="font-black text-sm text-white uppercase italic tracking-widest">Hábitos de hoje</h2>
               </div>
-              <Link href="/dashboard/habits" className="text-xs text-text-muted hover:text-purple transition-colors flex items-center gap-1">
+              <Link href="/dashboard/habits" className="text-[10px] font-bold text-text-muted hover:text-purple transition-colors flex items-center gap-1 uppercase tracking-widest">
                 Ver todos <ChevronRight className="w-3 h-3" />
               </Link>
             </div>
@@ -87,21 +88,24 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
         </motion.div>
 
         {/* Charts */}
-        <motion.div variants={item} className="lg:col-span-2 space-y-6">
+        <motion.div variants={item} className="lg:col-span-2 space-y-6 sm:space-y-8 order-1 lg:order-2">
           <WeeklyBarChart data={stats.weeklyData} />
+          {/* Radar Chart hidden on small mobile or simplified? Let's keep for now */}
           <RadarChart />
         </motion.div>
       </div>
 
       {/* ── Heatmap ── */}
       <motion.div variants={item}>
-        <div className="glass rounded-2xl border border-white/5 p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <Target className="w-4 h-4 text-purple" />
-            <h2 className="font-semibold text-sm text-text-primary">Consistência de Hábitos</h2>
-            <span className="ml-auto text-xs text-text-muted">Últimos 12 meses</span>
+        <div className="glass rounded-[2rem] border border-white/5 p-5 sm:p-8 bg-[#050505]">
+          <div className="flex items-center gap-2 mb-6">
+            <Target className="w-4.5 h-4.5 text-purple" />
+            <h2 className="font-black text-sm text-white uppercase italic tracking-widest">Consistência de Hábitos</h2>
+            <span className="ml-auto text-[10px] font-bold text-text-muted uppercase tracking-widest">Últimos 12 meses</span>
           </div>
-          <HabitHeatmap data={heatmapData} />
+          <div className="overflow-x-auto no-scrollbar -mx-2 px-2">
+            <HabitHeatmap data={heatmapData} />
+          </div>
         </div>
       </motion.div>
     </motion.div>

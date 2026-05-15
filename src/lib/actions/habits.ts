@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { startOfDay, endOfDay, subDays, format } from "date-fns";
+import { checkAndUnlockAchievements } from "./achievements";
 
 export async function getHabitsWithTodayStatus(userId: string) {
   try {
@@ -93,7 +93,8 @@ export async function completeHabit(habitId: string, userId: string) {
     }
 
     revalidatePath("/dashboard");
-    return { success: true };
+    const unlockedAchievements = await checkAndUnlockAchievements(userId);
+    return { success: true, unlockedAchievements };
   } catch (error) {
     console.error("Error completing habit:", error);
     return { success: false, error: "Falha ao completar hábito" };
@@ -170,7 +171,8 @@ export async function createHabit(data: {
 
     revalidatePath("/dashboard/habits");
     revalidatePath("/dashboard");
-    return { success: true, data: habit };
+    const unlockedAchievements = await checkAndUnlockAchievements(userId);
+    return { success: true, data: habit, unlockedAchievements };
   } catch (error) {
     console.error("Error creating habit:", error);
     return { success: false, error: "Falha ao criar hábito" };

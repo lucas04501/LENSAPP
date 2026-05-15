@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { XP_REWARDS } from "@/types";
+import { checkAndUnlockAchievements } from "./achievements";
 
 export async function saveFocusSession(data: {
   userId: string;
@@ -37,7 +37,8 @@ export async function saveFocusSession(data: {
   });
 
   revalidatePath("/dashboard");
-  return session;
+  const unlockedAchievements = await checkAndUnlockAchievements(data.userId);
+  return { session, unlockedAchievements };
 }
 
 export async function getFocusToday(userId: string) {

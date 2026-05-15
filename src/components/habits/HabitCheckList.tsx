@@ -6,6 +6,7 @@ import { Check, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { completeHabit, uncompleteHabit } from "@/lib/actions/habits";
 import { toast } from "react-hot-toast";
+import { showAchievementToast } from "../gamification/AchievementToast";
 import { AddHabitModal } from "./AddHabitModal";
 import { Skeleton } from "../layout/Skeleton";
 
@@ -45,6 +46,7 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
         const res = await completeHabit(habitId, userId);
         if (res.success) {
           toast.success("Hábito concluído! +XP");
+          res.unlockedAchievements?.forEach(showAchievementToast);
           setTimeout(() => setJustCompleted(null), 1000);
         } else {
           toast.error(res.error || "Erro ao concluir");
