@@ -49,6 +49,7 @@ model User {
   comments      Comment[]
   sessions      FocusSession[]
   goals         Goal[]
+  journalEntries JournalEntry[]
   following     Follow[]  @relation("following")
   followers     Follow[]  @relation("followers")
   notifications Notification[]
@@ -226,6 +227,24 @@ model Goal {
   updatedAt   DateTime   @updatedAt
 
   @@map("goals")
+}
+
+// ─── JOURNAL ENTRY (Diário diário) ───────────────────────────────────────────
+model JournalEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content   String
+  mood      Int      @default(3)  // 1-5 (1=péssimo, 5=excelente)
+  date      DateTime @default(now())
+  tags      String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@map("journal_entries")
 }
 
 // ─── ENUMS ────────────────────────────────────────────────────────────────────

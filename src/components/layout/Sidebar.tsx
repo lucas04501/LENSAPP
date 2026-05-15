@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import {
   LayoutDashboard, Flame, Users, BarChart3,
   Settings, ChevronLeft, Zap, Timer, Brain,
-  Target, Trophy, User, X
+  Target, Trophy, User, X, BookOpen
 } from "lucide-react";
 import { useUIStore } from "@/store";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/dashboard",           icon: LayoutDashboard, label: "Dashboard",   group: "main" },
   { href: "/dashboard/habits",    icon: Flame,           label: "Hábitos",     group: "main" },
   { href: "/dashboard/goals",     icon: Target,          label: "Metas",       group: "main" },
+  { href: "/dashboard/journal",   icon: BookOpen,        label: "Diário",      group: "main" },
   { href: "/dashboard/focus",     icon: Timer,           label: "Foco",        group: "main" },
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
   { href: "/dashboard/social",    icon: Users,           label: "Gym Rats",    group: "community" },
