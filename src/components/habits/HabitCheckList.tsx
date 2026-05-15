@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { completeHabit } from "@/lib/actions/habits";
+import { completeHabit, uncompleteHabit } from "@/lib/actions/habits";
 import { toast } from "react-hot-toast";
 import { AddHabitModal } from "./AddHabitModal";
 import { Skeleton } from "../layout/Skeleton";
@@ -16,6 +16,7 @@ interface HabitCheckListProps {
 }
 
 export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps) {
+  const [isPending, startTransition] = useTransition();
   const [justCompleted, setJustCompleted] = useState<string | null>(null);
 
   if (loading || !habits) {
@@ -28,25 +29,35 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
     );
   }
 
-  const handleComplete = async (habitId: string, isCompleted: boolean) => {
-    if (isCompleted) return;
-
-    setJustCompleted(habitId);
-    
-    try {
-      await completeHabit(habitId, userId);
-      toast.success("Hábito concluído! +XP");
-      setTimeout(() => setJustCompleted(null), 1000);
-    } catch (error) {
-      toast.error("Erro ao concluir hábito");
-      setJustCompleted(null);
-    }
+  const handleToggle = (habitId: string, isDone: boolean) => {
+    startTransition(async () => {
+      if (isDone) {
+        // Uncomplete
+        const res = await uncompleteHabit(habitId, userId);
+        if (res.success) {
+          toast.success("Hábito desmarcado");
+        } else {
+          toast.error(res.error || "Erro ao desmarcar");
+        }
+      } else {
+        // Complete
+        setJustCompleted(habitId);
+        const res = await completeHabit(habitId, userId);
+        if (res.success) {
+          toast.success("Hábito concluído! +XP");
+          setTimeout(() => setJustCompleted(null), 1000);
+        } else {
+          toast.error(res.error || "Erro ao concluir");
+          setJustCompleted(null);
+        }
+      }
+    });
   };
 
   return (
     <div className="space-y-2">
       {habits.map((habit, i) => {
-        const isDone = habit.isCompleted;
+        const isDone = habit.todayDone;
         const isBurst = justCompleted === habit.id;
 
         return (
@@ -55,12 +66,13 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            onClick={() => handleComplete(habit.id, isDone)}
+            onClick={() => !isPending && handleToggle(habit.id, isDone)}
             className={cn(
               "flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group",
               isDone
                 ? "bg-surface-2 opacity-60"
-                : "hover:bg-surface-2 border border-transparent hover:border-white/5"
+                : "hover:bg-surface-2 border border-transparent hover:border-white/5",
+              isPending && "pointer-events-none opacity-40"
             )}
           >
             {/* Checkbox */}

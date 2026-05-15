@@ -8,14 +8,13 @@ import { WeeklyBarChart } from "@/components/dashboard/WeeklyBarChart";
 import { RadarChart } from "@/components/dashboard/RadarChart";
 import { HabitCheckList } from "@/components/habits/HabitCheckList";
 import { XPCard } from "@/components/gamification/XPCard";
-import { getRankByXP, getLevelByXP } from "@/types";
 import Link from "next/link";
 
 interface DashboardContentProps {
   user: any;
   stats: any;
   habitsToday: any[];
-  heatmapData: any[];
+  heatmapData: any;
 }
 
 const container = {
@@ -28,8 +27,7 @@ const item = {
 };
 
 export function DashboardContent({ user, stats, habitsToday, heatmapData }: DashboardContentProps) {
-  const rank = getRankByXP(stats.totalXP);
-  const level = getLevelByXP(stats.totalXP);
+  const { rank, level, xp } = stats;
 
   return (
     <motion.div
@@ -66,7 +64,7 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
 
       {/* ── XP Card ── */}
       <motion.div variants={item}>
-        <XPCard xp={stats.totalXP} />
+        <XPCard xp={xp} />
       </motion.div>
 
       {/* ── Grid: Habits + Charts ── */}
@@ -90,7 +88,7 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
 
         {/* Charts */}
         <motion.div variants={item} className="lg:col-span-2 space-y-6">
-          <WeeklyBarChart data={stats.weeklyChartData} />
+          <WeeklyBarChart data={stats.weeklyData} />
           <RadarChart />
         </motion.div>
       </div>

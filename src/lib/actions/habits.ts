@@ -2,120 +2,222 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { startOfDay, endOfDay, subDays } from "date-fns";
+import { startOfDay, endOfDay, subDays, format } from "date-fns";
 
-export async function getHabitsToday(userId: string) {
-  const today = new Date();
-  const dayOfWeek = today.getDay() === 0 ? 7 : today.getDay(); // 1=Mon...7=Sun
-
-  const habits = await prisma.habit.findMany({
-    where: {
-      userId,
-      isActive: true,
-      isArchived: false,
-      targetDays: {
-        has: dayOfWeek,
+export async function getHabitsWithTodayStatus(userId: string) {
+  try {
+    const today = new Date();
+    const habits = await prisma.habit.findMany({
+      where: {
+        userId,
+        isArchived: false,
       },
-    },
-    include: {
-      logs: {
-        where: {
-          completedAt: {
-            gte: startOfDay(today),
-            lte: endOfDay(today),
+      include: {
+        logs: {
+          where: {
+            completedAt: {
+              gte: startOfDay(today),
+              lte: endOfDay(today),
+            },
           },
         },
       },
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-  return habits.map((habit) => ({
-    ...habit,
-    isCompleted: habit.logs.length >= habit.targetCount,
-  }));
+    return {
+      success: true,
+      data: habits.map((habit) => ({
+        ...habit,
+        todayDone: habit.logs.length > 0,
+      })),
+    };
+  } catch (error) {
+    console.error("Error fetching habits:", error);
+    return { success: false, error: "Falha ao buscar hábitos" };
+  }
 }
 
 export async function completeHabit(habitId: string, userId: string) {
-  const today = new Date();
+  try {
+    const today = new Date();
 
-  // 1. Create Log
-  const habit = await prisma.habit.findUnique({
-    where: { id: habitId },
-  });
+    const habit = await prisma.habit.findUnique({
+      where: { id: habitId },
+    });
 
-  if (!habit) throw new Error("Habit not found");
+    if (!habit) return { success: false, error: "Hábito não encontrado" };
 
-  await prisma.habitLog.create({
-    data: {
-      habitId,
-      userId,
-      xpEarned: habit.xpReward,
-      completedAt: today,
-    },
-  });
-
-  // 2. Update User XP
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      xp: {
-        increment: habit.xpReward,
+    // 1. Create HabitLog
+    await prisma.habitLog.create({
+      data: {
+        habitId,
+        userId,
+        xpEarned: habit.xpReward,
+        completedAt: today,
       },
-    },
-  });
+    });
 
-  // 3. Update Habit Stats (Simplified streak for now)
-  await prisma.habit.update({
-    where: { id: habitId },
-    data: {
-      totalCompletions: {
-        increment: 1,
-      },
-      currentStreak: {
-        increment: 1,
-      },
-    },
-  });
+    // 2. Update Habit Streak
+    const newStreak = habit.currentStreak + 1;
+    const newLongestStreak = Math.max(newStreak, habit.longestStreak);
 
-  revalidatePath("/dashboard");
+    await prisma.habit.update({
+      where: { id: habitId },
+      data: {
+        currentStreak: newStreak,
+        longestStreak: newLongestStreak,
+        totalCompletions: { increment: 1 },
+      },
+    });
+
+    // 3. Update User XP and Level
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { xp: true },
+    });
+
+    if (user) {
+      const newXP = user.xp + habit.xpReward;
+      const newLevel = Math.floor(Math.sqrt(newXP / 100)) + 1;
+
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          xp: newXP,
+          level: newLevel,
+        },
+      });
+    }
+
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error completing habit:", error);
+    return { success: false, error: "Falha ao completar hábito" };
+  }
 }
 
-export async function createHabit(data: any, userId: string) {
-  const habit = await prisma.habit.create({
-    data: {
-      ...data,
-      userId,
-    },
-  });
+export async function uncompleteHabit(habitId: string, userId: string) {
+  try {
+    const today = new Date();
 
-  revalidatePath("/dashboard");
-  return habit;
+    const log = await prisma.habitLog.findFirst({
+      where: {
+        habitId,
+        userId,
+        completedAt: {
+          gte: startOfDay(today),
+          lte: endOfDay(today),
+        },
+      },
+    });
+
+    if (!log) return { success: false, error: "Log não encontrado" };
+
+    const habit = await prisma.habit.findUnique({
+      where: { id: habitId },
+    });
+
+    if (!habit) return { success: false, error: "Hábito não encontrado" };
+
+    // 1. Delete Log
+    await prisma.habitLog.delete({
+      where: { id: log.id },
+    });
+
+    // 2. Update Habit Streak (Decrement)
+    await prisma.habit.update({
+      where: { id: habitId },
+      data: {
+        currentStreak: { decrement: 1 },
+        totalCompletions: { decrement: 1 },
+      },
+    });
+
+    // 3. Update User XP
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        xp: { decrement: habit.xpReward },
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error uncompleting habit:", error);
+    return { success: false, error: "Falha ao desmarcar hábito" };
+  }
+}
+
+export async function createHabit(data: {
+  title: string;
+  icon?: string;
+  color?: string;
+  category?: any;
+  xpReward: number;
+}, userId: string) {
+  try {
+    const habit = await prisma.habit.create({
+      data: {
+        ...data,
+        userId,
+      },
+    });
+
+    revalidatePath("/dashboard/habits");
+    revalidatePath("/dashboard");
+    return { success: true, data: habit };
+  } catch (error) {
+    console.error("Error creating habit:", error);
+    return { success: false, error: "Falha ao criar hábito" };
+  }
+}
+
+export async function deleteHabit(habitId: string, userId: string) {
+  try {
+    await prisma.habit.update({
+      where: { id: habitId, userId },
+      data: { isArchived: true },
+    });
+
+    revalidatePath("/dashboard/habits");
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting habit:", error);
+    return { success: false, error: "Falha ao excluir hábito" };
+  }
 }
 
 export async function getHeatmapData(userId: string) {
-  const oneYearAgo = subDays(new Date(), 365);
+  try {
+    const oneYearAgo = subDays(new Date(), 366);
 
-  const logs = await prisma.habitLog.findMany({
-    where: {
-      userId,
-      completedAt: {
-        gte: oneYearAgo,
+    const logs = await prisma.habitLog.findMany({
+      where: {
+        userId,
+        completedAt: {
+          gte: oneYearAgo,
+        },
       },
-    },
-    select: {
-      completedAt: true,
-    },
-  });
+      select: {
+        completedAt: true,
+      },
+    });
 
-  // Group by date
-  const counts: Record<string, number> = {};
-  logs.forEach((log) => {
-    const dateStr = log.completedAt.toISOString().split("T")[0];
-    counts[dateStr] = (counts[dateStr] || 0) + 1;
-  });
+    const heatmap: Record<string, number> = {};
+    logs.forEach((log) => {
+      const dateStr = format(log.completedAt, "yyyy-MM-dd");
+      heatmap[dateStr] = (heatmap[dateStr] || 0) + 1;
+    });
 
-  return Object.entries(counts).map(([date, count]) => ({
-    date,
-    count,
-  }));
+    return { success: true, data: heatmap };
+  } catch (error) {
+    console.error("Error fetching heatmap data:", error);
+    return { success: false, error: "Falha ao buscar dados do heatmap" };
+  }
 }

@@ -6,14 +6,11 @@ import { Skeleton } from "@/components/layout/Skeleton";
 
 interface StatsRowProps {
   stats?: {
-    totalXP: number;
+    xp: number;
     currentStreak: number;
-    habitsToday: {
-      total: number;
-      done: number;
-    };
-    focusMinutes: number;
-    weeklyChartData: any[];
+    habitsToday: number;
+    habitsCompleted: number;
+    focusMinutesToday: number;
   };
   loading?: boolean;
 }
@@ -29,12 +26,12 @@ export function StatsRow({ stats, loading }: StatsRowProps) {
     );
   }
 
-  const habitPercentage = stats.habitsToday.total > 0 
-    ? Math.round((stats.habitsToday.done / stats.habitsToday.total) * 100)
+  const habitPercentage = stats.habitsToday > 0 
+    ? Math.round((stats.habitsCompleted / stats.habitsToday) * 100)
     : 0;
 
-  const hours = Math.floor(stats.focusMinutes / 60);
-  const minutes = stats.focusMinutes % 60;
+  const hours = Math.floor(stats.focusMinutesToday / 60);
+  const minutes = stats.focusMinutesToday % 60;
 
   const displayStats = [
     {
@@ -57,7 +54,7 @@ export function StatsRow({ stats, loading }: StatsRowProps) {
     },
     {
       label: "Total XP",
-      value: `${stats.totalXP} XP`,
+      value: `${stats.xp} XP`,
       sub: "Acumulado",
       icon: Zap,
       color: "#F59E0B",
@@ -66,7 +63,7 @@ export function StatsRow({ stats, loading }: StatsRowProps) {
     },
     {
       label: "Hábitos completos",
-      value: `${stats.habitsToday.done} / ${stats.habitsToday.total}`,
+      value: `${stats.habitsCompleted} / ${stats.habitsToday}`,
       sub: `${habitPercentage}% concluído`,
       icon: Target,
       color: "#22C55E",

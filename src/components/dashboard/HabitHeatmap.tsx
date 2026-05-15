@@ -6,7 +6,7 @@ import { format, subDays, startOfWeek, addDays } from "date-fns";
 import { Skeleton } from "../layout/Skeleton";
 
 interface HabitHeatmapProps {
-  data?: { date: string; count: number }[];
+  data?: Record<string, number>;
   loading?: boolean;
 }
 
@@ -25,9 +25,9 @@ export function HabitHeatmap({ data: heatmapData, loading }: HabitHeatmapProps) 
   const dataMap = useMemo(() => {
     if (loading || !heatmapData) return {};
     const map: Record<string, number> = {};
-    heatmapData.forEach(item => {
+    Object.entries(heatmapData).forEach(([date, count]) => {
       // Map counts to intensity 0-4
-      map[item.date] = Math.min(item.count, 4);
+      map[date] = Math.min(count, 4);
     });
     return map;
   }, [heatmapData, loading]);
@@ -61,13 +61,13 @@ export function HabitHeatmap({ data: heatmapData, loading }: HabitHeatmapProps) 
     }
   });
 
-  const totalCompleted = heatmapData.length;
+  const totalCompleted = Object.values(heatmapData).reduce((acc, v) => acc + v, 0);
 
   return (
     <div>
       {/* Summary */}
       <div className="flex gap-6 mb-4 text-xs text-text-muted">
-        <span><span className="text-purple font-semibold">{totalCompleted}</span> dias ativos nos últimos 12 meses</span>
+        <span><span className="text-purple font-semibold">{totalCompleted}</span> check-ins nos últimos 12 meses</span>
       </div>
 
       <div className="overflow-x-auto no-scrollbar">

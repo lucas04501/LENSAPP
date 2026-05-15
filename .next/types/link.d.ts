@@ -37,9 +37,9 @@ declare namespace __next_route_internal_types__ {
     | `/dashboard/analytics`
     | `/dashboard/focus`
     | `/dashboard/habits`
-    | `/dashboard/social`
-    | `/dashboard/ranks`
     | `/dashboard/profile`
+    | `/dashboard/ranks`
+    | `/dashboard/social`
   type DynamicRoutes<T extends string = string> = 
     | `/api/auth/${CatchAllSlug<T>}`
 
