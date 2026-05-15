@@ -2,7 +2,7 @@
   "node": {
     "3468bc1fc24880530913538bd917162658fc7b6c": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
@@ -10,7 +10,7 @@
     },
     "006ab39cc5a4c7c4b04d427c28b8143a374adb74": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
@@ -18,7 +18,7 @@
     },
     "14b89e2e140dff850ced69d15dda7b2f363cee9f": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
@@ -26,7 +26,7 @@
     },
     "2ea1d5a5e62f3d89ea923588de54912892ac3d18": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
@@ -34,7 +34,7 @@
     },
     "823496bbce2f761a5d9fd7dd8e65a7c7fbdcd1c7": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
@@ -42,7 +42,7 @@
     },
     "f6ad197bd6b8beb3bc5d5025ecd07f5979721cb9": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
@@ -50,10 +50,38 @@
     },
     "f9a7aa4cbc1b610dea5b0ab1935f50481fa42e65": {
       "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc"
+      }
+    },
+    "8fca8728a9c6a2cc497a03160488375f2d1ca4d3": {
+      "workers": {
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/focus/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cfocus.ts%22%2C%5B%22getFocusToday%22%2C%22saveFocusSession%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/dashboard/page": "rsc",
+        "app/dashboard/goals/page": "rsc",
+        "app/dashboard/focus/page": "rsc",
+        "app/dashboard/achievements/page": "rsc"
+      }
+    },
+    "a7e1b3286d787c15aa7cc05ca6dfd15932c0a82e": {
+      "workers": {
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cstats.ts%22%2C%5B%22getDashboardStats%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Chabits.ts%22%2C%5B%22deleteHabit%22%2C%22getHeatmapData%22%2C%22getHabitsWithTodayStatus%22%2C%22createHabit%22%2C%22uncompleteHabit%22%2C%22completeHabit%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/focus/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cfocus.ts%22%2C%5B%22getFocusToday%22%2C%22saveFocusSession%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/dashboard/page": "rsc",
+        "app/dashboard/goals/page": "rsc",
+        "app/dashboard/focus/page": "rsc",
+        "app/dashboard/achievements/page": "rsc"
       }
     },
     "0d64c72ec6871b3331f7a9b94424bd50c5575e6e": {
@@ -67,6 +95,7 @@
         "app/dashboard/analytics/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/social/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
+        "app/dashboard/achievements/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/ranks/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
@@ -79,6 +108,7 @@
         "app/dashboard/analytics/page": "action-browser",
         "app/dashboard/social/page": "action-browser",
         "app/dashboard/profile/page": "action-browser",
+        "app/dashboard/achievements/page": "action-browser",
         "app/dashboard/ranks/page": "action-browser"
       }
     },
@@ -93,6 +123,7 @@
         "app/dashboard/analytics/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/social/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
+        "app/dashboard/achievements/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/ranks/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
@@ -105,6 +136,7 @@
         "app/dashboard/analytics/page": "action-browser",
         "app/dashboard/social/page": "action-browser",
         "app/dashboard/profile/page": "action-browser",
+        "app/dashboard/achievements/page": "action-browser",
         "app/dashboard/ranks/page": "action-browser"
       }
     },
@@ -119,6 +151,7 @@
         "app/dashboard/analytics/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/social/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
+        "app/dashboard/achievements/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/ranks/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
@@ -131,12 +164,13 @@
         "app/dashboard/analytics/page": "action-browser",
         "app/dashboard/social/page": "action-browser",
         "app/dashboard/profile/page": "action-browser",
+        "app/dashboard/achievements/page": "action-browser",
         "app/dashboard/ranks/page": "action-browser"
       }
     },
     "1dadcc05b288d41dd7f8faeebd467a03cfc7702a": {
       "workers": {
-        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/goals/page": "rsc"
@@ -144,7 +178,7 @@
     },
     "74948e63f400d7729c81580f71cbccf20a9da329": {
       "workers": {
-        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/goals/page": "rsc"
@@ -152,7 +186,7 @@
     },
     "939e8f49d98727d5b9fc7ada1babe887d525a790": {
       "workers": {
-        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/goals/page": "rsc"
@@ -160,7 +194,7 @@
     },
     "c7274a37d47446b24c6b14bc9f1aa7b28cb9b622": {
       "workers": {
-        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/goals/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cgoals.ts%22%2C%5B%22deleteGoal%22%2C%22createGoal%22%2C%22updateProgress%22%2C%22getGoals%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/goals/page": "rsc"
@@ -208,7 +242,7 @@
     },
     "daa3f97fcb9d92b634996a7797673fad87a13621": {
       "workers": {
-        "app/dashboard/focus/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cfocus.ts%22%2C%5B%22getFocusToday%22%2C%22saveFocusSession%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/focus/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cfocus.ts%22%2C%5B%22getFocusToday%22%2C%22saveFocusSession%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/focus/page": "rsc"
@@ -216,7 +250,7 @@
     },
     "ecde12a1c8f019b05d031b5d61d59b997679d160": {
       "workers": {
-        "app/dashboard/focus/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cfocus.ts%22%2C%5B%22getFocusToday%22%2C%22saveFocusSession%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/focus/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cfocus.ts%22%2C%5B%22getFocusToday%22%2C%22saveFocusSession%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/focus/page": "rsc"
@@ -248,5 +282,5 @@
     }
   },
   "edge": {},
-  "encryptionKey": "HMp1aJdU+H28hnw5A0pkNt4X7iZDqLyycLOcJnAbF74="
+  "encryptionKey": "wWI3UMz58CF3fAILeKOp6jztlwd0vj7dlYFtN80pzZ4="
 }

@@ -31,11 +31,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
     "/dashboard/habits/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -76,10 +71,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/profile/page.js"
     ],
+    "/dashboard/achievements/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/achievements/page.js"
+    ],
     "/dashboard/ranks/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/ranks/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
