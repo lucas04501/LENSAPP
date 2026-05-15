@@ -48,6 +48,7 @@ model User {
   likes         Like[]
   comments      Comment[]
   sessions      FocusSession[]
+  goals         Goal[]
   following     Follow[]  @relation("following")
   followers     Follow[]  @relation("followers")
   notifications Notification[]
@@ -204,6 +205,27 @@ model Notification {
   createdAt DateTime         @default(now())
 
   @@map("notifications")
+}
+
+// ─── GOAL (Metas de 90 dias) ──────────────────────────────────────────────────
+model Goal {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  category    HabitCategory @default(WORK)
+  targetDate  DateTime
+
+  progress    Int        @default(0)  // 0-100 percentual
+  isCompleted Boolean    @default(false)
+  xpReward    Int        @default(100)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("goals")
 }
 
 // ─── ENUMS ────────────────────────────────────────────────────────────────────

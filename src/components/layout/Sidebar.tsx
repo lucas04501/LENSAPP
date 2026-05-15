@@ -15,11 +15,12 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/dashboard",           icon: LayoutDashboard, label: "Dashboard",   group: "main" },
   { href: "/dashboard/habits",    icon: Flame,           label: "Hábitos",     group: "main" },
+  { href: "/dashboard/goals",     icon: Target,          label: "Metas",       group: "main" },
   { href: "/dashboard/focus",     icon: Timer,           label: "Foco",        group: "main" },
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
   { href: "/dashboard/social",    icon: Users,           label: "Gym Rats",    group: "community" },
-  { href: "/dashboard/ranks",     icon: Trophy,          label: "Ranks",       group: "community" },
   { href: "/dashboard/profile",   icon: User,            label: "Perfil",      group: "community" },
+  { href: "/dashboard/ranks",     icon: Trophy,          label: "Ranks",       group: "community" },
   { href: "/dashboard/settings",  icon: Settings,        label: "Settings",    group: "bottom" },
 ];
 
