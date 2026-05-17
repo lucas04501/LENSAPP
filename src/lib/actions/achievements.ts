@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { startOfDay, endOfDay, subDays } from "date-fns";
+import { createNotification } from "./notifications";
 
 export async function checkAndUnlockAchievements(userId: string) {
   try {
@@ -60,6 +61,15 @@ export async function checkAndUnlockAchievements(userId: string) {
       });
 
       newlyUnlocked.push(ua.achievement);
+
+      // Create Notification
+      await createNotification(
+        userId,
+        "ACHIEVEMENT",
+        "Conquista Desbloqueada! 🏆",
+        `Você desbloqueou: ${template.title}. +${template.xpReward} XP`,
+        "/dashboard/achievements"
+      );
     };
 
     // --- CONDITIONS ---

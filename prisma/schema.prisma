@@ -280,6 +280,10 @@ enum NotificationType {
   RANK_UP
   STREAK_RISK
   ACHIEVEMENT
+  SOCIAL_LIKE
+  SOCIAL_COMMENT
+  GOAL_DEADLINE
+  LEVEL_UP
 }
 
 enum HabitCategory {

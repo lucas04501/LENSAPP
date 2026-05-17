@@ -3,6 +3,11 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { getGoals } from "@/lib/actions/goals";
 import { GoalsContent } from "@/components/dashboard/goals/GoalsContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Metas | LENS",
+};
 
 export default async function GoalsPage() {
   const session = await getServerSession(authOptions);

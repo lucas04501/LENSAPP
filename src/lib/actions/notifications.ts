@@ -1,21 +1,18 @@
-"use server";
+'use server';
 
 import { prisma } from "@/lib/prisma";
+import { NotificationType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function getNotifications(userId: string) {
   try {
     return await prisma.notification.findMany({
-      where: {
-        userId,
-        isRead: false,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
     });
   } catch (error) {
-    console.error("GET_NOTIFICATIONS_ERROR:", error);
+    console.error("Error fetching notifications:", error);
     return [];
   }
 }
@@ -26,9 +23,9 @@ export async function markAsRead(notificationId: string) {
       where: { id: notificationId },
       data: { isRead: true },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/");
   } catch (error) {
-    console.error("MARK_AS_READ_ERROR:", error);
+    console.error("Error marking notification as read:", error);
   }
 }
 
@@ -38,8 +35,41 @@ export async function markAllAsRead(userId: string) {
       where: { userId, isRead: false },
       data: { isRead: true },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/");
   } catch (error) {
-    console.error("MARK_ALL_AS_READ_ERROR:", error);
+    console.error("Error marking all notifications as read:", error);
+  }
+}
+
+export async function deleteNotification(notificationId: string) {
+  try {
+    await prisma.notification.delete({
+      where: { id: notificationId },
+    });
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error deleting notification:", error);
+  }
+}
+
+export async function createNotification(
+  userId: string,
+  type: NotificationType,
+  title: string,
+  message: string,
+  actionUrl?: string
+) {
+  try {
+    return await prisma.notification.create({
+      data: {
+        userId,
+        type,
+        title,
+        message,
+        actionUrl,
+      },
+    });
+  } catch (error) {
+    console.error("Error creating notification:", error);
   }
 }

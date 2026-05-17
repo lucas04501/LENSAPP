@@ -10,16 +10,20 @@ import { useEffect, useState } from "react";
 import { getNotifications } from "@/lib/actions/notifications";
 import { cn } from "@/lib/utils";
 
-export function Header() {
+export function Header({ initialNotifications = [] }: { initialNotifications?: any[] }) {
   const { data: session } = useSession();
   const { openCommandPalette, toggleSidebar } = useUIStore();
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>(initialNotifications);
 
   const user = session?.user as any;
   const xp = user?.xp || 0;
   const rank = getRankByXP(xp);
   const level = getLevelByXP(xp);
   const xpProgress = getXPProgress(xp);
+
+  useEffect(() => {
+    setNotifications(initialNotifications);
+  }, [initialNotifications]);
 
   useEffect(() => {
     if (user?.id) {

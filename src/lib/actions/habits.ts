@@ -2,7 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { startOfDay, endOfDay, subDays, format } from "date-fns";
+import { createNotification } from "./notifications";
 import { checkAndUnlockAchievements } from "./achievements";
+import { getRankByXP } from "@/types";
 
 export async function getHabitsWithTodayStatus(userId: string) {
   try {
@@ -76,12 +79,17 @@ export async function completeHabit(habitId: string, userId: string) {
     // 3. Update User XP and Level
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { xp: true },
+      select: { xp: true, level: true },
     });
 
     if (user) {
-      const newXP = user.xp + habit.xpReward;
+      const oldXP = user.xp;
+      const oldLevel = user.level;
+      const oldRank = getRankByXP(oldXP);
+
+      const newXP = oldXP + habit.xpReward;
       const newLevel = Math.floor(Math.sqrt(newXP / 100)) + 1;
+      const newRank = getRankByXP(newXP);
 
       await prisma.user.update({
         where: { id: userId },
@@ -90,6 +98,28 @@ export async function completeHabit(habitId: string, userId: string) {
           level: newLevel,
         },
       });
+
+      // Level Up Notification
+      if (newLevel > oldLevel) {
+        await createNotification(
+          userId,
+          "LEVEL_UP",
+          "Level Up! ⚡",
+          `Você alcançou o nível ${newLevel}! Continue evoluindo.`,
+          "/dashboard"
+        );
+      }
+
+      // Rank Up Notification
+      if (newRank.name !== oldRank.name) {
+        await createNotification(
+          userId,
+          "RANK_UP",
+          "Novo Rank Alcançado! 🏆",
+          `Parabéns! Você agora é um ${newRank.name}.`,
+          "/dashboard"
+        );
+      }
     }
 
     revalidatePath("/dashboard");

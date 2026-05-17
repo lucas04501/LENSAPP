@@ -3,6 +3,11 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { getTodayEntry, getEntries } from "@/lib/actions/journal";
 import { JournalContent } from "@/components/dashboard/journal/JournalContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Diário | LENS",
+};
 
 export default async function JournalPage() {
   const session = await getServerSession(authOptions);

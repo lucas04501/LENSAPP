@@ -4,6 +4,12 @@ import { redirect } from "next/navigation";
 import { getDashboardStats } from "@/lib/actions/stats";
 import { getHabitsWithTodayStatus, getHeatmapData } from "@/lib/actions/habits";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard | LENS",
+  description: "Gerencie sua performance e hábitos.",
+};
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);

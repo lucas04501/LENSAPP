@@ -8,6 +8,8 @@ import { WeeklyBarChart } from "@/components/dashboard/WeeklyBarChart";
 import { RadarChart } from "@/components/dashboard/RadarChart";
 import { HabitCheckList } from "@/components/habits/HabitCheckList";
 import { XPCard } from "@/components/gamification/XPCard";
+import { DailyQuote } from "@/components/dashboard/DailyQuote";
+import { StreakWarning } from "@/components/dashboard/StreakWarning";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +30,8 @@ const item = {
 };
 
 export function DashboardContent({ user, stats, habitsToday, heatmapData }: DashboardContentProps) {
-  const { rank, level, xp } = stats;
+  const { rank, level, xp, totalStreak } = stats;
+  const pendingHabitsCount = habitsToday.filter(h => !h.todayDone).length;
 
   return (
     <motion.div
@@ -58,6 +61,12 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
         </div>
       </motion.div>
 
+      {/* ── Streak Warning ── */}
+      <StreakWarning 
+        pendingHabitsCount={pendingHabitsCount} 
+        totalStreak={totalStreak} 
+      />
+
       {/* ── Stats Row ── */}
       <motion.div variants={item}>
         <StatsRow stats={stats} />
@@ -66,6 +75,11 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
       {/* ── XP Card ── */}
       <motion.div variants={item}>
         <XPCard xp={xp} />
+      </motion.div>
+
+      {/* ── Daily Quote ── */}
+      <motion.div variants={item}>
+        <DailyQuote />
       </motion.div>
 
       {/* ── Grid: Habits + Charts ── */}
