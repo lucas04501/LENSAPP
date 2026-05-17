@@ -2,7 +2,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { DashboardClientWrapper } from "@/components/layout/DashboardClientWrapper";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getNotifications } from "@/lib/actions/notifications";
 import dynamic from "next/dynamic";
 
