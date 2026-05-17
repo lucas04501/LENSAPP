@@ -1,66 +1,66 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Brain, Home, ArrowLeft } from "lucide-react";
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Ghost, Home } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center p-4 overflow-hidden relative">
-      {/* Background Decor */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple/10 rounded-full blur-[120px] pointer-events-none" />
-      
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#050505] p-4 text-center">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 flex flex-col items-center text-center space-y-8"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="mb-8"
       >
-        <div className="relative">
-          <motion.div
-            animate={{ 
-              rotate: [0, 10, -10, 0],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple to-red flex items-center justify-center p-1 shadow-2xl shadow-purple/20"
-          >
-            <div className="w-full h-full bg-[#050505] rounded-[22px] flex items-center justify-center">
-              <Brain className="w-12 h-12 text-white" />
-            </div>
-          </motion.div>
-          <div className="absolute -bottom-2 -right-2 bg-red text-white text-[10px] font-black px-2 py-1 rounded-lg shadow-xl uppercase italic">
-            Erro 404
+        <div className="relative inline-block">
+          <span className="text-9xl font-black tracking-tighter text-white opacity-10">404</span>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Ghost className="h-16 w-16 text-purple-500" />
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <h1 className="text-5xl font-black text-white italic uppercase tracking-tighter">
-            Conexão <span className="text-purple">Perdida</span>
-          </h1>
-          <p className="text-text-muted text-sm max-w-xs mx-auto">
-            Essa página não existe na rede neural do LENS ou foi removida para otimização.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <Link href="/dashboard">
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-purple text-white font-bold rounded-2xl hover:bg-purple/80 transition-all active:scale-95 shadow-xl shadow-purple/20">
-              <Home className="w-4 h-4" />
-              Dashboard
-            </button>
-          </Link>
-          <button 
-            onClick={() => window.history.back()}
-            className="flex items-center justify-center gap-2 px-8 py-4 bg-surface-2 border border-white/5 text-white font-bold rounded-2xl hover:bg-surface-3 transition-all active:scale-95"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Voltar
-          </button>
         </div>
       </motion.div>
 
-      {/* Grid Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
+      <motion.h1 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="mb-2 text-2xl font-bold text-white"
+      >
+        Essa página está em <span className="text-purple-500 italic">Ghost Mode</span>
+      </motion.h1>
+      
+      <motion.p 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="mb-8 max-w-md text-zinc-400"
+      >
+        O conteúdo que você procura desapareceu no vácuo ou nunca existiu. 
+        Mantenha o foco no que importa.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <Link 
+          href="/dashboard"
+          className="group relative flex items-center gap-2 overflow-hidden rounded-full bg-white px-8 py-3 font-bold text-black transition-all hover:pr-10 active:scale-95"
+        >
+          <Home className="h-4 w-4" />
+          <span>Voltar ao Dashboard</span>
+          <div className="absolute right-4 translate-x-4 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
+            →
+          </div>
+        </Link>
+      </motion.div>
+
+      <div className="mt-12">
+        <span className="text-xs font-black tracking-[0.2em] text-zinc-800 uppercase">
+          LENS OS // SYSTEM ERROR
+        </span>
+      </div>
     </div>
   );
 }

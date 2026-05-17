@@ -30,20 +30,20 @@ declare namespace __next_route_internal_types__ {
 
   type StaticRoutes = 
     | `/`
-    | `/api/auth/register`
     | `/login`
     | `/register`
+    | `/api/auth/register`
     | `/dashboard`
-    | `/dashboard/analytics`
     | `/dashboard/achievements`
+    | `/dashboard/analytics`
     | `/dashboard/calendar`
     | `/dashboard/focus`
     | `/dashboard/goals`
     | `/dashboard/habits`
     | `/dashboard/journal`
     | `/dashboard/profile`
-    | `/dashboard/ranks`
     | `/dashboard/social`
+    | `/dashboard/ranks`
     | `/onboarding`
   type DynamicRoutes<T extends string = string> = 
     | `/api/auth/${CatchAllSlug<T>}`

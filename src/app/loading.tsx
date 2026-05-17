@@ -1,50 +1,42 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 bg-[#050505] z-[9999] flex flex-col items-center justify-center gap-6">
-      <div className="relative w-20 h-20">
-        {/* Spinner rings */}
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#050505]">
+      <div className="relative">
+        {/* Spinner animado com gradiente */}
         <motion.div
+          className="h-24 w-24 rounded-full border-t-4 border-l-4 border-transparent"
+          style={{
+            borderImage: 'linear-gradient(to right, #A855F7, #EF4444) 1',
+            borderRadius: '50%',
+          }}
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-2 border-purple/10 border-t-purple shadow-[0_0_20px_rgba(168,85,247,0.3)]"
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-2 rounded-full border-2 border-red/10 border-t-red shadow-[0_0_20px_rgba(239,68,68,0.2)]"
         />
         
-        {/* Core */}
+        {/* Logo LENS centralizado pulsando */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+          <motion.span 
+            className="text-2xl font-black tracking-tighter text-white"
+            animate={{ opacity: [0.5, 1, 0.5], scale: [0.95, 1.05, 0.95] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-4 h-4 bg-white rounded-full blur-[2px]"
-          />
+          >
+            LENS
+          </motion.span>
         </div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="flex flex-col items-center gap-1"
+      
+      <motion.p 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="mt-8 text-sm font-medium tracking-widest text-zinc-500 uppercase"
       >
-        <p className="text-xs font-black text-white uppercase tracking-[0.4em] italic">Carregando</p>
-        <div className="flex gap-1">
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              animate={{ opacity: [0, 1, 0] }}
-              transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-              className="w-1 h-1 bg-purple rounded-full"
-            />
-          ))}
-        </div>
-      </motion.div>
+        Initializing Flow...
+      </motion.p>
     </div>
   );
 }

@@ -1,10 +1,15 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/dashboard/social/page": "app/dashboard/social/page.js",
-  "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
-  "/dashboard/profile/page": "app/dashboard/profile/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/calendar/page": "app/dashboard/calendar/page.js",
+  "/dashboard/journal/page": "app/dashboard/journal/page.js",
+  "/dashboard/focus/page": "app/dashboard/focus/page.js",
+  "/dashboard/goals/page": "app/dashboard/goals/page.js",
+  "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
+  "/dashboard/social/page": "app/dashboard/social/page.js",
   "/dashboard/achievements/page": "app/dashboard/achievements/page.js",
+  "/dashboard/profile/page": "app/dashboard/profile/page.js",
+  "/dashboard/ranks/page": "app/dashboard/ranks/page.js",
   "/dashboard/habits/page": "app/dashboard/habits/page.js"
 }
