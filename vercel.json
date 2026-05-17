@@ -2,17 +2,5 @@
   "buildCommand": "npx prisma generate && tsx scripts/check-env.ts && next build",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["gru1"],
-  "//": [
-    "INSTRUÇÕES DE DEPLOY:",
-    "1. Push para GitHub",
-    "2. Acessar vercel.com e importar repositório",
-    "3. Adicionar Environment Variables:",
-    "   - DATABASE_URL (connection string do Neon com pooler)",
-    "   - DIRECT_URL (connection string direta do Neon)",
-    "   - NEXTAUTH_URL (URL do projeto na Vercel)",
-    "   - NEXTAUTH_SECRET (gerar com: openssl rand -base64 32)",
-    "   - NEXT_PUBLIC_APP_URL (mesma que NEXTAUTH_URL)",
-    "4. Deploy automático em cada push para main"
-  ]
+  "regions": ["gru1"]
 }
