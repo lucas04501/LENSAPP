@@ -31,7 +31,7 @@ export function CommandPalette() {
   const { commandPaletteOpen, closeCommandPalette } = useUIStore();
 
   const handleSelect = useCallback((href: string) => {
-    router.push(href);
+    router.push(href as any);
     closeCommandPalette();
   }, [router, closeCommandPalette]);
 
