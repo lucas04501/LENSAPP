@@ -35,7 +35,14 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Credenciais inválidas");
         }
 
-        return user;
+        // Retornamos o objeto com todos os campos necessários para o JWT
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          username: user.username,
+          totalStreak: user.totalStreak,
+        };
       },
     }),
   ],
@@ -47,16 +54,20 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      // Quando o usuário faz login, 'user' contém os dados retornados pelo authorize
       if (user) {
         token.id = user.id;
-        token.username = (user as any).username;
+        token.username = user.username;
+        token.totalStreak = user.totalStreak;
       }
       return token;
     },
     async session({ session, token }) {
+      // Injeta os dados do token no objeto da sessão
       if (session.user) {
-        (session.user as any).id = token.id;
-        (session.user as any).username = token.username;
+        session.user.id = token.id;
+        session.user.username = token.username;
+        session.user.totalStreak = token.totalStreak;
       }
       return session;
     },

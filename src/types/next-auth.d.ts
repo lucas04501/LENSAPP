@@ -7,25 +7,28 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      username?: string | null;
+      username: string | null;
+      totalStreak: number;
     } & DefaultSession["user"];
   }
 
   /**
-   * Extende o tipo 'User' retornado pelo authorize
+   * Extende o tipo 'User' retornado pelo authorize e providers
    */
   interface User {
     id: string;
-    username?: string | null;
+    username: string | null;
+    totalStreak: number;
   }
 }
 
 declare module "next-auth/jwt" {
   /**
-   * Extende o tipo do token JWT
+   * Extende o tipo do token JWT para incluir o id, username e streak
    */
   interface JWT {
     id: string;
-    username?: string | null;
+    username: string | null;
+    totalStreak: number;
   }
 }
