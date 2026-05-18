@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { FocusTimer } from "@/components/focus/FocusTimer";
 import { getFocusToday } from "@/lib/actions/focus";
