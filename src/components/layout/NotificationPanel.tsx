@@ -56,7 +56,7 @@ export function NotificationPanel({ userId, notifications: initialNotifications 
     }
     
     if (notification.actionUrl) {
-      router.push(notification.actionUrl);
+      router.push(notification.actionUrl as any);
       setIsOpen(false);
     }
   };
