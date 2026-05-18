@@ -98,9 +98,9 @@ export function Sidebar() {
             <div className="relative">
               <Flame className={cn(
                 "w-5 h-5 transition-colors",
-                (session?.user as any)?.totalStreak > 0 ? "text-red animate-pulse" : "text-text-muted opacity-20"
+                session?.user?.totalStreak > 0 ? "text-red animate-pulse" : "text-text-muted opacity-20"
               )} />
-              {(session?.user as any)?.totalStreak > 0 && (
+              {session?.user?.totalStreak > 0 && (
                 <div className="absolute inset-0 bg-red/40 blur-lg rounded-full animate-pulse" />
               )}
             </div>
@@ -108,7 +108,7 @@ export function Sidebar() {
               <div className="flex flex-col">
                 <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none">Streak</span>
                 <span className="text-sm font-black text-white italic tracking-tighter">
-                  {(session?.user as any)?.totalStreak || 0} DIAS
+                  {session?.user?.totalStreak || 0} DIAS
                 </span>
               </div>
             )}
@@ -127,7 +127,7 @@ export function Sidebar() {
               {NAV_ITEMS.filter((i) => i.group === group).map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link key={item.href} href={item.href} onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
+                  <Link key={item.href} href={item.href as any} onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
                     <motion.div
                       whileHover={{ x: 2 }}
                       className={cn(
@@ -172,7 +172,7 @@ export function Sidebar() {
 
         {/* Bottom */}
         <div className="p-2 border-t border-white/5 shrink-0">
-          <Link href="/dashboard/settings" onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
+          <Link href={"/dashboard/settings" as any} onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
             <div className="flex items-center gap-3 px-3 py-3 lg:py-2.5 rounded-xl text-sm text-text-muted hover:text-text-primary hover:bg-surface-2 transition-all min-h-[44px]">
               <Settings className="w-5 h-5 lg:w-4.5 lg:h-4.5 shrink-0" />
               {sidebarOpen && <span>Settings</span>}
