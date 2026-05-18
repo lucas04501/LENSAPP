@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
       where: { id: userId },
       include: {
         habits: { where: { isArchived: false } },
-        focusSessions: { orderBy: { startedAt: "desc" }, take: 100 },
+        sessions: { orderBy: { startedAt: "desc" }, take: 100 },
         goals: { orderBy: { createdAt: "desc" } },
         journalEntries: { orderBy: { date: "desc" }, take: 50 },
       },
@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
       // Focus Sessions
       csvContent += "--- SESSOES DE FOCO ---\n";
       csvContent += "Data,Tipo,Duracao (min),XP Ganho\n";
-      user.focusSessions.forEach(s => {
+      user.sessions.forEach(s => {
         csvContent += `"${format(s.startedAt, "yyyy-MM-dd HH:mm")}","${s.type}","${s.durationMin}","${s.xpEarned}"\n`;
       });
       csvContent += "\n";
@@ -126,7 +126,7 @@ export async function GET(req: NextRequest) {
           <table>
             <thead><tr><th>Data</th><th>Tipo</th><th>Duração</th><th>XP</th></tr></thead>
             <tbody>
-              ${user.focusSessions.map(s => `<tr><td>${format(s.startedAt, "dd/MM/yyyy HH:mm")}</td><td>${s.type}</td><td>${s.durationMin} min</td><td>${s.xpEarned}</td></tr>`).join("")}
+              ${user.sessions.map(s => `<tr><td>${format(s.startedAt, "dd/MM/yyyy HH:mm")}</td><td>${s.type}</td><td>${s.durationMin} min</td><td>${s.xpEarned}</td></tr>`).join("")}
             </tbody>
           </table>
 
