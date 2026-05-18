@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Zap, Calendar, CheckCircle2, Trash2, 
-  MoreHorizontal, PlusCircle, Target
+  MoreHorizontal, PlusCircle, Target, Trophy
 } from "lucide-react";
 import { differenceInDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
