@@ -57,7 +57,7 @@ export async function createNotification(
   type: NotificationType,
   title: string,
   message: string,
-  actionUrl?: string
+  _actionUrl?: string // Prefixado com underscore para ignorar, já que não existe no schema
 ) {
   try {
     return await prisma.notification.create({
@@ -66,7 +66,6 @@ export async function createNotification(
         type,
         title,
         message,
-        actionUrl,
       },
     });
   } catch (error) {
