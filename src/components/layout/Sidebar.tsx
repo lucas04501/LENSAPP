@@ -98,9 +98,9 @@ export function Sidebar() {
             <div className="relative">
               <Flame className={cn(
                 "w-5 h-5 transition-colors",
-                session?.user?.totalStreak > 0 ? "text-red animate-pulse" : "text-text-muted opacity-20"
+                (session?.user?.totalStreak ?? 0) > 0 ? "text-red animate-pulse" : "text-text-muted opacity-20"
               )} />
-              {session?.user?.totalStreak > 0 && (
+              {(session?.user?.totalStreak ?? 0) > 0 && (
                 <div className="absolute inset-0 bg-red/40 blur-lg rounded-full animate-pulse" />
               )}
             </div>
@@ -108,7 +108,7 @@ export function Sidebar() {
               <div className="flex flex-col">
                 <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none">Streak</span>
                 <span className="text-sm font-black text-white italic tracking-tighter">
-                  {session?.user?.totalStreak || 0} DIAS
+                  {session?.user?.totalStreak ?? 0} DIAS
                 </span>
               </div>
             )}

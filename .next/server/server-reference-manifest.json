@@ -68,7 +68,8 @@
         "app/dashboard/social/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/profile/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cuser.ts%22%2C%5B%22getUser%22%2C%22getFullProfile%22%2C%22updateProfile%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
-        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc",
@@ -81,7 +82,8 @@
         "app/dashboard/social/page": "rsc",
         "app/dashboard/profile/page": "rsc",
         "app/dashboard/achievements/page": "rsc",
-        "app/dashboard/ranks/page": "rsc"
+        "app/dashboard/ranks/page": "rsc",
+        "app/dashboard/settings/page": "rsc"
       }
     },
     "15ec644b44fdda7800320946197d03497e855dcb": {
@@ -96,7 +98,8 @@
         "app/dashboard/social/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/profile/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cuser.ts%22%2C%5B%22getUser%22%2C%22getFullProfile%22%2C%22updateProfile%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
-        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc",
@@ -109,7 +112,8 @@
         "app/dashboard/social/page": "rsc",
         "app/dashboard/profile/page": "rsc",
         "app/dashboard/achievements/page": "rsc",
-        "app/dashboard/ranks/page": "rsc"
+        "app/dashboard/ranks/page": "rsc",
+        "app/dashboard/settings/page": "rsc"
       }
     },
     "258b61f98e84300e1b1e5783162b70d0399a8f5b": {
@@ -124,7 +128,8 @@
         "app/dashboard/social/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/profile/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cuser.ts%22%2C%5B%22getUser%22%2C%22getFullProfile%22%2C%22updateProfile%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
-        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc",
@@ -137,7 +142,8 @@
         "app/dashboard/social/page": "rsc",
         "app/dashboard/profile/page": "rsc",
         "app/dashboard/achievements/page": "rsc",
-        "app/dashboard/ranks/page": "rsc"
+        "app/dashboard/ranks/page": "rsc",
+        "app/dashboard/settings/page": "rsc"
       }
     },
     "dca63d0e406f44cafa79a6c8345438f457fda432": {
@@ -152,7 +158,8 @@
         "app/dashboard/social/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/profile/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cuser.ts%22%2C%5B%22getUser%22%2C%22getFullProfile%22%2C%22updateProfile%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
-        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc",
@@ -165,7 +172,8 @@
         "app/dashboard/social/page": "rsc",
         "app/dashboard/profile/page": "rsc",
         "app/dashboard/achievements/page": "rsc",
-        "app/dashboard/ranks/page": "rsc"
+        "app/dashboard/ranks/page": "rsc",
+        "app/dashboard/settings/page": "rsc"
       }
     },
     "fe73e9e178a2aeb9373757e094d41e38cf9d3959": {
@@ -180,7 +188,8 @@
         "app/dashboard/social/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/profile/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cuser.ts%22%2C%5B%22getUser%22%2C%22getFullProfile%22%2C%22updateProfile%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
         "app/dashboard/achievements/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cachievements.ts%22%2C%5B%22checkAndUnlockAchievements%22%2C%22getUserAchievements%22%5D%5D%2C%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
-        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
+        "app/dashboard/ranks/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CPichau%5C%5CDesktop%5C%5Clens%5C%5Csrc%5C%5Clib%5C%5Cactions%5C%5Cnotifications.ts%22%2C%5B%22getNotifications%22%2C%22markAllAsRead%22%2C%22deleteNotification%22%2C%22createNotification%22%2C%22markAsRead%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/dashboard/page": "rsc",
@@ -193,7 +202,8 @@
         "app/dashboard/social/page": "rsc",
         "app/dashboard/profile/page": "rsc",
         "app/dashboard/achievements/page": "rsc",
-        "app/dashboard/ranks/page": "rsc"
+        "app/dashboard/ranks/page": "rsc",
+        "app/dashboard/settings/page": "rsc"
       }
     },
     "8fca8728a9c6a2cc497a03160488375f2d1ca4d3": {
