@@ -16,7 +16,7 @@ export default async function JournalPage() {
     redirect("/login");
   }
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const [todayRes, historyRes] = await Promise.all([
     getTodayEntry(userId),
     getEntries(userId),
@@ -35,7 +35,7 @@ export default async function JournalPage() {
     <JournalContent 
       userId={userId} 
       initialToday={todayRes.data} 
-      history={historyRes.data} 
+      history={historyRes.data || []} 
     />
   );
 }
