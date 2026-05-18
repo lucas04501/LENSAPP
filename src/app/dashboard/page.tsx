@@ -18,7 +18,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
 
   // Fetch data in parallel
   const [statsRes, habitsRes, heatmapRes] = await Promise.all([
@@ -27,7 +27,7 @@ export default async function DashboardPage() {
     getHeatmapData(userId),
   ]);
 
-  if (!statsRes.success || !habitsRes.success || !heatmapRes.success) {
+  if (!statsRes.success || !habitsRes.success || !heatmapRes.success || !habitsRes.data) {
     // Basic error handling - could be improved with Error Boundaries
     return (
       <div className="p-8 text-center">
@@ -44,7 +44,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardContent 
-      user={session.user as any}
+      user={session.user}
       stats={statsRes.data}
       habitsToday={habitsRes.data}
       heatmapData={heatmapRes.data}
