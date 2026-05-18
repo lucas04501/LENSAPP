@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { checkAndUnlockAchievements } from "./achievements";
+import { XP_REWARDS } from "@/types";
 
 export async function saveFocusSession(data: {
   userId: string;
