@@ -32,8 +32,8 @@ declare namespace __next_route_internal_types__ {
     | `/`
     | `/login`
     | `/register`
-    | `/api/export`
     | `/api/auth/register`
+    | `/api/export`
     | `/dashboard`
     | `/dashboard/achievements`
     | `/dashboard/analytics`
