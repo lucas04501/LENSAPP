@@ -54,7 +54,7 @@ async function main() {
     { key: "xp_500",       title: "Builder",           description: "Atingiu a marca de 500 XP total.",      icon: "🏗️", xpReward: 30, rarity: "COMMON" },
     { key: "xp_1500",      title: "Architect",         description: "Atingiu a marca de 1500 XP total.",     icon: "🏛️", xpReward: 75, rarity: "RARE" },
     { key: "xp_4000",      title: "Deep Worker",       description: "Atingiu a marca de 4000 XP total.",     icon: "💎", xpReward: 150, rarity: "EPIC" },
-    { key: "first_post",   title: "Voz da Tribo",      description: "Fez seu primeiro post no Gym Rats.",    icon: "📣", xpReward: 20, rarity: "COMMON" },
+    { key: "first_post",   title: "Voz da Tribo",      description: "Fez seu primeiro post no Feed.",    icon: "📣", xpReward: 20, rarity: "COMMON" },
     { key: "focus_60",     title: "Foco Real",         description: "Focou por 60 minutos em um único dia.", icon: "⏱️", xpReward: 40, rarity: "COMMON" },
     { key: "perfect_week", title: "Semana Perfeita",   description: "Completou todos os hábitos por 7 dias.",icon: "🏆", xpReward: 150, rarity: "RARE" },
     { key: "habits_5",     title: "Sistema Montado",   description: "Tem 5 hábitos ativos simultâneos.",     icon: "⚙️", xpReward: 50, rarity: "COMMON" },

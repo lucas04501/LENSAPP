@@ -7,12 +7,13 @@ import { ptBR } from "date-fns/locale";
 export async function getAnalyticsData(userId: string) {
   try {
     const now = new Date();
+    
+    // 1. Weekly Data (last 7 days)
     const last7Days = eachDayOfInterval({
       start: subDays(now, 6),
       end: now,
     });
 
-    // 1. Weekly Data (last 7 days)
     const [focusSessions, habitLogs] = await Promise.all([
       prisma.focusSession.findMany({
         where: {
@@ -51,7 +52,7 @@ export async function getAnalyticsData(userId: string) {
         .reduce((acc, l) => acc + l.xpEarned, 0);
 
       return {
-        day: dayStr.toUpperCase(),
+        day: dayStr.toUpperCase().replace('.', ''),
         foco: focus,
         habitos: habitCount,
         xp: xpFromFocus + xpFromHabits,
@@ -60,19 +61,6 @@ export async function getAnalyticsData(userId: string) {
 
     // 2. Habit Rates (last 30 days)
     const thirtyDaysAgo = subDays(startOfDay(now), 30);
-    const habits = await prisma.habit.findMany({
-      where: { userId, isArchived: false, isActive: true },
-      include: {
-        _count: {
-          积极: {
-            where: { completedAt: { gte: thirtyDaysAgo } }
-          }
-        }
-      }
-    });
-
-    // Note: The above _count in Prisma doesn't directly work as 'logs' check. 
-    // Let's do it properly.
     const habitsWithLogs = await prisma.habit.findMany({
       where: { userId, isArchived: false, isActive: true },
       include: {
@@ -99,8 +87,8 @@ export async function getAnalyticsData(userId: string) {
     });
 
     const xpGrowth = Array.from({ length: 12 }).map((_, i) => {
-      const weekStart = subDays(startOfWeek(now), (11 - i) * 7);
-      const weekEnd = endOfWeek(weekStart);
+      const weekStart = subDays(startOfWeek(now, { weekStartsOn: 1 }), (11 - i) * 7);
+      const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
       
       const xpLogs = allRecentLogs
         .filter(l => l.completedAt >= weekStart && l.completedAt <= weekEnd)
@@ -111,7 +99,7 @@ export async function getAnalyticsData(userId: string) {
         .reduce((acc, s) => acc + s.xpEarned, 0);
 
       return {
-        week: `S${12 - (11 - i)}`,
+        week: `S${i + 1}`,
         xp: xpLogs + xpSessions
       };
     });
@@ -137,6 +125,17 @@ export async function getAnalyticsData(userId: string) {
 
   } catch (error) {
     console.error("Analytics Error:", error);
-    return { success: false, error: "Falha ao carregar analytics" };
+    return { 
+      success: false, 
+      error: "Falha ao carregar analytics",
+      data: {
+        weeklyData: [],
+        habitRates: [],
+        xpGrowth: [],
+        totalFocusWeek: 0,
+        avgHabitRate: 0,
+        xpThisWeek: 0
+      }
+    };
   }
 }

@@ -17,7 +17,7 @@ const COMMANDS = [
   { id: "habits",   label: "Ir para Hábitos",      icon: Flame,           href: "/dashboard/habits",     category: "Navegar",   shortcut: ["G", "H"] },
   { id: "focus",    label: "Ir para Foco",          icon: Timer,           href: "/dashboard/focus",      category: "Navegar",   shortcut: ["G", "F"] },
   { id: "analytics",label: "Ir para Analytics",    icon: BarChart3,       href: "/dashboard/analytics",  category: "Navegar",   shortcut: ["G", "A"] },
-  { id: "social",   label: "Ir para Gym Rats",     icon: Users,           href: "/dashboard/social",     category: "Navegar",   shortcut: ["G", "S"] },
+  { id: "social",   label: "Ir para Feed",     icon: Users,           href: "/dashboard/social",     category: "Navegar",   shortcut: ["G", "S"] },
   { id: "ranks",    label: "Ver Ranks",             icon: Trophy,          href: "/dashboard/ranks",      category: "Navegar",   shortcut: [] },
 
   // Actions

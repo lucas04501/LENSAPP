@@ -20,7 +20,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/calendar",  icon: CalendarDays,    label: "Calendário",  group: "main" },
   { href: "/dashboard/focus",     icon: Timer,           label: "Foco",        group: "main" },
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
-  { href: "/dashboard/social",    icon: Users,           label: "Gym Rats",    group: "community" },
+  { href: "/dashboard/social",    icon: Users,           label: "Feed",    group: "community" },
   { href: "/dashboard/profile",   icon: User,            label: "Perfil",      group: "community" },
   { href: "/dashboard/achievements", icon: Trophy,       label: "Conquistas",  group: "community" },
   { href: "/dashboard/ranks",     icon: Trophy,          label: "Ranks",       group: "community" },

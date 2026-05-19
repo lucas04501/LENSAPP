@@ -132,7 +132,7 @@ model FocusSession {
   @@map("focus_sessions")
 }
 
-// ─── POST (Gym Rats social feed) ─────────────────────────────────────────────
+// ─── POST (Social Feed) ───────────────────────────────────────────────────
 model Post {
   id          String    @id @default(cuid())
   userId      String
