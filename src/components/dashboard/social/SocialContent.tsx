@@ -33,6 +33,7 @@ const POST_TYPE_STYLES: Record<string, { label: string; color: string }> = {
 };
 
 export function SocialContent({ initialPosts }: SocialContentProps) {
+  const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [posts, setPosts]       = useState(initialPosts);
