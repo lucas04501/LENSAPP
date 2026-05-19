@@ -34,7 +34,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-const EmptyState = ({ icon: Icon, link, label }: { icon: any, link: string, label: string }) => (
+const EmptyState = ({ icon: Icon, link, label }: { icon: any, link: any, label: string }) => (
   <div className="flex flex-col items-center justify-center py-12 px-4 text-center bg-[#050505] rounded-[2rem]">
     <div className="w-16 h-16 rounded-2xl bg-[#0A0A0A] border border-[#1A1A1A] flex items-center justify-center mb-6 text-[#333]">
       <Icon className="w-8 h-8" />
