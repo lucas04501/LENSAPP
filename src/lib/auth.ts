@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           username: user.username,
           totalStreak: user.totalStreak,
+          avatarUrl: user.avatarUrl,
         };
       },
     }),
@@ -53,13 +54,20 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       // Quando o usuário faz login, 'user' contém os dados retornados pelo authorize
       if (user) {
         token.id = user.id;
         token.username = user.username;
         token.totalStreak = user.totalStreak;
+        token.avatarUrl = user.avatarUrl;
       }
+
+      // Suporte para update() do useSession
+      if (trigger === "update" && session?.avatarUrl) {
+        token.avatarUrl = session.avatarUrl;
+      }
+
       return token;
     },
     async session({ session, token }) {
@@ -68,6 +76,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.username = token.username;
         session.user.totalStreak = token.totalStreak;
+        session.user.avatarUrl = token.avatarUrl;
       }
       return session;
     },

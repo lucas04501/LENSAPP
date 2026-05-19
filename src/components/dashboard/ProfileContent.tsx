@@ -9,6 +9,7 @@ import {
 import { XPCard } from "@/components/gamification/XPCard";
 import { HabitHeatmap } from "@/components/dashboard/HabitHeatmap";
 import { EditProfileModal } from "@/components/dashboard/EditProfileModal";
+import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -35,13 +36,6 @@ const item = {
 export function ProfileContent({ data }: ProfileContentProps) {
   const { user, habits, totalHabitLogs, activeDays, recentPosts, heatmap } = data;
 
-  const initials = (user.name || user.username)
-    .split(" ")
-    .map((n: string) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-
   return (
     <motion.div
       variants={container}
@@ -55,17 +49,11 @@ export function ProfileContent({ data }: ProfileContentProps) {
         
         <div className="relative flex flex-col md:flex-row items-center gap-8">
           {/* Avatar */}
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple to-red p-1 shadow-2xl shadow-purple/20">
-            <div className="w-full h-full bg-[#050505] rounded-[22px] flex items-center justify-center overflow-hidden">
-              {user.avatarUrl ? (
-                <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-3xl font-black text-white italic tracking-tighter">
-                  {initials}
-                </span>
-              )}
-            </div>
-          </div>
+          <AvatarUpload 
+            currentAvatar={user.avatarUrl} 
+            name={user.name || user.username} 
+            size="lg"
+          />
 
           <div className="flex-1 text-center md:text-left space-y-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

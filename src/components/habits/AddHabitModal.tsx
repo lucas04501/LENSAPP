@@ -1,18 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { X, Plus, Sparkles } from "lucide-react";
-import { createHabit } from "@/lib/actions/habits";
+import { X, Plus, Sparkles, Save } from "lucide-react";
+import { createHabit, updateHabit } from "@/lib/actions/habits";
 import { toast } from "react-hot-toast";
 import { showAchievementToast } from "../gamification/AchievementToast";
 import { cn } from "@/lib/utils";
 
 interface AddHabitModalProps {
   userId: string;
+  habit?: any;
+  trigger?: React.ReactNode;
+  onSuccess?: () => void;
 }
 
-export function AddHabitModal({ userId }: AddHabitModalProps) {
+export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitModalProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
@@ -25,6 +28,22 @@ export function AddHabitModal({ userId }: AddHabitModalProps) {
     color: "#A855F7",
   });
 
+  const isEdit = !!habit;
+
+  useEffect(() => {
+    if (habit) {
+      setData({
+        title: habit.title,
+        icon: habit.icon || "🧘",
+        category: habit.category,
+        targetDays: habit.targetDays || [1, 2, 3, 4, 5, 6, 7],
+        targetCount: habit.targetCount || 1,
+        xpReward: habit.xpReward || 10,
+        color: habit.color || "#A855F7",
+      });
+    }
+  }, [habit]);
+
   const categories = ["HEALTH", "MIND", "WORK", "SOCIAL", "FINANCE", "CREATIVE", "OTHER"];
   const days = [
     { label: "S", val: 1 }, { label: "T", val: 2 }, { label: "Q", val: 3 },
@@ -36,17 +55,29 @@ export function AddHabitModal({ userId }: AddHabitModalProps) {
     setLoading(true);
 
     try {
-      const res = await createHabit(data, userId);
-      if (res.success) {
-        toast.success("Hábito criado com sucesso! ✨");
-        res.unlockedAchievements?.forEach(showAchievementToast);
-        setOpen(false);
-        setData({ ...data, title: "" });
+      if (isEdit) {
+        const res = await updateHabit(habit.id, userId, data);
+        if (res.success) {
+          toast.success("Hábito atualizado! ✨");
+          setOpen(false);
+          onSuccess?.();
+        } else {
+          toast.error(res.error || "Erro ao atualizar hábito");
+        }
       } else {
-        toast.error(res.error || "Erro ao criar hábito");
+        const res = await createHabit(data, userId);
+        if (res.success) {
+          toast.success("Hábito criado com sucesso! ✨");
+          res.unlockedAchievements?.forEach(showAchievementToast);
+          setOpen(false);
+          setData({ ...data, title: "" });
+          onSuccess?.();
+        } else {
+          toast.error(res.error || "Erro ao criar hábito");
+        }
       }
     } catch (error) {
-      toast.error("Erro ao criar hábito");
+      toast.error("Erro ao processar hábito");
     } finally {
       setLoading(false);
     }
@@ -64,10 +95,12 @@ export function AddHabitModal({ userId }: AddHabitModalProps) {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <button className="w-full flex items-center gap-2 p-4 rounded-2xl border border-dashed border-white/10 text-text-muted hover:border-purple/30 hover:text-purple transition-all text-sm mt-4 min-h-[52px]">
-          <Plus className="w-4.5 h-4.5" />
-          <span className="font-bold uppercase tracking-widest text-xs">Adicionar hábito</span>
-        </button>
+        {trigger || (
+          <button className="w-full flex items-center gap-2 p-4 rounded-2xl border border-dashed border-white/10 text-text-muted hover:border-purple/30 hover:text-purple transition-all text-sm mt-4 min-h-[52px]">
+            <Plus className="w-4.5 h-4.5" />
+            <span className="font-bold uppercase tracking-widest text-xs">Adicionar hábito</span>
+          </button>
+        )}
       </Dialog.Trigger>
       
       <Dialog.Portal>
@@ -79,11 +112,15 @@ export function AddHabitModal({ userId }: AddHabitModalProps) {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-purple/10 rounded-xl border border-purple/20">
-                <Sparkles className="w-5 h-5 text-purple" />
+                {isEdit ? <Save className="w-5 h-5 text-purple" /> : <Sparkles className="w-5 h-5 text-purple" />}
               </div>
               <div>
-                <Dialog.Title className="text-xl font-black text-white italic uppercase tracking-tighter">Novo Hábito</Dialog.Title>
-                <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest">Inicie uma nova jornada de consistência</p>
+                <Dialog.Title className="text-xl font-black text-white italic uppercase tracking-tighter">
+                  {isEdit ? "Editar Hábito" : "Novo Hábito"}
+                </Dialog.Title>
+                <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest">
+                  {isEdit ? "Ajuste sua estratégia de evolução" : "Inicie uma nova jornada de consistência"}
+                </p>
               </div>
             </div>
             <Dialog.Close asChild>
@@ -163,7 +200,7 @@ export function AddHabitModal({ userId }: AddHabitModalProps) {
                 disabled={loading || !data.title}
                 className="w-full bg-gradient-to-r from-purple to-red hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-xs"
               >
-                {loading ? "Sincronizando..." : "Começar Agora"}
+                {loading ? "Sincronizando..." : (isEdit ? "Salvar alterações" : "Começar Agora")}
               </button>
             </div>
           </form>

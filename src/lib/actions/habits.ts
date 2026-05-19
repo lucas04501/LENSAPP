@@ -209,6 +209,33 @@ export async function createHabit(data: {
   }
 }
 
+export async function updateHabit(
+  habitId: string,
+  userId: string,
+  data: {
+    title?: string;
+    icon?: string;
+    color?: string;
+    category?: any;
+    xpReward?: number;
+    targetDays?: number[];
+  }
+) {
+  try {
+    const habit = await prisma.habit.update({
+      where: { id: habitId, userId },
+      data,
+    });
+
+    revalidatePath("/dashboard/habits");
+    revalidatePath("/dashboard");
+    return { success: true, data: habit };
+  } catch (error) {
+    console.error("Error updating habit:", error);
+    return { success: false, error: "Falha ao atualizar hábito" };
+  }
+}
+
 export async function deleteHabit(habitId: string, userId: string) {
   try {
     await prisma.habit.update({

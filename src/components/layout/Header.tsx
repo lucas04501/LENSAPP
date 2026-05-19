@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getNotifications } from "@/lib/actions/notifications";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function Header({ initialNotifications = [] }: { initialNotifications?: any[] }) {
   const { data: session } = useSession();
@@ -100,19 +101,23 @@ export function Header({ initialNotifications = [] }: { initialNotifications?: a
       <NotificationPanel userId={user.id} notifications={notifications} />
 
       {/* Avatar */}
-      <div className="flex items-center gap-2.5 cursor-pointer group shrink-0">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple to-red p-0.5 shrink-0">
-          <div className="w-full h-full bg-[#050505] rounded-[8px] flex items-center justify-center text-xs font-black text-white italic">
-            {(user.username || user.name || "U")[0].toUpperCase()}
-          </div>
+      <Link href="/dashboard/profile" className="flex items-center gap-2.5 cursor-pointer group shrink-0">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple to-red p-[1px] shrink-0 overflow-hidden">
+          {user.avatarUrl ? (
+            <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover rounded-[10px]" />
+          ) : (
+            <div className="w-full h-full bg-[#050505] rounded-[10px] flex items-center justify-center text-xs font-black text-white italic">
+              {(user.username || user.name || "U")[0].toUpperCase()}
+            </div>
+          )}
         </div>
         <div className="hidden sm:flex flex-col max-w-[100px]">
-          <span className="text-xs font-bold text-text-primary leading-none uppercase italic tracking-tighter truncate">
+          <span className="text-xs font-bold text-text-primary leading-none uppercase italic tracking-tighter truncate group-hover:text-purple transition-colors">
             {user.username || user.name}
           </span>
           <span className="text-[9px] font-bold text-text-muted mt-0.5 tracking-[0.2em] uppercase">LEVEL {level}</span>
         </div>
-      </div>
+      </Link>
     </header>
   );
 }
