@@ -9,10 +9,6 @@ export const metadata: Metadata = {
   title: "Analytics | LENS",
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Analytics | LENS" };
-}
-
 export default async function AnalyticsPage() {
   const session = await getServerSession(authOptions);
 
