@@ -25,6 +25,7 @@ interface Notification {
 interface NotificationPanelProps {
   userId: string;
   notifications: Notification[];
+  trigger?: React.ReactNode;
 }
 
 const TYPE_CONFIG: Record<NotificationType, { icon: any, color: string, bg: string }> = {
@@ -38,7 +39,7 @@ const TYPE_CONFIG: Record<NotificationType, { icon: any, color: string, bg: stri
   LEVEL_UP:       { icon: Zap,           color: "#A855F7", bg: "rgba(168, 85, 247, 0.1)" },
 };
 
-export function NotificationPanel({ userId, notifications: initialNotifications }: NotificationPanelProps) {
+export function NotificationPanel({ userId, notifications: initialNotifications, trigger }: NotificationPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState(initialNotifications);
   const router = useRouter();
@@ -75,18 +76,23 @@ export function NotificationPanel({ userId, notifications: initialNotifications 
   return (
     <div className="relative">
       {/* Trigger Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-xl bg-surface-2 border border-white/5 hover:border-white/10 transition-all group h-[44px] w-[44px] flex items-center justify-center"
-      >
-        <Bell className="w-5 h-5 text-text-muted group-hover:text-white transition-colors" />
-        {unreadCount > 0 && (
-          <span className="absolute top-2 right-2 w-4 h-4 bg-red rounded-full border-2 border-[#050505] text-[9px] font-black flex items-center justify-center text-white animate-in zoom-in">
-            {unreadCount}
-          </span>
-        )}
-      </button>
-
+      {trigger ? (
+        <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
+          {trigger}
+        </div>
+      ) : (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="relative p-2 rounded-xl bg-surface-2 border border-white/5 hover:border-white/10 transition-all group h-[44px] w-[44px] flex items-center justify-center"
+        >
+          <Bell className="w-5 h-5 text-text-muted group-hover:text-white transition-colors" />
+          {unreadCount > 0 && (
+            <span className="absolute top-2 right-2 w-4 h-4 bg-red rounded-full border-2 border-[#050505] text-[9px] font-black flex items-center justify-center text-white animate-in zoom-in">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+      )}
       {/* Overlay Backdrop */}
       <AnimatePresence>
         {isOpen && (

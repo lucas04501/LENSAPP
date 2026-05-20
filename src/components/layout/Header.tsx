@@ -1,19 +1,19 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Zap, Menu, X } from "lucide-react";
+import { motion } from "framer-motion";
+import { Search, Zap, Bell } from "lucide-react";
 import { useUIStore } from "@/store";
 import { getRankByXP, getXPProgress, getLevelByXP } from "@/types";
-import { NotificationPanel } from "./NotificationPanel";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getNotifications } from "@/lib/actions/notifications";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { NotificationPanel } from "./NotificationPanel";
 
 export function Header({ initialNotifications = [] }: { initialNotifications?: any[] }) {
   const { data: session } = useSession();
-  const { openCommandPalette, toggleSidebar } = useUIStore();
+  const { openCommandPalette } = useUIStore();
   const [notifications, setNotifications] = useState<any[]>(initialNotifications);
 
   const user = session?.user as any;
@@ -32,92 +32,104 @@ export function Header({ initialNotifications = [] }: { initialNotifications?: a
     }
   }, [user?.id]);
 
-  if (!user) return <header className="h-16 glass border-b border-white/5 shrink-0" />;
+  const unreadCount = notifications.filter(n => !n.isRead).length;
+
+  // Simple string-to-color hash for avatar background
+  const getAvatarBg = (str: string) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = hash % 360;
+    return `hsl(${h}, 60%, 40%)`;
+  };
+
+  if (!user) return <header className="h-[52px] bg-[#09090B] border-b border-[#18181B] shrink-0" />;
 
   return (
-    <header className="h-16 glass border-b border-white/5 flex items-center gap-2 sm:gap-4 px-3 sm:px-6 shrink-0 relative z-50">
+    <header className="h-[52px] bg-[#09090B] border-b border-[#18181B] flex items-center justify-between px-6 shrink-0 relative z-50">
       
-      {/* Mobile Menu Toggle */}
-      <button 
-        onClick={toggleSidebar}
-        className="lg:hidden p-2 rounded-xl bg-surface-2 border border-white/5 hover:bg-surface-3 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-      >
-        <Menu className="w-5 h-5 text-text-muted" />
-      </button>
-
-      {/* Search / Command */}
+      {/* Search / Command (Left) */}
       <button
         onClick={openCommandPalette}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-2 border border-border hover:border-purple/30 text-text-muted text-sm transition-all group max-w-[44px] sm:max-w-xs overflow-hidden h-[44px] sm:h-auto"
+        className="flex items-center gap-3 px-3 py-1.5 rounded-[6px] bg-[#111113] border border-[#27272A] hover:border-[#3F3F46] text-[#52525B] text-sm transition-all group w-full max-w-[280px]"
       >
-        <Search className="w-4.5 h-4.5 group-hover:text-purple transition-colors shrink-0" />
-        <span className="text-xs hidden sm:inline truncate">Buscar ou criar...</span>
-        <kbd className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-surface-3 border border-border text-text-muted font-mono hidden md:inline-block">
+        <Search className="w-4 h-4 shrink-0" />
+        <span className="text-[13px] font-sans">Search or jump to...</span>
+        <kbd className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-[#18181B] border border-[#27272A] text-[#52525B] font-mono">
           ⌘K
         </kbd>
       </button>
 
-      <div className="flex-1" />
-
-      {/* XP + Level */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        {/* XP Bar (Hidden on Mobile) */}
-        <div className="hidden md:flex flex-col items-end gap-0.5">
-          <div className="flex items-center gap-1.5">
-            <Zap className="w-3 h-3 text-purple" />
-            <span className="text-xs font-semibold text-purple">
-              {xp.toLocaleString()} XP
-            </span>
-          </div>
-          <div className="w-24 sm:w-32 h-1 rounded-full bg-surface-3 overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${xpProgress.percentage}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="h-full rounded-full bg-gradient-to-r from-purple to-red"
-            />
+      {/* Right side items */}
+      <div className="flex items-center gap-6">
+        
+        {/* XP Display */}
+        <div 
+          className="group relative flex items-center gap-1.5 cursor-help"
+          title={`${xpProgress.current} / ${xpProgress.next} XP para o próximo nível`}
+        >
+          <Zap className="w-3.5 h-3.5 text-[#A855F7]" />
+          <span className="font-mono text-[13px] text-[#A855F7] font-medium tracking-tight">
+            {xp.toLocaleString()} XP
+          </span>
+          
+          {/* Tooltip implementation if title is not enough */}
+          <div className="absolute top-full right-0 mt-2 p-2 bg-[#111113] border border-[#27272A] rounded-md text-[10px] text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-2xl">
+            {xpProgress.percentage}% para o nível {level + 1}
           </div>
         </div>
 
-        {/* Level badge (Always visible) */}
-        <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-purple/10 border border-purple/30 text-purple font-black text-xs shrink-0">
-          {level}
+        {/* Level Badge */}
+        <div className="w-7 h-7 rounded-full bg-[#18181B] border border-[#27272A] flex items-center justify-center">
+          <span className="text-white text-[12px] font-bold">{level}</span>
         </div>
-      </div>
 
-      {/* Rank badge (Hidden on mobile) */}
-      <div
-        className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase tracking-wider whitespace-nowrap"
-        style={{
-          borderColor: `${rank.color}40`,
-          backgroundColor: `${rank.color}10`,
-          color: rank.color,
-        }}
-      >
-        <span>{rank.name}</span>
-      </div>
+        {/* Rank Badge */}
+        <div
+          className="px-3 py-1 rounded-[6px] border text-[11px] font-bold tracking-tight whitespace-nowrap uppercase italic"
+          style={{
+            borderColor: `${rank.color}33`, // 0.2 opacity
+            backgroundColor: `${rank.color}1A`, // 0.1 opacity
+            color: rank.color,
+          }}
+        >
+          {rank.name}
+        </div>
 
-      {/* Notification Panel */}
-      <NotificationPanel userId={user.id} notifications={notifications} />
+        {/* Notification Bell */}
+        <div className="relative">
+          <NotificationPanel 
+            userId={user.id} 
+            notifications={notifications} 
+            trigger={
+              <button className="p-1 text-[#71717A] hover:text-white transition-colors relative">
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 w-[6px] h-[6px] bg-red-600 rounded-full" />
+                )}
+              </button>
+            }
+          />
+        </div>
 
-      {/* Avatar */}
-      <Link href="/dashboard/profile" className="flex items-center gap-2.5 cursor-pointer group shrink-0">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple to-red p-[1px] shrink-0 overflow-hidden">
+        {/* Avatar */}
+        <Link 
+          href="/dashboard/profile" 
+          className="w-8 h-8 rounded-[6px] border border-transparent hover:border-[#A855F7] transition-all overflow-hidden shrink-0 group relative"
+        >
           {user.avatarUrl ? (
-            <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover rounded-[10px]" />
+            <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-[#050505] rounded-[10px] flex items-center justify-center text-xs font-black text-white italic">
-              {(user.username || user.name || "U")[0].toUpperCase()}
+            <div 
+              className="w-full h-full flex items-center justify-center text-xs font-bold text-white uppercase"
+              style={{ backgroundColor: getAvatarBg(user.username || user.name || "U") }}
+            >
+              {(user.username || user.name || "U")[0]}
             </div>
           )}
-        </div>
-        <div className="hidden sm:flex flex-col max-w-[100px]">
-          <span className="text-xs font-bold text-text-primary leading-none uppercase italic tracking-tighter truncate group-hover:text-purple transition-colors">
-            {user.username || user.name}
-          </span>
-          <span className="text-[9px] font-bold text-text-muted mt-0.5 tracking-[0.2em] uppercase">LEVEL {level}</span>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </header>
   );
 }
