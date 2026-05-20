@@ -121,7 +121,7 @@ export function AchievementsContent({ achievements }: AchievementsContentProps) 
               </div>
 
               <p className="text-xs text-text-muted leading-relaxed mb-6 italic">
-                "{ach.description}"
+                &quot;{ach.description}&quot;
               </p>
 
               <div className="flex items-center justify-between pt-4 border-t border-white/5">

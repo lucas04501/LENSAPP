@@ -117,7 +117,7 @@ export function GoalCard({ goal, userId }: GoalCardProps) {
         </h3>
         {goal.description && (
           <p className="text-xs text-text-muted mt-2 line-clamp-2 leading-relaxed italic">
-            "{goal.description}"
+            &quot;{goal.description}&quot;
           </p>
         )}
       </div>

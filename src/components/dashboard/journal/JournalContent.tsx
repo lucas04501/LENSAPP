@@ -293,7 +293,7 @@ export function JournalContent({ userId, initialToday, history }: JournalContent
                     <span className="text-xl">{MOODS.find(m => m.value === entry.mood)?.emoji}</span>
                   </div>
                   <p className="text-xs text-text-primary line-clamp-2 leading-relaxed mb-3 italic text-text-muted">
-                    "{entry.content}"
+                    &quot;{entry.content}&quot;
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {entry.tags.map((t: string) => (
@@ -339,7 +339,7 @@ export function JournalContent({ userId, initialToday, history }: JournalContent
 
                 <div className="space-y-6">
                   <div className="text-base text-text-primary leading-[1.8] italic whitespace-pre-wrap border-l-2 border-purple/20 pl-6 py-2">
-                    "{selectedEntry.content}"
+                    &quot;{selectedEntry.content}&quot;
                   </div>
 
                   <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">

@@ -289,7 +289,7 @@ export function HabitsContent({ initialHabits, userId }: HabitsContentProps) {
               </Dialog.Title>
               
               <p className="text-sm text-text-muted mb-1">
-                Tem certeza que quer remover <span className="text-white font-bold">"{habitToDelete?.title}"</span>?
+                Tem certeza que quer remover <span className="text-white font-bold">&quot;{habitToDelete?.title}&quot;</span>?
               </p>
               <p className="text-[10px] font-black text-red uppercase tracking-widest mb-8">
                 Seu histórico de conclusões será preservado.

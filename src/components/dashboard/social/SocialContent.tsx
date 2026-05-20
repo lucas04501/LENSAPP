@@ -227,7 +227,7 @@ export function SocialContent({ initialPosts }: SocialContentProps) {
 
                   {/* Content */}
                   <p className="text-sm sm:text-base text-white leading-relaxed mb-4 sm:mb-6 font-medium italic">
-                    "{post.content}"
+                    &quot;{post.content}&quot;
                   </p>
 
                   {/* Tags */}

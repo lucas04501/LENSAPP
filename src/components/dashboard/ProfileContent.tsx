@@ -188,7 +188,7 @@ export function ProfileContent({ data }: ProfileContentProps) {
                     </div>
                   </div>
                   <p className="text-sm text-text-primary line-clamp-2 mb-4 leading-relaxed italic">
-                    "{post.content}"
+                    &quot;{post.content}&quot;
                   </p>
                   <div className="flex items-center justify-between pt-3 border-t border-white/5">
                     <div className="flex items-center gap-4">
