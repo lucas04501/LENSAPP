@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { motion } from "framer-motion";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -67,91 +68,99 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-black text-white uppercase italic tracking-tighter">Criar Conta</h1>
-        <p className="text-text-muted text-xs sm:text-sm mt-1 uppercase font-bold tracking-widest">Junte-se à Elite da Produtividade</p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Identidade</label>
-          <input
-            type="text"
-            required
-            value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
-            placeholder="Seu Nome Real"
-            className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
-          />
+    <div className="flex min-h-screen items-center justify-center p-8 bg-[#09090B] selection:bg-purple-500/30">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="w-full max-w-[480px] bg-[#111113] border border-[#27272A] rounded-lg p-10 shadow-2xl"
+      >
+        <div className="mb-10">
+          <h2 className="text-white text-2xl font-bold mb-2 tracking-tight">Create account</h2>
+          <p className="text-[#71717A] text-sm font-sans">Join the LENS community and start your journey.</p>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Codinome</label>
-          <input
-            type="text"
-            required
-            value={data.username}
-            onChange={(e) => setData({ ...data, username: e.target.value.toLowerCase().replace(/\s/g, "") })}
-            placeholder="username"
-            className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Contato</label>
-          <input
-            type="email"
-            required
-            value={data.email}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
-            placeholder="seu@email.com"
-            className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Senha</label>
+            <label className="block text-[#A1A1AA] text-[12px] uppercase tracking-[0.05em] font-medium">Name</label>
             <input
-              type="password"
+              type="text"
               required
-              value={data.password}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
-              placeholder="••••"
-              className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+              placeholder="Your Name"
+              className="w-full bg-[#18181B] border border-[#3F3F46] rounded-md px-4 py-3 text-sm text-white placeholder:text-[#3F3F46] focus:outline-none focus:border-[#A855F7] transition-all"
             />
           </div>
+
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] ml-1">Confirmar</label>
+            <label className="block text-[#A1A1AA] text-[12px] uppercase tracking-[0.05em] font-medium">Username</label>
             <input
-              type="password"
+              type="text"
               required
-              value={data.confirmPassword}
-              onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
-              placeholder="••••"
-              className="w-full bg-surface-2 border border-white/5 rounded-2xl px-5 py-4 text-sm font-bold text-white placeholder:text-text-muted/30 focus:outline-none focus:border-purple/50 transition-all"
+              value={data.username}
+              onChange={(e) => setData({ ...data, username: e.target.value.toLowerCase().replace(/\s/g, "") })}
+              placeholder="username"
+              className="w-full bg-[#18181B] border border-[#3F3F46] rounded-md px-4 py-3 text-sm text-white placeholder:text-[#3F3F46] focus:outline-none focus:border-[#A855F7] transition-all"
             />
           </div>
+
+          <div className="space-y-2">
+            <label className="block text-[#A1A1AA] text-[12px] uppercase tracking-[0.05em] font-medium">Email</label>
+            <input
+              type="email"
+              required
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
+              placeholder="email@example.com"
+              className="w-full bg-[#18181B] border border-[#3F3F46] rounded-md px-4 py-3 text-sm text-white placeholder:text-[#3F3F46] focus:outline-none focus:border-[#A855F7] transition-all"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="block text-[#A1A1AA] text-[12px] uppercase tracking-[0.05em] font-medium">Password</label>
+              <input
+                type="password"
+                required
+                value={data.password}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
+                placeholder="••••"
+                className="w-full bg-[#18181B] border border-[#3F3F46] rounded-md px-4 py-3 text-sm text-white placeholder:text-[#3F3F46] focus:outline-none focus:border-[#A855F7] transition-all"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-[#A1A1AA] text-[12px] uppercase tracking-[0.05em] font-medium">Confirm</label>
+              <input
+                type="password"
+                required
+                value={data.confirmPassword}
+                onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
+                placeholder="••••"
+                className="w-full bg-[#18181B] border border-[#3F3F46] rounded-md px-4 py-3 text-sm text-white placeholder:text-[#3F3F46] focus:outline-none focus:border-[#A855F7] transition-all"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#A855F7] hover:bg-[#9333EA] text-white font-medium py-3 rounded-md transition-all disabled:opacity-50 text-sm mt-4 flex items-center justify-center gap-2"
+          >
+            {loading ? "Processing..." : "Create account"}
+            {!loading && <span className="text-lg">→</span>}
+          </button>
+        </form>
+
+        <div className="mt-10 text-center">
+          <p className="text-[#71717A] text-sm">
+            Already have an account?{" "}
+            <Link href="/login" className="text-[#71717A] underline underline-offset-4 hover:text-[#A1A1AA] transition-colors">
+              Sign in
+            </Link>
+          </p>
         </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-gradient-to-r from-purple to-red hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] disabled:opacity-50 uppercase tracking-[0.2em] text-xs mt-2"
-        >
-          {loading ? "Processando..." : "Criar Minha Identidade"}
-        </button>
-      </form>
-
-      <div className="text-center">
-        <p className="text-xs font-bold text-text-muted uppercase tracking-widest">
-          Já faz parte?{" "}
-          <Link href="/login" className="text-purple hover:text-purple-light transition-colors">
-            Entrar
-          </Link>
-        </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
