@@ -20,7 +20,6 @@ export function Header({ initialNotifications = [] }: { initialNotifications?: a
   const xp = user?.xp || 0;
   const rank = getRankByXP(xp);
   const level = getLevelByXP(xp);
-  const xpProgress = getXPProgress(xp);
 
   useEffect(() => {
     setNotifications(initialNotifications);
@@ -34,79 +33,57 @@ export function Header({ initialNotifications = [] }: { initialNotifications?: a
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  // Simple string-to-color hash for avatar background
-  const getAvatarBg = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const h = hash % 360;
-    return `hsl(${h}, 60%, 40%)`;
-  };
-
-  if (!user) return <header className="h-[52px] bg-[#09090B] border-b border-[#18181B] shrink-0" />;
+  if (!user) return <header className="h-[48px] bg-[#09090B] border-b border-[#111118] shrink-0" />;
 
   return (
-    <header className="h-[52px] bg-[#09090B] border-b border-[#18181B] flex items-center justify-between px-6 shrink-0 relative z-50">
+    <header className="h-[48px] bg-[#09090B] border-b border-[#111118] flex items-center justify-between px-4 shrink-0 relative z-50">
       
-      {/* Search / Command (Left) */}
+      {/* Logo (Left) */}
+      <div className="w-[120px] shrink-0">
+        <span className="font-mono text-[14px] font-medium tracking-[0.15em] text-white">LENS</span>
+      </div>
+
+      {/* Search / Command (Center) */}
       <button
         onClick={openCommandPalette}
-        className="flex items-center gap-3 px-3 py-1.5 rounded-[6px] bg-[#111113] border border-[#27272A] hover:border-[#3F3F46] text-[#52525B] text-sm transition-all group w-full max-w-[280px]"
+        className="flex items-center gap-2 px-3 h-8 rounded-md bg-[#111113]/50 border border-[#1E1E2E] hover:border-[#374151] text-[#6B7280] transition-all group w-full max-w-[320px]"
       >
-        <Search className="w-4 h-4 shrink-0" />
-        <span className="text-[13px] font-sans">Search or jump to...</span>
-        <kbd className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-[#18181B] border border-[#27272A] text-[#52525B] font-mono">
-          ⌘K
-        </kbd>
+        <Search className="w-3.5 h-3.5 shrink-0" />
+        <span className="text-[12px]">Search or jump to...</span>
+        <div className="ml-auto flex items-center gap-1 opacity-60">
+          <kbd className="text-[10px] font-sans">⌘</kbd>
+          <kbd className="text-[10px] font-sans">K</kbd>
+        </div>
       </button>
 
       {/* Right side items */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4 w-[280px] justify-end">
         
-        {/* XP Display */}
-        <div 
-          className="group relative flex items-center gap-1.5 cursor-help"
-          title={`${xpProgress.current} / ${xpProgress.next} XP para o próximo nível`}
-        >
-          <Zap className="w-3.5 h-3.5 text-[#A855F7]" />
-          <span className="font-mono text-[13px] text-[#A855F7] font-medium tracking-tight">
-            {xp.toLocaleString()} XP
-          </span>
-          
-          {/* Tooltip implementation if title is not enough */}
-          <div className="absolute top-full right-0 mt-2 p-2 bg-[#111113] border border-[#27272A] rounded-md text-[10px] text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-2xl">
-            {xpProgress.percentage}% para o nível {level + 1}
-          </div>
-        </div>
+        {/* XP */}
+        <span className="font-mono text-[11px] text-purple font-medium">
+          {xp.toLocaleString()} XP
+        </span>
 
         {/* Level Badge */}
-        <div className="w-7 h-7 rounded-full bg-[#18181B] border border-[#27272A] flex items-center justify-center">
+        <div className="w-7 h-7 rounded-sm border border-purple flex items-center justify-center shrink-0">
           <span className="text-white text-[12px] font-bold">{level}</span>
         </div>
 
-        {/* Rank Badge */}
-        <div
-          className="px-3 py-1 rounded-[6px] border text-[11px] font-bold tracking-tight whitespace-nowrap uppercase italic"
-          style={{
-            borderColor: `${rank.color}33`, // 0.2 opacity
-            backgroundColor: `${rank.color}1A`, // 0.1 opacity
-            color: rank.color,
-          }}
-        >
+        {/* Rank */}
+        <span className="text-[11px] font-bold uppercase tracking-wider whitespace-nowrap" style={{ color: rank.color }}>
           {rank.name}
-        </div>
+        </span>
 
-        {/* Notification Bell */}
+        {/* Bell */}
         <div className="relative">
           <NotificationPanel 
             userId={user.id} 
             notifications={notifications} 
             trigger={
-              <button className="p-1 text-[#71717A] hover:text-white transition-colors relative">
-                <Bell className="w-5 h-5" />
+              <button className="p-1 text-[#4B5563] hover:text-white transition-colors relative">
+                <Bell className="w-4 h-4" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 w-[6px] h-[6px] bg-red-600 rounded-full" />
+                  <span className="absolute top-1 right-1 w-1 h-1 bg-red-600 rounded-full" />
                 )}
               </button>
             }
@@ -116,14 +93,13 @@ export function Header({ initialNotifications = [] }: { initialNotifications?: a
         {/* Avatar */}
         <Link 
           href="/dashboard/profile" 
-          className="w-8 h-8 rounded-[6px] border border-transparent hover:border-[#A855F7] transition-all overflow-hidden shrink-0 group relative"
+          className="w-8 h-8 rounded-[6px] border border-[#1E1E2E] hover:border-purple transition-all overflow-hidden shrink-0 group relative"
         >
           {user.avatarUrl ? (
             <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
           ) : (
             <div 
-              className="w-full h-full flex items-center justify-center text-xs font-bold text-white uppercase"
-              style={{ backgroundColor: getAvatarBg(user.username || user.name || "U") }}
+              className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white uppercase bg-[#1E1E2E]"
             >
               {(user.username || user.name || "U")[0]}
             </div>

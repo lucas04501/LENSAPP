@@ -99,10 +99,7 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ delay: i * 0.05 }}
               className={cn(
-                "flex items-center gap-3 p-3 rounded-xl transition-all duration-200 group relative",
-                isDone
-                  ? "bg-surface-2 opacity-60"
-                  : "hover:bg-surface-2 border border-transparent hover:border-white/5",
+                "flex items-center gap-3 py-3 border-b border-[#111118] last:border-0 group relative",
                 isPending && "pointer-events-none opacity-40"
               )}
             >
@@ -111,59 +108,25 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
                 className="relative cursor-pointer"
                 onClick={() => !isPending && handleToggle(habit.id, isDone)}
               >
-                <motion.div
-                  animate={isBurst ? { scale: [1, 1.4, 1] } : {}}
-                  transition={{ duration: 0.4 }}
+                <div
                   className={cn(
-                    "w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-200 shrink-0",
+                    "w-4 h-4 rounded-sm flex items-center justify-center transition-all duration-200 shrink-0",
                     isDone
-                      ? "border-none"
-                      : "border-2 border-border group-hover:border-purple/40"
+                      ? "bg-purple border-purple"
+                      : "border border-[#374151] hover:border-purple/60"
                   )}
-                  style={isDone ? { backgroundColor: habit.color } : {}}
                 >
                   {isDone && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", bounce: 0.5 }}
-                    >
-                      <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />
-                    </motion.div>
+                    <Check className="w-3 h-3 text-white" strokeWidth={4} />
                   )}
-                </motion.div>
-
-                {/* Burst particles */}
-                <AnimatePresence>
-                  {isBurst && (
-                    <>
-                      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                        <motion.div
-                          key={angle}
-                          initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
-                          animate={{
-                            scale: 1,
-                            x: Math.cos((angle * Math.PI) / 180) * 16,
-                            y: Math.sin((angle * Math.PI) / 180) * 16,
-                            opacity: 0,
-                          }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.5, ease: "easeOut" }}
-                          className="absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full pointer-events-none"
-                          style={{ backgroundColor: habit.color, transform: "translate(-50%,-50%)" }}
-                        />
-                      ))}
-                    </>
-                  )}
-                </AnimatePresence>
+                </div>
               </div>
 
-              {/* Icon + title */}
+              {/* title */}
               <div className="flex items-center gap-2 flex-1 cursor-pointer" onClick={() => !isPending && handleToggle(habit.id, isDone)}>
-                <span className="text-sm">{habit.icon}</span>
                 <span className={cn(
                   "text-sm transition-all",
-                  isDone ? "line-through text-text-muted" : "text-text-primary"
+                  isDone ? "line-through text-[#4B5563]" : "text-white"
                 )}>
                   {habit.title}
                 </span>
@@ -171,13 +134,12 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
 
               {/* Actions & Stats */}
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1 shrink-0">
-                  <Flame className="w-3 h-3 text-red" />
-                  <span className="text-[11px] text-text-muted">{habit.currentStreak}</span>
+                <div className="flex items-center gap-1 shrink-0 opacity-60">
+                  <Flame className="w-3 h-3 text-[#EF4444]" />
+                  <span className="text-[10px] text-[#4B5563] font-semibold">{habit.currentStreak}</span>
                 </div>
 
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md"
-                      style={{ backgroundColor: `${habit.color}15`, color: habit.color }}>
+                <span className="text-[10px] font-semibold text-[#4B5563] bg-[#111118] px-1.5 py-0.5 rounded">
                   +{habit.xpReward}
                 </span>
 
@@ -186,9 +148,9 @@ export function HabitCheckList({ habits, userId, loading }: HabitCheckListProps)
                     e.stopPropagation();
                     setHabitToDelete(habit);
                   }}
-                  className="p-1.5 rounded-lg text-text-muted hover:text-red hover:bg-red/10 opacity-0 group-hover:opacity-100 transition-all"
+                  className="p-1 rounded text-[#4B5563] hover:text-[#EF4444] hover:bg-[#EF4444]/10 opacity-0 group-hover:opacity-100 transition-all"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-3 h-3" />
                 </button>
               </div>
             </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, TrendingUp, Star } from "lucide-react";
+import { Zap } from "lucide-react";
 import { getRankByXP, getLevelByXP, getXPProgress, RANKS } from "@/types";
 
 interface XPCardProps {
@@ -15,22 +15,16 @@ export function XPCard({ xp }: XPCardProps) {
   const nextRank = RANKS.find(r => r.minXP > xp);
 
   return (
-    <div className="glass rounded-2xl sm:rounded-3xl border border-purple/20 p-5 sm:p-8 relative overflow-hidden"
-         style={{ boxShadow: "0 0 40px rgba(168,85,247,0.08)" }}>
-
-      {/* Background glow */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-purple/5 blur-3xl pointer-events-none" />
-
-      <div className="relative flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
-
+    <div className="bg-[#0F0F14] border border-[#111118] rounded-md p-5 sm:p-6 relative overflow-hidden">
+      <div className="relative flex items-center gap-6">
         {/* Level circle */}
         <div className="relative shrink-0 flex justify-center">
-          <svg width="84" height="84" viewBox="0 0 72 72" className="sm:w-24 sm:h-24">
-            <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(168,85,247,0.1)" strokeWidth="6" />
+          <svg width="64" height="64" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#111118" strokeWidth="6" />
             <motion.circle
               cx="36" cy="36" r="30"
               fill="none"
-              stroke="url(#xpGrad)"
+              stroke="#7C3AED"
               strokeWidth="6"
               strokeLinecap="round"
               strokeDasharray={`${2 * Math.PI * 30}`}
@@ -40,94 +34,42 @@ export function XPCard({ xp }: XPCardProps) {
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
               transform="rotate(-90 36 36)"
             />
-            <defs>
-              <linearGradient id="xpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#A855F7" />
-                <stop offset="100%" stopColor="#EF4444" />
-              </linearGradient>
-            </defs>
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl sm:text-3xl font-black text-white italic tracking-tighter leading-none">{level}</span>
-            <span className="text-[10px] text-text-muted uppercase font-bold tracking-widest mt-0.5">nível</span>
+            <span className="text-xl font-semibold text-white leading-none">{level}</span>
+            <span className="text-[8px] text-[#4B5563] uppercase font-semibold tracking-widest mt-0.5">lvl</span>
           </div>
         </div>
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-[10px] sm:text-xs font-black tracking-[0.2em] uppercase" style={{ color: rank.color }}>
-              {rank.name}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="w-4 h-4 text-purple" />
-            <span className="text-3xl sm:text-4xl font-black text-white italic tracking-tighter">{xp.toLocaleString()}</span>
-            <span className="text-xs sm:text-sm font-bold text-text-muted uppercase tracking-widest">XP total</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-col">
+              <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-purple mb-0.5">
+                {rank.name}
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-semibold text-white tracking-tight">{xp.toLocaleString()}</span>
+                <span className="text-[10px] font-semibold text-[#4B5563] uppercase tracking-wider">XP TOTAL</span>
+              </div>
+            </div>
+            {nextRank && (
+              <span className="text-[11px] text-[#4B5563]">
+                Next: <span className="text-white font-medium">{nextRank.name.split(" ")[0]}</span> — {(nextRank.minXP - xp).toLocaleString()} XP away
+              </span>
+            )}
           </div>
 
           {/* XP bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider">
-              <span>{progress.current.toLocaleString()} / {progress.next.toLocaleString()} XP</span>
-              <span>{progress.percentage}%</span>
-            </div>
-            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-purple to-red rounded-full shadow-[0_0_10px_rgba(168,85,247,0.4)]"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress.percentage}%` }}
-                transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-              />
-            </div>
+          <div className="h-1 w-full bg-[#111118] rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-[#7C3AED] rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress.percentage}%` }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+            />
           </div>
         </div>
-
-        {/* Next rank preview (Desktop only) */}
-        {nextRank && (
-          <div className="hidden lg:flex flex-col items-center gap-2 px-8 border-l border-white/5 shrink-0">
-            <TrendingUp className="w-5 h-5 text-text-muted" />
-            <div className="text-center">
-              <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">Próximo rank</p>
-              <p className="text-sm font-black italic tracking-tighter uppercase" style={{ color: nextRank.color }}>{nextRank.name}</p>
-              <p className="text-[10px] text-text-muted mt-1 font-bold">
-                faltam {(nextRank.minXP - xp).toLocaleString()} XP
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Rank milestones (Hidden on small mobile) */}
-      <div className="mt-8 pt-6 border-t border-white/5 hidden sm:flex gap-4 overflow-x-auto no-scrollbar">
-        {RANKS.map((r) => {
-          const isActive  = r.id === rank.id;
-          const isPassed  = xp >= r.minXP;
-          return (
-            <div
-              key={r.id}
-              className="flex flex-col items-center gap-2 shrink-0 px-4 py-2 rounded-2xl transition-all"
-              style={{
-                backgroundColor: isActive ? `${r.color}15` : "transparent",
-                border: isActive ? `1px solid ${r.color}40` : "1px solid transparent",
-              }}
-            >
-              <div
-                className="w-2.5 h-2.5 rounded-full"
-                style={{ 
-                  backgroundColor: isPassed ? r.color : "#1A1A1A",
-                  boxShadow: isPassed ? `0 0 10px ${r.color}` : 'none'
-                }}
-              />
-              <span
-                className="text-[9px] font-black uppercase tracking-widest whitespace-nowrap"
-                style={{ color: isPassed ? r.color : "#303030" }}
-              >
-                {r.name.split(" ")[0]}
-              </span>
-            </div>
-          );
-        })}
       </div>
     </div>
   );

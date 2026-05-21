@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Flame, Target, ChevronRight } from "lucide-react";
+import { Flame, Target, ChevronRight, CheckCircle2 } from "lucide-react";
 import { StatsRow } from "@/components/dashboard/StatsRow";
 import { HabitHeatmap } from "@/components/dashboard/HabitHeatmap";
 import { WeeklyBarChart } from "@/components/dashboard/WeeklyBarChart";
@@ -34,29 +34,23 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
   const pendingHabitsCount = habitsToday.filter(h => !h.todayDone).length;
 
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="space-y-6 sm:space-y-8"
-    >
+    <div className="space-y-5">
       {/* ── Greeting ── */}
       <motion.div variants={item}>
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-text-muted text-xs sm:text-sm mb-1">
-              {getGreeting()}, <span className="text-purple font-semibold">{user.name || user.username}</span>
-            </p>
-            <h1 className="text-xl sm:text-2xl font-black text-white italic uppercase tracking-tighter">
-              Seu painel de controle 🧠
+            <h1 className="text-[28px] font-semibold text-white leading-tight">
+              Dashboard
             </h1>
+            <p className="text-[#4B5563] text-sm mt-1">
+              {getGreeting()}, <span className="text-white font-medium">{user.name || user.username}</span>
+            </p>
           </div>
           <div
-            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold tracking-wide"
-            style={{ borderColor: `${rank.color}40`, backgroundColor: `${rank.color}10`, color: rank.color }}
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#111118] bg-[#0F0F14] text-[11px] font-mono uppercase tracking-wider text-purple"
           >
             <span>{rank.name}</span>
-            <span className="opacity-60">LVL {level}</span>
+            <span className="opacity-60 text-[#4B5563]">LVL {level}</span>
           </div>
         </div>
       </motion.div>
@@ -83,18 +77,18 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
       </motion.div>
 
       {/* ── Grid: Habits + Charts ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         {/* Habits today */}
         <motion.div variants={item} className="lg:col-span-1 order-2 lg:order-1">
-          <div className="glass rounded-[2rem] border border-white/5 p-5 sm:p-6 h-full bg-[#050505]">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-[#0F0F14] border border-[#111118] rounded-md p-4 sm:p-5 h-full">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Flame className="w-4.5 h-4.5 text-red" />
-                <h2 className="font-black text-sm text-white uppercase italic tracking-widest">Hábitos de hoje</h2>
+                <CheckCircle2 className="w-4 h-4 text-purple" />
+                <h2 className="text-[10px] font-semibold text-[#4B5563] uppercase tracking-wider">HABITS FOR TODAY</h2>
               </div>
-              <Link href="/dashboard/habits" className="text-[10px] font-bold text-text-muted hover:text-purple transition-colors flex items-center gap-1 uppercase tracking-widest">
-                Ver todos <ChevronRight className="w-3 h-3" />
+              <Link href="/dashboard/habits" className="text-[10px] font-semibold text-[#4B5563] hover:text-purple transition-colors flex items-center gap-1 uppercase tracking-wider">
+                View all <ChevronRight className="w-3 h-3" />
               </Link>
             </div>
             <HabitCheckList habits={habitsToday} userId={user.id} />
@@ -102,27 +96,26 @@ export function DashboardContent({ user, stats, habitsToday, heatmapData }: Dash
         </motion.div>
 
         {/* Charts */}
-        <motion.div variants={item} className="lg:col-span-2 space-y-6 sm:space-y-8 order-1 lg:order-2">
+        <motion.div variants={item} className="lg:col-span-2 space-y-5 order-1 lg:order-2">
           <WeeklyBarChart data={stats.weeklyData} />
-          {/* Radar Chart hidden on small mobile or simplified? Let's keep for now */}
           <RadarChart />
         </motion.div>
       </div>
 
       {/* ── Heatmap ── */}
       <motion.div variants={item}>
-        <div className="glass rounded-[2rem] border border-white/5 p-5 sm:p-8 bg-[#050505]">
-          <div className="flex items-center gap-2 mb-6">
-            <Target className="w-4.5 h-4.5 text-purple" />
-            <h2 className="font-black text-sm text-white uppercase italic tracking-widest">Consistência de Hábitos</h2>
-            <span className="ml-auto text-[10px] font-bold text-text-muted uppercase tracking-widest">Últimos 12 meses</span>
+        <div className="bg-[#0F0F14] border border-[#111118] rounded-md p-4 sm:p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Target className="w-4 h-4 text-purple" />
+            <h2 className="text-[10px] font-semibold text-[#4B5563] uppercase tracking-wider">CONSISTENCY</h2>
+            <span className="ml-auto text-[10px] font-semibold text-[#4B5563] uppercase tracking-wider opacity-60">Last 12 months</span>
           </div>
           <div className="overflow-x-auto no-scrollbar -mx-2 px-2">
             <HabitHeatmap data={heatmapData} />
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
 

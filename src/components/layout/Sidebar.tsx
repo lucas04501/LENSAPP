@@ -31,7 +31,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { sidebarOpen, toggleSidebar } = useUIStore();
 
-  const sidebarWidth = sidebarOpen ? "220px" : "52px";
+  const sidebarWidth = sidebarOpen ? "200px" : "48px";
 
   return (
     <>
@@ -54,20 +54,18 @@ export function Sidebar() {
           transition: "width 250ms ease, transform 250ms ease"
         }}
         className={cn(
-          "fixed lg:relative flex flex-col h-full bg-[#09090B] border-r border-[#18181B] overflow-hidden shrink-0 z-[70]",
+          "fixed lg:relative flex flex-col h-full bg-[#09090B] border-r border-[#111118] overflow-hidden shrink-0 z-[70]",
           !sidebarOpen && "max-lg:-translate-x-full"
         )}
       >
         {/* Logo Section */}
         <div className="flex flex-col shrink-0">
-          <div className="flex items-center px-3 h-14 shrink-0">
+          <div className="flex items-center px-4 h-12 shrink-0">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-[#A855F7] rounded-sm flex items-center justify-center shrink-0">
-                <span className="text-white text-[14px] font-bold font-mono">L</span>
-              </div>
+              <div className="w-1.5 h-1.5 bg-[#A855F7] rounded-full shrink-0" />
               {sidebarOpen && (
-                <span className="font-mono font-bold text-[14px] tracking-[0.2em] text-white">
-                  ENS
+                <span className="font-mono font-medium text-[14px] tracking-[0.15em] text-white">
+                  LENS
                 </span>
               )}
             </div>
@@ -76,34 +74,29 @@ export function Sidebar() {
             {sidebarOpen && (
               <button 
                 onClick={toggleSidebar}
-                className="lg:hidden ml-auto p-1.5 rounded-md hover:bg-[#111113] text-[#52525B] transition-colors"
+                className="lg:hidden ml-auto p-1.5 rounded-md hover:bg-[#111113] text-[#4B5563] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
           </div>
           
-          <div className="mx-3 border-b border-[#18181B]" />
-
           {/* Streak Line */}
-          <div className="px-4 py-3 shrink-0 min-h-[40px] flex items-center">
-            <div className="flex items-center gap-2">
-              <span className="text-[12px]">🔥</span>
-              {sidebarOpen && (
-                <span className="text-[11px] font-medium text-[#52525B] whitespace-nowrap">
-                  {session?.user?.totalStreak ?? 0} dias
-                </span>
-              )}
-            </div>
+          <div className="px-4 py-2 shrink-0 min-h-[32px] flex items-center">
+            {sidebarOpen && (
+              <span className="text-[11px] text-[#4B5563] whitespace-nowrap">
+                — {session?.user?.totalStreak ?? 0} day streak
+              </span>
+            )}
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-2 px-2 space-y-6 overflow-y-auto no-scrollbar">
+        <nav className="flex-1 py-4 space-y-8 overflow-y-auto no-scrollbar">
           {["main", "community"].map((group) => (
             <div key={group} className="space-y-1">
               {sidebarOpen && (
-                <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#3F3F46]">
+                <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#2D2D3A]">
                   {group === "main" ? "Core" : "Social"}
                 </p>
               )}
@@ -113,19 +106,16 @@ export function Sidebar() {
                   <Link key={item.href} href={item.href as any} onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
                     <div
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 group relative min-h-[36px]",
+                        "flex items-center gap-3 px-4 py-2 transition-all duration-200 group relative min-h-[32px]",
                         isActive
-                          ? "bg-[#18181B] text-white"
-                          : "text-[#52525B] hover:text-[#A1A1AA] hover:bg-[#111113]"
+                          ? "text-white border-l-2 border-[#7C3AED]"
+                          : "text-[#4B5563] hover:text-white border-l-2 border-transparent"
                       )}
                     >
-                      {isActive && (
-                        <div className="absolute left-0 top-1.5 bottom-1.5 w-[2px] bg-[#A855F7]" />
-                      )}
                       <item.icon
                         className={cn(
-                          "w-[18px] h-[18px] shrink-0 transition-colors",
-                          isActive ? "text-[#A855F7]" : "text-[#52525B] group-hover:text-[#A1A1AA]"
+                          "w-4 h-4 shrink-0 transition-colors",
+                          isActive ? "text-white" : "text-[#4B5563] group-hover:text-white"
                         )}
                       />
                       {sidebarOpen && (
@@ -142,20 +132,17 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom (Settings) */}
-        <div className="px-2 py-4 shrink-0">
+        <div className="py-4 shrink-0">
           <Link href="/dashboard/settings" onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
             <div className={cn(
-              "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 group min-h-[36px]",
+              "flex items-center gap-3 px-4 py-2 transition-all duration-200 group relative min-h-[32px]",
               pathname === "/dashboard/settings"
-                ? "bg-[#18181B] text-white"
-                : "text-[#52525B] hover:text-[#A1A1AA] hover:bg-[#111113]"
+                ? "text-white border-l-2 border-[#7C3AED]"
+                : "text-[#4B5563] hover:text-white border-l-2 border-transparent"
             )}>
-              {pathname === "/dashboard/settings" && (
-                <div className="absolute left-0 top-1.5 bottom-1.5 w-[2px] bg-[#A855F7]" />
-              )}
               <Settings className={cn(
-                "w-[18px] h-[18px] shrink-0",
-                pathname === "/dashboard/settings" ? "text-[#A855F7]" : "text-[#52525B] group-hover:text-[#A1A1AA]"
+                "w-4 h-4 shrink-0",
+                pathname === "/dashboard/settings" ? "text-white" : "text-[#4B5563] group-hover:text-white"
               )} />
               {sidebarOpen && <span className="text-[13px] font-medium">Settings</span>}
             </div>
@@ -165,13 +152,13 @@ export function Sidebar() {
         {/* Collapse toggle (Desktop only) */}
         <button
           onClick={toggleSidebar}
-          className="hidden lg:flex absolute top-[60px] -right-3 w-6 h-6 rounded-full bg-[#09090B] border border-[#18181B] items-center justify-center hover:border-[#A855F7]/30 text-[#52525B] hover:text-[#A855F7] transition-all z-10"
+          className="hidden lg:flex absolute bottom-4 left-4 w-6 h-6 items-center justify-center text-[#4B5563] hover:text-white transition-all z-10"
         >
           <div style={{ 
             transform: sidebarOpen ? "rotate(0deg)" : "rotate(180deg)",
             transition: "transform 250ms ease"
           }}>
-            <ChevronLeft className="w-3 h-3" />
+            <ChevronLeft className="w-4 h-4" />
           </div>
         </button>
       </aside>
