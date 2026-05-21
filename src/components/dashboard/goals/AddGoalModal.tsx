@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X, Target, Calendar, Zap, AlignLeft, Briefcase } from "lucide-react";
-import { createGoal } from "@/lib/actions/goals";
+import { createGoal, updateGoal } from "@/lib/actions/goals";
 import { toast } from "react-hot-toast";
 import { addDays, format, isBefore, isAfter } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface AddGoalModalProps {
   isOpen: boolean;
   onClose: () => void;
   userId: string;
+  goal?: any;
 }
 
 const CATEGORIES = ["WORK", "HEALTH", "MIND", "SOCIAL", "FINANCE", "CREATIVE", "OTHER"];
 
-export function AddGoalModal({ isOpen, onClose, userId }: AddGoalModalProps) {
+export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProps) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     title: "",
@@ -25,43 +27,69 @@ export function AddGoalModal({ isOpen, onClose, userId }: AddGoalModalProps) {
     xpReward: 100,
   });
 
+  const isEdit = !!goal;
+
+  useEffect(() => {
+    if (goal) {
+      setData({
+        title: goal.title,
+        description: goal.description || "",
+        category: goal.category,
+        targetDate: format(new Date(goal.targetDate), "yyyy-MM-dd"),
+        xpReward: goal.xpReward,
+      });
+    }
+  }, [goal]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
     const targetDate = new Date(data.targetDate);
-    const minDate = addDays(new Date(), 6); // at least 7 days (including today)
+    const minDate = addDays(new Date(), 6);
     const maxDate = addDays(new Date(), 366);
 
-    if (isBefore(targetDate, minDate)) {
-      return toast.error("A meta deve ter pelo menos 7 dias de duração.");
+    if (!isEdit && isBefore(targetDate, minDate)) {
+      return toast.error("MINIMUM 7 DAY DURATION REQUIRED");
     }
     if (isAfter(targetDate, maxDate)) {
-      return toast.error("A meta não pode exceder 365 dias.");
+      return toast.error("MAXIMUM 365 DAY DURATION EXCEEDED");
     }
 
     setLoading(true);
     try {
-      const res = await createGoal({
-        ...data,
-        targetDate: new Date(data.targetDate),
-      }, userId);
-
-      if (res.success) {
-        toast.success("Meta definida! Vá em frente. ✨");
-        onClose();
-        setData({
-          title: "",
-          description: "",
-          category: "WORK",
-          targetDate: format(addDays(new Date(), 90), "yyyy-MM-dd"),
-          xpReward: 100,
-        });
+      if (isEdit) {
+        const res = await updateGoal(goal.id, {
+          ...data,
+          targetDate: new Date(data.targetDate),
+        }, userId);
+        if (res.success) {
+          toast.success("PARAMETERS UPDATED");
+          onClose();
+        } else {
+          toast.error(res.error || "UPDATE FAILURE");
+        }
       } else {
-        toast.error(res.error || "Erro ao criar meta");
+        const res = await createGoal({
+          ...data,
+          targetDate: new Date(data.targetDate),
+        }, userId);
+
+        if (res.success) {
+          toast.success("MISSION INITIALIZED");
+          onClose();
+          setData({
+            title: "",
+            description: "",
+            category: "WORK",
+            targetDate: format(addDays(new Date(), 90), "yyyy-MM-dd"),
+            xpReward: 100,
+          });
+        } else {
+          toast.error(res.error || "INITIALIZATION FAILURE");
+        }
       }
     } catch (error) {
-      toast.error("Erro ao processar requisição");
+      toast.error("PROTOCOL ERROR");
     } finally {
       setLoading(false);
     }
@@ -70,65 +98,70 @@ export function AddGoalModal({ isOpen, onClose, userId }: AddGoalModalProps) {
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] animate-in fade-in duration-200" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-[#111111] border border-white/10 rounded-3xl p-6 shadow-2xl z-[101] animate-in zoom-in-95 duration-200 overflow-hidden">
+        <Dialog.Overlay className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] animate-in fade-in duration-200" />
+        <Dialog.Content className={cn(
+          "fixed z-[101] bg-black border border-[#1A1A1A] shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col",
+          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md md:h-auto md:rounded-md p-8"
+        )}>
           
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-purple/10 blur-3xl rounded-full" />
-          
-          <div className="flex items-center justify-between mb-8 relative">
-            <div>
-              <h2 className="text-xl font-black text-white uppercase italic tracking-tighter">Nova Meta</h2>
-              <p className="text-[10px] text-text-muted uppercase font-bold tracking-widest mt-1">Defina o seu norte para os próximos 90 dias</p>
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-4">
+              <div className="w-1 h-8 bg-purple rounded-full" />
+              <div>
+                <Dialog.Title className="text-lg font-bold text-white uppercase tracking-tight">
+                  {isEdit ? "Mod Protocol" : "New Objective"}
+                </Dialog.Title>
+                <p className="text-[10px] text-[#4B5563] font-bold uppercase tracking-widest mt-1">
+                  {isEdit ? "Recalibrate mission parameters" : "Establish a new strategic target"}
+                </p>
+              </div>
             </div>
             <Dialog.Close asChild>
-              <button className="p-2 hover:bg-white/5 rounded-xl transition-colors text-text-muted">
+              <button className="p-1.5 hover:bg-white/5 rounded transition-all text-[#4B5563] active:scale-95">
                 <X className="w-4 h-4" />
               </button>
             </Dialog.Close>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5 relative">
-            {/* Título */}
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">O que você quer alcançar?</label>
+              <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Identifier</label>
               <div className="relative">
-                <Target className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <Target className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#2D2D3A]" />
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Aprender Next.js 14 do zero"
+                  placeholder="Enter objective..."
                   value={data.title}
                   onChange={(e) => setData({ ...data, title: e.target.value })}
-                  className="w-full bg-surface-2 border border-white/5 rounded-2xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple/50 transition-all placeholder:text-text-muted/30"
+                  className="w-full h-11 bg-black border border-[#1A1A1A] rounded-md pl-11 pr-4 text-sm font-mono text-zinc-300 focus:outline-none focus:border-purple/50 transition-all placeholder:text-[#2D2D3A]"
                 />
               </div>
             </div>
 
-            {/* Descrição */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Detalhes (opcional)</label>
+              <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Documentation</label>
               <div className="relative">
-                <AlignLeft className="absolute left-4 top-3 w-4 h-4 text-text-muted" />
+                <AlignLeft className="absolute left-4 top-3.5 w-3.5 h-3.5 text-[#2D2D3A]" />
                 <textarea
                   value={data.description}
                   onChange={(e) => setData({ ...data, description: e.target.value })}
                   rows={2}
-                  placeholder="Como você vai saber que conseguiu?"
-                  className="w-full bg-surface-2 border border-white/5 rounded-2xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple/50 transition-all resize-none placeholder:text-text-muted/30"
+                  placeholder="Additional mission details..."
+                  className="w-full bg-black border border-[#1A1A1A] rounded-md pl-11 pr-4 py-3 text-sm font-mono text-zinc-300 focus:outline-none focus:border-purple/50 transition-all resize-none placeholder:text-[#2D2D3A]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              {/* Categoria */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Categoria</label>
+                <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Sector</label>
                 <div className="relative">
-                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#2D2D3A] pointer-events-none" />
                   <select
                     value={data.category}
                     onChange={(e) => setData({ ...data, category: e.target.value })}
-                    className="w-full bg-surface-2 border border-white/5 rounded-2xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple/50 transition-all appearance-none cursor-pointer"
+                    className="w-full h-11 bg-black border border-[#1A1A1A] rounded-md pl-11 pr-4 text-sm font-mono text-zinc-300 focus:outline-none focus:border-purple/50 transition-all appearance-none cursor-pointer uppercase"
                   >
                     {CATEGORIES.map(c => (
                       <option key={c} value={c}>{c}</option>
@@ -137,27 +170,25 @@ export function AddGoalModal({ isOpen, onClose, userId }: AddGoalModalProps) {
                 </div>
               </div>
 
-              {/* Data Alvo */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Data Alvo</label>
+                <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Neutralize By</label>
                 <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#2D2D3A] pointer-events-none" />
                   <input
                     type="date"
                     required
                     value={data.targetDate}
                     onChange={(e) => setData({ ...data, targetDate: e.target.value })}
-                    className="w-full bg-surface-2 border border-white/5 rounded-2xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple/50 transition-all [color-scheme:dark]"
+                    className="w-full h-11 bg-black border border-[#1A1A1A] rounded-md pl-11 pr-4 text-sm font-mono text-zinc-300 focus:outline-none focus:border-purple/50 transition-all [color-scheme:dark]"
                   />
                 </div>
               </div>
             </div>
 
-            {/* XP Reward */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-widest ml-1">Recompensa (XP)</label>
+              <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">XP Yield</label>
               <div className="relative">
-                <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-purple" />
+                <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-purple/50" />
                 <input
                   type="number"
                   required
@@ -166,18 +197,20 @@ export function AddGoalModal({ isOpen, onClose, userId }: AddGoalModalProps) {
                   step={50}
                   value={data.xpReward}
                   onChange={(e) => setData({ ...data, xpReward: parseInt(e.target.value) })}
-                  className="w-full bg-surface-2 border border-white/5 rounded-2xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple/50 transition-all"
+                  className="w-full h-11 bg-black border border-[#1A1A1A] rounded-md pl-11 pr-4 text-sm font-mono text-zinc-300 focus:outline-none focus:border-purple/50 transition-all"
                 />
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-purple to-red hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] disabled:opacity-50 mt-4 uppercase tracking-[0.2em] text-xs"
-            >
-              {loading ? "Estabelecendo Meta..." : "Começar Agora"}
-            </button>
+            <div className="pt-6">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-11 bg-purple text-white font-bold rounded-md transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.2em] text-[11px]"
+              >
+                {loading ? "INITIALIZING..." : (isEdit ? "Sync Changes" : "Confirm Mission")}
+              </button>
+            </div>
           </form>
         </Dialog.Content>
       </Dialog.Portal>

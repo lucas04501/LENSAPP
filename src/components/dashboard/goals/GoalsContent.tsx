@@ -2,145 +2,87 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Target, Plus, Calendar, Trophy, ChevronRight } from "lucide-react";
+import { Plus } from "lucide-react";
 import { AddGoalModal } from "./AddGoalModal";
 import { GoalCard } from "./GoalCard";
-import { differenceInDays } from "date-fns";
-import { cn } from "@/lib/utils";
 
 interface GoalsContentProps {
   goals: any[];
   userId: string;
 }
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
-};
-
 export function GoalsContent({ goals, userId }: GoalsContentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const activeGoals = goals.filter(g => !g.isCompleted);
   const completedGoals = goals.filter(g => g.isCompleted);
-  
-  const totalActive = activeGoals.length;
-  const completedActive = completedGoals.length; // This logic might be slightly off if we want "X of Y active completed", let's assume Y is total metas including completed ones
   const totalMetas = goals.length;
-  
   const overallProgress = totalMetas > 0 
     ? Math.round((completedGoals.length / totalMetas) * 100)
     : 0;
 
-  // Find nearest goal
-  const nearestGoal = activeGoals.length > 0
-    ? activeGoals.reduce((prev, curr) => 
-        new Date(prev.targetDate) < new Date(curr.targetDate) ? prev : curr
-      )
-    : null;
-
-  const daysToNearest = nearestGoal 
-    ? differenceInDays(new Date(nearestGoal.targetDate), new Date())
-    : null;
-
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="space-y-8 pb-20"
-    >
+    <div className="space-y-10 pb-20 max-w-5xl mx-auto selection:bg-purple-500/30 font-sans">
       {/* ── Header ── */}
-      <motion.div variants={item} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-[#1A1A1A]">
         <div>
-          <h1 className="text-3xl font-black text-white italic uppercase tracking-tighter flex items-center gap-3">
-            <Target className="w-8 h-8 text-purple" />
-            Metas dos 90 Dias
-          </h1>
-          <p className="text-text-muted text-sm mt-1">Transforme sua visão em realidade através de marcos consistentes.</p>
+          <h1 className="text-[22px] font-semibold text-white uppercase tracking-wider">Mission Command // Objectives</h1>
+          <p className="text-[#4B5563] text-[11px] mt-1 uppercase font-semibold tracking-[0.15em]">
+            <span className="text-purple">{completedGoals.length}</span> of <span className="text-white">{totalMetas}</span> secondary targets neutralized
+          </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-purple to-red text-white font-bold text-sm shadow-lg shadow-purple/20 hover:scale-[1.02] transition-all active:scale-[0.98]"
+          className="h-9 px-5 rounded-md border border-purple/50 bg-purple/10 text-white font-bold text-[11px] uppercase tracking-widest hover:bg-purple/20 transition-all flex items-center gap-2"
         >
-          <Plus className="w-4 h-4" />
-          Nova Meta
+          <Plus className="w-3.5 h-3.5" />
+          Initialize Mission
         </button>
-      </motion.div>
+      </header>
 
-      {/* ── Progresso Geral ── */}
-      <motion.div variants={item} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 glass rounded-3xl border border-white/5 p-6 bg-[#050505] relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5">
-            <Trophy className="w-32 h-32 text-gold" />
-          </div>
-          <div className="relative">
-            <div className="flex justify-between items-end mb-4">
-              <div>
-                <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-1">Progresso Geral</p>
-                <h2 className="text-2xl font-black text-white italic tracking-tighter">
-                  {completedGoals.length} de {totalMetas} metas completadas
-                </h2>
-              </div>
-              <span className="text-3xl font-black text-purple italic tracking-tighter">{overallProgress}%</span>
-            </div>
-            <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${overallProgress}%` }}
-                transition={{ duration: 1.5, ease: "easeOut", type: "spring" }}
-                className="h-full bg-gradient-to-r from-purple to-red rounded-full shadow-[0_0_20px_rgba(168,85,247,0.4)]"
-              />
-            </div>
-          </div>
+      {/* ── Global Metrics ── */}
+      <div className="space-y-3">
+        <div className="flex justify-between text-[10px] font-semibold uppercase tracking-widest text-[#4B5563]">
+          <span>Operational Success Rate</span>
+          <span className="text-purple font-mono">{overallProgress}%</span>
+        </div>
+        <div className="h-1 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${overallProgress}%` }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="h-full bg-gradient-to-r from-purple-600 to-red-500 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+          />
+        </div>
+      </div>
+
+      {/* ── Missions List ── */}
+      <div className="flex flex-col">
+        <div className="grid grid-cols-12 gap-4 px-4 py-3 text-[10px] font-bold text-[#2D2D3A] uppercase tracking-widest border-b border-[#1A1A1A]">
+          <div className="col-span-1 flex justify-center">STATUS</div>
+          <div className="col-span-6">OBJECTIVE PARAMETERS</div>
+          <div className="col-span-2 text-center">DEADLINE</div>
+          <div className="col-span-2 text-center">REWARD</div>
+          <div className="col-span-1 text-right">OPS</div>
         </div>
 
-        <div className="glass rounded-3xl border border-white/5 p-6 bg-[#050505] flex flex-col justify-center">
-          <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-1">Meta mais próxima</p>
-          {nearestGoal ? (
-            <>
-              <h2 className="text-2xl font-black text-white italic tracking-tighter line-clamp-1">
-                {daysToNearest === 0 ? "HOJE!" : `${daysToNearest} dias restantes`}
-              </h2>
-              <p className="text-xs text-text-muted mt-2 flex items-center gap-2">
-                <ChevronRight className="w-3 h-3 text-purple" />
-                {nearestGoal.title}
-              </p>
-            </>
-          ) : (
-            <p className="text-sm text-text-muted italic">Nenhuma meta ativa.</p>
-          )}
-        </div>
-      </motion.div>
-
-      {/* ── Grid de Metas ── */}
-      <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {goals.length === 0 ? (
-          <div className="col-span-full py-20 text-center">
-            <p className="text-text-muted italic">Você ainda não definiu nenhuma meta. Comece agora!</p>
+          <div className="py-20 text-center border border-dashed border-[#1A1A1A] rounded-md mt-4">
+            <p className="text-[10px] font-mono text-[#2D2D3A] uppercase tracking-[0.2em]">NO ACTIVE MISSIONS FOUND.</p>
           </div>
         ) : (
-          goals.map((goal) => (
-            <GoalCard key={goal.id} goal={goal} userId={userId} />
-          ))
+          <div className="flex flex-col">
+            {goals.map((goal) => (
+              <GoalCard key={goal.id} goal={goal} userId={userId} />
+            ))}
+          </div>
         )}
-      </motion.div>
+      </div>
 
       <AddGoalModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         userId={userId}
       />
-    </motion.div>
+    </div>
   );
 }
