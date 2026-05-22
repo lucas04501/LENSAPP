@@ -270,12 +270,12 @@ npx tsx prisma/seed.ts  # re-seed database
 - [x] Gym Rats social feed with likes and comments
 - [x] Command Palette (Ctrl+K)
 - [x] Glassmorphism UI with neon accents
-- [ ] Full auth — login & register pages
-- [ ] Focus timer — Pomodoro / Deep Work modes
-- [ ] Real-time data from database (Server Actions)
-- [ ] Push notifications for habit reminders
-- [ ] Mobile responsive layout
-- [ ] Deploy to Vercel
+- [x] Full auth — login & register pages
+- [x] Focus timer — Pomodoro / Deep Work modes
+- [x] Real-time data from database (Server Actions)
+- [x] Push notifications for habit reminders
+- [x] Mobile responsive layout
+- [x] Deploy to Vercel
 
 ---
 
