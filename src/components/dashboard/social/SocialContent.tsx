@@ -158,7 +158,7 @@ export function SocialContent({ initialPosts }: SocialContentProps) {
                     <span className="text-[12px] font-bold text-white shrink-0">
                       {post.user.username.toUpperCase()}
                     </span>
-                    <span className="hidden sm:inline text-[#2D2D3A] font-mono text-xs">//</span>
+                    <span className="hidden sm:inline text-[#2D2D3A] font-mono text-xs">{'//'}</span>
                     <p className="text-[13px] text-zinc-400 font-mono line-clamp-1 group-hover:line-clamp-none transition-all uppercase tracking-tight">
                       {post.content}
                     </p>

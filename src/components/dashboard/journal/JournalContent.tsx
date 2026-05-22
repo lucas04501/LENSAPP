@@ -107,7 +107,7 @@ export function JournalContent({ userId, initialToday, history }: JournalContent
               </h1>
             </div>
             <p className="text-[#4B5563] text-[11px] font-mono tracking-widest uppercase">
-              STATUS: ONLINE // DATE: <span className="text-white">{format(new Date(), "dd.MM.yyyy", { locale: ptBR })}</span>
+              STATUS: ONLINE {'//'} DATE: <span className="text-white">{format(new Date(), "dd.MM.yyyy", { locale: ptBR })}</span>
             </p>
           </div>
           

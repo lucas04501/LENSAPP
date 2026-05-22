@@ -100,3 +100,25 @@ export async function deleteGoal(goalId: string, userId: string) {
     return { success: false, error: "Falha ao deletar meta" };
   }
 }
+
+export async function updateGoal(goalId: string, data: {
+  title: string;
+  description?: string;
+  category: any;
+  targetDate: Date;
+  xpReward: number;
+}, userId: string) {
+  try {
+    const goal = await prisma.goal.update({
+      where: { id: goalId, userId },
+      data: {
+        ...data,
+      },
+    });
+    revalidatePath("/dashboard/goals");
+    return { success: true, data: goal };
+  } catch (error) {
+    console.error("Error updating goal:", error);
+    return { success: false, error: "Falha ao atualizar meta" };
+  }
+}
