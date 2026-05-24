@@ -1,3 +1,9 @@
 node_modules
 .env
+.env.*
 .vercel
+.next
+dist
+build
+.DS_Store
+*.log

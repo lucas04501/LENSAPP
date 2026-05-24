@@ -27,18 +27,15 @@ async function getUserId() {
     });
 
     if (token?.id) {
-      console.log("SERVER_AUTH_SUCCESS: Found user ID in JWT token");
       return token.id as string;
     }
 
     // Fallback to getServerSession if getToken fails
     const session = await getServerSession(authOptions);
     if (session?.user?.id) {
-      console.log("SERVER_AUTH_SUCCESS: Found user ID in session");
       return session.user.id;
     }
 
-    console.warn("SERVER_AUTH_FAIL: No authentication found in JWT or Session");
     return null;
   } catch (error) {
     console.error("SERVER_AUTH_FATAL: Error in authentication check", error);

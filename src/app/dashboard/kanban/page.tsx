@@ -15,9 +15,9 @@ import {
   PointerSensor, 
   useSensor, 
   useSensors,
-  DragStart,
-  DragOver,
-  DragEnd,
+  DragStartEvent,
+  DragOverEvent,
+  DragEndEvent,
   defaultDropAnimationSideEffects
 } from "@dnd-kit/core";
 import { 
@@ -355,7 +355,7 @@ export default function KanbanPage() {
     }
   };
 
-  const onDragStart = (event: DragStart) => {
+  const onDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "Card") {
       setActiveCard(event.active.data.current.card);
       return;
@@ -366,7 +366,7 @@ export default function KanbanPage() {
     }
   };
 
-  const onDragOver = (event: DragOver) => {
+  const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
 
@@ -446,7 +446,7 @@ export default function KanbanPage() {
     }
   };
 
-  const onDragEnd = async (event: DragEnd) => {
+  const onDragEnd = async (event: DragEndEvent) => {
     setActiveCard(null);
     setActiveColumn(null);
 
