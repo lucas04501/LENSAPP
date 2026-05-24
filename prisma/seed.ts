@@ -104,6 +104,62 @@ async function main() {
         data: { userId: user.id, ...h },
       });
     }
+
+    // Default Routine Blocks
+    const routineData = [
+      { title: "Ritual matinal",      startTime: "05:30", endTime: "06:00", days: [1,2,3,4,5], color: "purple", category: "Saúde" },
+      { title: "Trabalho profundo",   startTime: "08:30", endTime: "12:00", days: [1,2,3,4,5], color: "blue",   category: "Trabalho" },
+      { title: "Planejamento noturno",startTime: "22:00", endTime: "22:30", days: [1,2,3,4,5], color: "gray",   category: "Mente" },
+    ];
+
+    for (const r of routineData) {
+      await prisma.routineBlock.create({
+        data: { userId: user.id, ...r },
+      });
+    }
+
+    // Default Kanban Board
+    const board = await prisma.kanbanBoard.create({
+      data: {
+        userId: user.id,
+        name: "Meu Board",
+        columns: {
+          create: [
+            { name: "Backlog", order: 1, color: "#6B7280" },
+            { name: "Em andamento", order: 2, color: "#3B82F6" },
+            { name: "Revisão", order: 3, color: "#F59E0B" },
+            { name: "Concluído", order: 4, color: "#22C55E" },
+          ],
+        },
+      },
+      include: { columns: true },
+    });
+
+    const backlogCol = board.columns.find(c => c.name === "Backlog")!;
+    const progressCol = board.columns.find(c => c.name === "Em andamento")!;
+
+    await prisma.kanbanCard.createMany({
+      data: [
+        { 
+          columnId: backlogCol.id, 
+          userId: user.id, 
+          title: "Criar meu primeiro hábito", 
+          tag: "Hábito", 
+          tagColor: "purple", 
+          priority: "high", 
+          order: 1 
+        },
+        { 
+          columnId: progressCol.id, 
+          userId: user.id, 
+          title: "Explorar o LENS", 
+          tag: "App", 
+          tagColor: "blue", 
+          priority: "medium", 
+          order: 1 
+        },
+      ],
+    });
   }
 
   console.log("✅ Seed completo!");

@@ -1,12 +1,10 @@
 {
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/dashboard/focus/page": "app/dashboard/focus/page.js",
-  "/dashboard/profile/page": "app/dashboard/profile/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/ranks/page": "app/dashboard/ranks/page.js",
-  "/dashboard/achievements/page": "app/dashboard/achievements/page.js",
-  "/dashboard/habits/page": "app/dashboard/habits/page.js",
-  "/dashboard/social/page": "app/dashboard/social/page.js",
   "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
-  "/dashboard/settings/page": "app/dashboard/settings/page.js"
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/routine/page": "app/dashboard/routine/page.js",
+  "/dashboard/kanban/page": "app/dashboard/kanban/page.js",
+  "/dashboard/social/page": "app/dashboard/social/page.js",
+  "/dashboard/settings/page": "app/dashboard/settings/page.js",
+  "/dashboard/profile/page": "app/dashboard/profile/page.js"
 }

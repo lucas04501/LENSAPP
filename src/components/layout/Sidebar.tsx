@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
   LayoutDashboard, Flame, Users, BarChart3,
-  Settings, ChevronLeft, Timer,
+  Settings, ChevronLeft, Timer, CalendarClock, Kanban,
   Target, User, X, BookOpen, CalendarDays, Trophy
 } from "lucide-react";
 import { useUIStore } from "@/store";
@@ -18,6 +18,8 @@ const NAV_ITEMS = [
   { href: "/dashboard/goals",     icon: Target,          label: "Metas",       group: "main" },
   { href: "/dashboard/journal",   icon: BookOpen,        label: "Diário",      group: "main" },
   { href: "/dashboard/calendar",  icon: CalendarDays,    label: "Calendário",  group: "main" },
+  { href: "/dashboard/routine",   icon: CalendarClock,   label: "Rotina",      group: "main" },
+  { href: "/dashboard/kanban",    icon: Kanban,          label: "Kanban",      group: "main" },
   { href: "/dashboard/focus",     icon: Timer,           label: "Foco",        group: "main" },
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
   { href: "/dashboard/social",    icon: Users,           label: "Feed",        group: "community" },
