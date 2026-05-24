@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
-  LayoutDashboard, Flame, Users, BarChart3,
-  Settings, ChevronLeft, Timer, CalendarClock, Kanban,
-  Target, User, X, BookOpen, CalendarDays, Trophy
+  LayoutDashboard, Flame, BarChart3,
+  Settings, ChevronLeft, CalendarClock, Kanban,
+  Target, User, X, CalendarDays, Trophy
 } from "lucide-react";
 import { useUIStore } from "@/store";
 import { cn } from "@/lib/utils";
@@ -16,13 +16,10 @@ const NAV_ITEMS = [
   { href: "/dashboard",           icon: LayoutDashboard, label: "Dashboard",   group: "main" },
   { href: "/dashboard/habits",    icon: Flame,           label: "Hábitos",     group: "main" },
   { href: "/dashboard/goals",     icon: Target,          label: "Metas",       group: "main" },
-  { href: "/dashboard/journal",   icon: BookOpen,        label: "Diário",      group: "main" },
   { href: "/dashboard/calendar",  icon: CalendarDays,    label: "Calendário",  group: "main" },
   { href: "/dashboard/routine",   icon: CalendarClock,   label: "Rotina",      group: "main" },
   { href: "/dashboard/kanban",    icon: Kanban,          label: "Kanban",      group: "main" },
-  { href: "/dashboard/focus",     icon: Timer,           label: "Foco",        group: "main" },
   { href: "/dashboard/analytics", icon: BarChart3,       label: "Analytics",   group: "main" },
-  { href: "/dashboard/social",    icon: Users,           label: "Feed",        group: "community" },
   { href: "/dashboard/profile",   icon: User,            label: "Perfil",      group: "community" },
   { href: "/dashboard/achievements", icon: Trophy,       label: "Conquistas",  group: "community" },
   { href: "/dashboard/ranks",     icon: Trophy,          label: "Ranks",       group: "community" },
@@ -136,39 +133,36 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Section: Profile & Settings */}
-        <div className="mt-auto border-t border-[#151515] py-4 px-3 space-y-1">
+        <div className="mt-auto border-t border-[#151515] py-2 px-2 space-y-0.5">
           <Link href="/dashboard/settings" onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
             <div className={cn(
               "flex items-center gap-3 px-3 py-2 transition-all duration-300 group relative min-h-[32px] rounded-md",
               pathname === "/dashboard/settings"
-                ? "text-white border-l-2 border-purple-500 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
-                : "text-[#4B5563] hover:text-zinc-300 border-l-2 border-transparent"
+                ? "text-white bg-white/5 shadow-sm"
+                : "text-[#4B5563] hover:text-zinc-300"
             )}>
               <Settings strokeWidth={1.5} className="w-4 h-4 shrink-0" />
-              {sidebarOpen && <span className="text-[13px] font-medium tracking-tight">Settings</span>}
+              {sidebarOpen && <span className="text-[12px] font-medium tracking-tight">Settings</span>}
             </div>
           </Link>
 
           {user && sidebarOpen && (
-            <div className="flex items-center gap-3 px-3 py-4 mt-2">
-              <div className="w-8 h-8 rounded-md bg-[#151515] border border-white/5 overflow-hidden shrink-0">
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-[10px] font-bold text-[#4B5563] uppercase">
-                    {(user.username || user.name || "U")[0]}
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[13px] font-medium text-zinc-200 truncate">
+            <Link href="/dashboard/profile" onClick={() => { if(window.innerWidth < 1024) toggleSidebar() }}>
+              <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 transition-all">
+                <div className="w-6 h-6 rounded-md bg-[#151515] border border-white/5 overflow-hidden shrink-0">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[9px] font-bold text-[#4B5563] uppercase">
+                      {(user.username || user.name || "U")[0]}
+                    </div>
+                  )}
+                </div>
+                <span className="text-[12px] font-medium text-zinc-400 truncate group-hover:text-zinc-200 transition-colors">
                   {user.name || user.username}
                 </span>
-                <span className="text-[10px] text-[#4B5563] font-mono uppercase tracking-widest">
-                  Active Session
-                </span>
               </div>
-            </div>
+            </Link>
           )}
         </div>
 

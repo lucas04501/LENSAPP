@@ -13,158 +13,114 @@ import Link from "next/link";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
-  const [deleteStep, setDeleteStep] = useState(0); // 0: idle, 1: confirm, 2: final confirm
+  const [deleteStep, setDeleteStep] = useState(0);
 
   const user = session?.user as any;
 
   const handleDeleteAccount = async () => {
-    // In a real app, call a server action to delete user data
     console.log("Deleting account for:", user.id);
     await signOut({ callbackUrl: "/" });
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-20 px-2 sm:px-0">
+    <div className="max-w-3xl mx-auto space-y-12 py-10 px-4">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-black text-white italic uppercase tracking-tighter">Configurações</h1>
-        <p className="text-text-muted text-sm mt-1 uppercase font-bold tracking-widest">Gerencie sua conta e preferências do sistema LENS.</p>
+      <div className="space-y-1">
+        <h1 className="text-xl font-bold text-white tracking-tight">Configurações</h1>
+        <p className="text-zinc-500 text-xs uppercase tracking-widest font-medium">Conta & Preferências</p>
       </div>
 
       {/* 1. Account Info */}
-      <section className="space-y-4">
-        <h2 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] px-4">Informações da Conta</h2>
-        <div className="glass rounded-[2rem] border border-white/5 bg-[#050505] overflow-hidden">
-          <Link href="/dashboard/profile" className="flex items-center gap-4 p-6 hover:bg-white/[0.02] transition-colors group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple to-red flex items-center justify-center text-white font-black text-lg shrink-0">
+      <section className="space-y-6">
+        <div className="flex items-center justify-between group cursor-pointer border-b border-white/5 pb-6">
+          <Link href="/dashboard/profile" className="flex items-center gap-4 flex-1">
+            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-400 font-bold text-sm">
               {(user?.username || user?.name || "U")[0].toUpperCase()}
             </div>
-            <div className="flex-1 min-w-0">
-              <span className="block text-white font-bold text-lg leading-none">{user?.name || "Usuário"}</span>
-              <span className="block text-text-muted text-sm mt-1">@{user?.username || "username"} • {user?.email}</span>
+            <div>
+              <span className="block text-zinc-200 font-bold text-sm leading-none">{user?.name || "Usuário"}</span>
+              <span className="block text-zinc-500 text-[10px] mt-1 uppercase tracking-wider font-mono">@{user?.username || "username"}</span>
             </div>
-            <ChevronRight className="w-5 h-5 text-text-muted group-hover:text-white transition-all group-hover:translate-x-1" />
           </Link>
+          <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-all" />
         </div>
       </section>
 
       {/* 2. Preferences */}
-      <section className="space-y-4">
-        <h2 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] px-4">Preferências</h2>
-        <div className="glass rounded-[2rem] border border-white/5 bg-[#050505] divide-y divide-white/5">
-          <div className="flex items-center justify-between p-6">
+      <section className="space-y-6">
+        <h2 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em]">Sistema</h2>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-surface-2 flex items-center justify-center">
-                <Moon className="w-5 h-5 text-text-muted" />
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-white uppercase tracking-widest">Modo Escuro</span>
-                <span className="block text-[10px] text-text-muted uppercase mt-0.5">Sempre ativo (LENS Original)</span>
-              </div>
+              <Moon className="w-4 h-4 text-zinc-500" />
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Modo Escuro</span>
             </div>
-            <div className="w-12 h-6 rounded-full bg-purple/20 border border-purple/30 p-1 flex justify-end">
-              <div className="w-4 h-4 rounded-full bg-purple" />
-            </div>
+            <span className="text-[9px] text-zinc-600 uppercase font-black">Ativo</span>
           </div>
 
-          <div className="flex items-center justify-between p-6">
+          <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-surface-2 flex items-center justify-center">
-                <Bell className="w-5 h-5 text-text-muted" />
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-white uppercase tracking-widest">Notificações In-App</span>
-                <span className="block text-[10px] text-text-muted uppercase mt-0.5">Alertas de hábitos e social</span>
-              </div>
+              <Bell className="w-4 h-4 text-zinc-500" />
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Notificações</span>
             </div>
-            <div className="w-12 h-6 rounded-full bg-purple p-1 flex justify-end cursor-pointer">
-              <div className="w-4 h-4 rounded-full bg-white shadow-lg" />
+            <div className="w-8 h-4 rounded-full bg-purple-500/20 border border-purple-500/40 p-0.5 flex justify-end">
+              <div className="w-3 h-3 rounded-full bg-purple-500" />
             </div>
           </div>
         </div>
       </section>
 
       {/* 3. Export Data */}
-      <section className="space-y-4">
-        <h2 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] px-4">Portabilidade</h2>
+      <section className="space-y-6 pt-4">
+        <h2 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em]">Dados</h2>
         <ExportData />
       </section>
 
       {/* 4. Danger Zone */}
-      <section className="space-y-4">
-        <h2 className="text-xs font-black text-red uppercase tracking-[0.2em] px-4">Zona de Perigo</h2>
-        <div className="glass rounded-[2rem] border border-red/10 bg-[#050505] p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-red/10 flex items-center justify-center shrink-0">
-                <Trash2 className="w-6 h-6 text-red" />
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-white italic uppercase tracking-tighter">Excluir Conta</h3>
-                <p className="text-sm text-text-muted mt-1">Isso apagará permanentemente todos os seus hábitos, conquistas e histórico social. Esta ação não pode ser desfeita.</p>
-              </div>
-            </div>
+      <section className="pt-10 space-y-6 border-t border-red-500/10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest">Excluir Conta</h3>
+            <p className="text-[10px] text-zinc-500 leading-relaxed max-w-sm">Esta ação apagará permanentemente todos os seus dados. O processo é irreversível.</p>
+          </div>
 
-            <div className="shrink-0 flex flex-col gap-2">
-              {deleteStep === 0 && (
+          <div className="shrink-0">
+            {deleteStep === 0 && (
+              <button
+                onClick={() => setDeleteStep(1)}
+                className="px-4 py-2 rounded-lg bg-red-500/5 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/10 transition-all"
+              >
+                Remover Conta
+              </button>
+            )}
+
+            {deleteStep > 0 && (
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setDeleteStep(1)}
-                  className="px-6 py-3 rounded-xl bg-red/10 border border-red/20 text-red text-xs font-black uppercase tracking-widest hover:bg-red/20 transition-all active:scale-95"
+                  onClick={() => setDeleteStep(0)}
+                  className="px-3 py-2 rounded-lg bg-zinc-900 text-zinc-500 text-[9px] font-bold uppercase tracking-widest"
                 >
-                  Excluir Conta
+                  Cancelar
                 </button>
-              )}
-
-              {deleteStep === 1 && (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setDeleteStep(0)}
-                    className="px-4 py-3 rounded-xl bg-surface-2 border border-white/5 text-text-muted text-[10px] font-black uppercase tracking-widest"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={() => setDeleteStep(2)}
-                    className="px-6 py-3 rounded-xl bg-red text-white text-[10px] font-black uppercase tracking-widest animate-pulse"
-                  >
-                    Tem certeza?
-                  </button>
-                </div>
-              )}
-
-              {deleteStep === 2 && (
-                <div className="flex flex-col gap-2 items-end">
-                  <span className="text-[10px] font-black text-red uppercase tracking-widest flex items-center gap-1">
-                    <AlertTriangle className="w-3 h-3" /> Ação Irreversível
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setDeleteStep(0)}
-                      className="px-4 py-3 rounded-xl bg-surface-2 border border-white/5 text-text-muted text-[10px] font-black uppercase tracking-widest"
-                    >
-                      Voltar
-                    </button>
-                    <button
-                      onClick={handleDeleteAccount}
-                      className="px-6 py-3 rounded-xl bg-red text-white text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(239,68,68,0.4)]"
-                    >
-                      Confirmar Exclusão
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+                <button
+                  onClick={handleDeleteAccount}
+                  className="px-4 py-2 rounded-lg bg-red-500 text-white text-[9px] font-bold uppercase tracking-widest"
+                >
+                  {deleteStep === 1 ? "Confirmar?" : "Excluir Agora"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* Logout */}
-      <div className="flex justify-center pt-8">
+      <div className="flex justify-center pt-20">
         <button 
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="flex items-center gap-2 px-8 py-4 rounded-full bg-surface-2 border border-white/5 text-text-muted hover:text-white hover:border-white/20 transition-all text-xs font-black uppercase tracking-widest active:scale-95"
+          className="flex items-center gap-2 text-[10px] font-bold text-zinc-600 hover:text-zinc-200 uppercase tracking-[0.3em] transition-all"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-3 h-3" />
           Encerrar Sessão
         </button>
       </div>

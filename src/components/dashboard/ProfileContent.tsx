@@ -34,179 +34,95 @@ const item = {
 };
 
 export function ProfileContent({ data }: ProfileContentProps) {
-  const { user, habits, totalHabitLogs, activeDays, recentPosts, heatmap } = data;
+  const { user, habits, totalHabitLogs, activeDays, heatmap } = data;
 
   return (
     <motion.div
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-8 pb-20"
+      className="max-w-5xl mx-auto space-y-6 pb-20"
     >
-      {/* ── 1. HEADER DO PERFIL ── */}
-      <motion.div variants={item} className="glass rounded-[32px] border border-white/5 p-8 relative overflow-hidden bg-[#050505]">
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-purple/10 blur-[100px] rounded-full" />
-        
-        <div className="relative flex flex-col md:flex-row items-center gap-8">
-          {/* Avatar */}
+      {/* ── 1. MINIMALIST HEADER ── */}
+      <motion.div variants={item} className="flex flex-col md:flex-row items-center justify-between gap-6 p-4">
+        <div className="flex items-center gap-6">
           <AvatarUpload 
             currentAvatar={user.avatarUrl} 
             name={user.name || user.username} 
             size="lg"
           />
-
-          <div className="flex-1 text-center md:text-left space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <h1 className="text-3xl font-black text-white italic uppercase tracking-tighter">
-                  {user.name || user.username}
-                </h1>
-                <p className="text-text-muted text-sm font-medium">@{user.username}</p>
-              </div>
-              <EditProfileModal user={user} />
-            </div>
-
+          <div className="space-y-1">
+            <h1 className="text-2xl font-black text-white italic uppercase tracking-tighter leading-none">
+              {user.name || user.username}
+            </h1>
+            <p className="text-text-muted text-xs font-mono uppercase tracking-widest">@{user.username}</p>
             {user.bio && (
-              <p className="text-sm text-text-muted max-w-xl leading-relaxed">
+              <p className="text-xs text-text-muted max-w-md leading-relaxed mt-2">
                 {user.bio}
               </p>
             )}
-
-            <div className="flex flex-wrap justify-center md:justify-start gap-3">
-              <div className="px-3 py-1 rounded-full bg-surface-2 border border-white/5 flex items-center gap-2">
-                <Award className="w-3.5 h-3.5" style={{ color: user.rank?.color || "#A855F7" }} />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-                  {user.rank?.name || "INICIANTE"}
-                </span>
-              </div>
-              <div className="px-3 py-1 rounded-full bg-surface-2 border border-white/5 flex items-center gap-2">
-                <Target className="w-3.5 h-3.5 text-red" />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">Nível {user.level}</span>
-              </div>
-            </div>
           </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <EditProfileModal user={user} />
         </div>
       </motion.div>
 
-      {/* ── 2. STATS CARDS ── */}
+      {/* ── 2. QUICK STATS ── */}
       <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "XP Total", value: user.xp.toLocaleString(), icon: Zap, color: "#A855F7" },
-          { label: "Maior Streak", value: `${user.longestStreak} dias`, icon: Flame, color: "#EF4444" },
-          { label: "Habit Logs", value: totalHabitLogs, icon: CheckCircle2, color: "#22C55E" },
-          { label: "Dias Ativos", value: activeDays, icon: Calendar, color: "#F59E0B" },
+          { label: "XP Total", value: user.xp.toLocaleString(), color: "#A855F7" },
+          { label: "Streak", value: `${user.longestStreak}d`, color: "#EF4444" },
+          { label: "Concluídos", value: totalHabitLogs, color: "#22C55E" },
+          { label: "Rank", value: user.rank?.name || "INICIANTE", color: "#F59E0B" },
         ].map((stat, i) => (
-          <div key={i} className="glass rounded-2xl border border-white/5 p-5 bg-[#050505]">
-            <stat.icon className="w-5 h-5 mb-3" style={{ color: stat.color }} />
-            <p className="text-2xl font-black text-white italic tracking-tighter">{stat.value}</p>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-1">{stat.label}</p>
+          <div key={i} className="bg-surface-2/30 border border-white/5 p-4 rounded-2xl flex flex-col items-center text-center">
+            <p className="text-lg font-black text-white italic tracking-tighter">{stat.value}</p>
+            <p className="text-[9px] font-bold text-text-muted uppercase tracking-[0.2em] mt-0.5">{stat.label}</p>
           </div>
         ))}
       </motion.div>
 
-      {/* ── 3. BARRA DE XP E NÍVEL ── */}
-      <motion.div variants={item}>
+      {/* ── 3. XP PROGRESS ── */}
+      <motion.div variants={item} className="px-4">
         <XPCard xp={user.xp} />
       </motion.div>
 
-      {/* ── 4. HEATMAP ── */}
-      <motion.div variants={item} className="glass rounded-3xl border border-white/5 p-6 bg-[#050505]">
+      {/* ── 4. YEARLY CONSISTENCY ── */}
+      <motion.div variants={item} className="bg-surface-2/20 border border-white/5 p-6 rounded-[2rem]">
         <div className="flex items-center gap-2 mb-6">
-          <Calendar className="w-4 h-4 text-purple" />
-          <h2 className="text-xs font-black text-white uppercase tracking-[0.2em]">Consistência Anual</h2>
+          <Calendar className="w-3.5 h-3.5 text-[#4B5563]" />
+          <h2 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Consistência</h2>
         </div>
         <HabitHeatmap data={heatmap} />
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* ── 5. HÁBITOS DO USUÁRIO ── */}
-        <div className="space-y-4">
-          <h2 className="text-sm font-black text-white uppercase tracking-[0.2em] px-1 flex items-center gap-2">
-            <Target className="w-4 h-4 text-purple" />
-            Hábitos Ativos
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {habits.length === 0 ? (
-              <div className="col-span-full glass rounded-2xl border border-white/5 p-8 text-center bg-[#050505]">
-                <p className="text-xs text-text-muted italic">Nenhum hábito ativo encontrado.</p>
-              </div>
-            ) : (
-              habits.map((habit: any) => (
-                <div key={habit.id} className="glass rounded-2xl border border-white/5 p-4 bg-[#050505] hover:border-white/10 transition-all group">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-2xl">{habit.icon}</span>
-                    <div className="flex-1">
-                      <h3 className="text-xs font-bold text-white uppercase tracking-tight line-clamp-1">{habit.title}</h3>
-                      <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest">{habit.category}</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="p-2 rounded-lg bg-surface-2 border border-white/5">
-                      <p className="text-[9px] font-bold text-text-muted uppercase tracking-wider mb-1">Streak</p>
-                      <div className="flex items-center gap-1">
-                        <Flame className="w-3 h-3 text-red" />
-                        <span className="text-xs font-bold text-white">{habit.currentStreak}d</span>
-                      </div>
-                    </div>
-                    <div className="p-2 rounded-lg bg-surface-2 border border-white/5">
-                      <p className="text-[9px] font-bold text-text-muted uppercase tracking-wider mb-1">Total</p>
-                      <div className="flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-green" />
-                        <span className="text-xs font-bold text-white">{habit.totalCompletions}</span>
-                      </div>
-                    </div>
+      {/* ── 5. ACTIVE HABITS ── */}
+      <motion.div variants={item} className="space-y-4 px-4">
+        <h2 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] flex items-center gap-2">
+          <Target className="w-3.5 h-3.5" />
+          Foco Atual
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {habits.length === 0 ? (
+            <p className="text-[10px] text-text-muted italic uppercase tracking-widest">Nenhum hábito rastreado.</p>
+          ) : (
+            habits.slice(0, 6).map((habit: any) => (
+              <div key={habit.id} className="bg-surface-2/40 border border-white/5 p-4 rounded-2xl hover:border-white/10 transition-all flex items-center gap-4">
+                <span className="text-xl shrink-0">{habit.icon}</span>
+                <div className="min-w-0">
+                  <h3 className="text-[11px] font-bold text-white uppercase truncate">{habit.title}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[9px] font-mono text-zinc-500">{habit.currentStreak}d streak</span>
+                    <div className="w-1 h-1 rounded-full bg-zinc-700" />
+                    <span className="text-[9px] font-mono text-zinc-500">{habit.totalCompletions} total</span>
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* ── 6. POSTS RECENTES ── */}
-        <div className="space-y-4">
-          <h2 className="text-sm font-black text-white uppercase tracking-[0.2em] px-1 flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-purple" />
-            Posts Recentes
-          </h2>
-          <div className="space-y-3">
-            {recentPosts.length === 0 ? (
-              <div className="glass rounded-2xl border border-white/5 p-8 text-center bg-[#050505]">
-                <p className="text-xs text-text-muted italic">Nenhum post recente.</p>
               </div>
-            ) : (
-              recentPosts.map((post: any) => (
-                <div key={post.id} className="glass rounded-2xl border border-white/5 p-4 bg-[#050505] hover:border-white/10 transition-all group">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-3 h-3 text-text-muted" />
-                      <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">
-                        {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: ptBR })}
-                      </span>
-                    </div>
-                    <div className="px-2 py-0.5 rounded-full bg-purple/10 border border-purple/20 text-[9px] font-bold text-purple uppercase tracking-widest">
-                      {post.type}
-                    </div>
-                  </div>
-                  <p className="text-sm text-text-primary line-clamp-2 mb-4 leading-relaxed italic">
-                    &quot;{post.content}&quot;
-                  </p>
-                  <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1.5">
-                        <Heart className="w-3.5 h-3.5 text-red" />
-                        <span className="text-xs font-bold text-text-muted">{post.likesCount}</span>
-                      </div>
-                    </div>
-                    <button className="text-[10px] font-bold text-purple uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">
-                      Ver Post <ArrowUpRight className="w-3 h-3" />
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+            ))
+          )}
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
