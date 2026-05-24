@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { startOfDay, endOfDay, subDays, format } from "date-fns";
+import { startOfDay, endOfDay, subDays, format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay } from "date-fns";
 import { createNotification } from "./notifications";
 import { checkAndUnlockAchievements } from "./achievements";
 import { getRankByXP } from "@/types";
@@ -10,6 +10,9 @@ import { getRankByXP } from "@/types";
 export async function getHabitsWithTodayStatus(userId: string) {
   try {
     const today = new Date();
+    const weekStart = startOfWeek(today, { weekStartsOn: 1 }); // Monday
+    const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
+
     const habits = await prisma.habit.findMany({
       where: {
         userId,
@@ -19,8 +22,8 @@ export async function getHabitsWithTodayStatus(userId: string) {
         logs: {
           where: {
             completedAt: {
-              gte: startOfDay(today),
-              lte: endOfDay(today),
+              gte: weekStart,
+              lte: weekEnd,
             },
           },
         },
@@ -30,12 +33,22 @@ export async function getHabitsWithTodayStatus(userId: string) {
       },
     });
 
+    const daysOfWeek = eachDayOfInterval({ start: weekStart, end: weekEnd });
+
     return {
       success: true,
-      data: habits.map((habit) => ({
-        ...habit,
-        todayDone: habit.logs.length > 0,
-      })),
+      data: habits.map((habit) => {
+        const weeklyStatus = daysOfWeek.map((day) => ({
+          day: format(day, "yyyy-MM-dd"),
+          isDone: habit.logs.some((log) => isSameDay(log.completedAt, day)),
+        }));
+
+        return {
+          ...habit,
+          todayDone: habit.logs.some((log) => isSameDay(log.completedAt, today)),
+          weeklyStatus,
+        };
+      }),
     };
   } catch (error) {
     console.error("Error fetching habits:", error);
