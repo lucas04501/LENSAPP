@@ -557,7 +557,7 @@ function KanbanColumnComponent({
         <Plus className="w-3.5 h-3.5" />
         Adicionar Card
       </button>
-    </div>
+    </motion.div>
   );
 }
 
