@@ -71,12 +71,22 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // Injeta os dados do token no objeto da sessão
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.username = token.username;
-        session.user.totalStreak = token.totalStreak;
-        session.user.avatarUrl = token.avatarUrl;
+      if (token && session.user) {
+        session.user.id = token.id as string;
+        
+        // Fetch fresh user data from DB on each session request
+        const user = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { avatarUrl: true, username: true, xp: true, level: true, totalStreak: true }
+        });
+
+        if (user) {
+          session.user.avatarUrl = user.avatarUrl;
+          session.user.username = user.username;
+          session.user.xp = user.xp;
+          session.user.level = user.level;
+          session.user.totalStreak = user.totalStreak;
+        }
       }
       return session;
     },

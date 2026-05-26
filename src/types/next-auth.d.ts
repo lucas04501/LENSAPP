@@ -1,37 +1,39 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import "next-auth"
 
 declare module "next-auth" {
-  /**
-   * Extende o tipo 'user' dentro de 'session'
-   */
   interface Session {
     user: {
-      id: string;
-      username: string | null;
-      totalStreak: number;
-      avatarUrl?: string | null;
-    } & DefaultSession["user"];
+      id: string
+      name?: string | null
+      email?: string | null
+      image?: string | null
+      username?: string | null
+      avatarUrl?: string | null
+      xp?: number
+      level?: number
+      totalStreak?: number
+    }
   }
 
-  /**
-   * Extende o tipo 'User' retornado pelo authorize e providers
-   */
   interface User {
-    id: string;
-    username: string | null;
-    totalStreak: number;
-    avatarUrl?: string | null;
+    id: string
+    name: string
+    username: string
+    email: string
+    avatarUrl?: string | null
+    xp?: number
+    level?: number
+    totalStreak?: number
   }
 }
 
 declare module "next-auth/jwt" {
-  /**
-   * Extende o tipo do token JWT para incluir o id, username e streak
-   */
   interface JWT {
-    id: string;
-    username: string | null;
-    totalStreak: number;
-    avatarUrl?: string | null;
+    sub: string
+    username?: string | null
+    avatarUrl?: string | null
+    xp?: number
+    level?: number
+    totalStreak?: number
   }
 }

@@ -32,9 +32,9 @@ const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
-
 export function ProfileContent({ data }: ProfileContentProps) {
   const { user, habits, totalHabitLogs, activeDays, heatmap } = data;
+  const { update } = useSession();
 
   return (
     <motion.div
@@ -47,9 +47,9 @@ export function ProfileContent({ data }: ProfileContentProps) {
       <motion.div variants={item} className="flex flex-col md:flex-row items-center justify-between gap-6 p-4">
         <div className="flex items-center gap-6">
           <AvatarUpload 
-            currentAvatar={user.avatarUrl} 
-            name={user.name || user.username} 
-            size="lg"
+            currentAvatarUrl={user.avatarUrl} 
+            username={user.username} 
+            onUpdate={(newUrl) => update({ avatarUrl: newUrl })}
           />
           <div className="space-y-1">
             <h1 className="text-2xl font-black text-white italic uppercase tracking-tighter leading-none">

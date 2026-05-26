@@ -108,3 +108,26 @@ export const useDashboardStore = create<DashboardState>()((set) => ({
   isLoading: false,
   setStats: (stats) => set({ stats }),
 }));
+
+// ─── Notes Panel Store ─────────────────────────────────────────────────────
+interface NotesPanelState {
+  isOpen: boolean;
+  activeProjectId: string | null;
+  activeNoteId: string | null;
+  togglePanel: () => void;
+  openPanel: () => void;
+  closePanel: () => void;
+  setActiveProject: (id: string | null) => void;
+  setActiveNote: (id: string | null) => void;
+}
+
+export const useNotesPanelStore = create<NotesPanelState>()((set) => ({
+  isOpen: false,
+  activeProjectId: null,
+  activeNoteId: null,
+  togglePanel: () => set((s) => ({ isOpen: !s.isOpen })),
+  openPanel: () => set({ isOpen: true }),
+  closePanel: () => set({ isOpen: false }),
+  setActiveProject: (id) => set({ activeProjectId: id, activeNoteId: null }),
+  setActiveNote: (id) => set({ activeNoteId: id }),
+}));

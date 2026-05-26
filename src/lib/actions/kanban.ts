@@ -55,6 +55,11 @@ export async function getBoard() {
             cards: {
               where: { isArchived: false },
               orderBy: { order: "asc" },
+              include: {
+                checklist: {
+                  orderBy: { order: "asc" }
+                }
+              }
             },
           },
         },
@@ -82,6 +87,11 @@ export async function getBoard() {
               cards: {
                 where: { isArchived: false },
                 orderBy: { order: "asc" },
+                include: {
+                  checklist: {
+                    orderBy: { order: "asc" }
+                  }
+                }
               },
             },
           },
@@ -242,7 +252,7 @@ export async function deleteCard(cardId: string) {
   }
 }
 
-export async function createColumn(boardId: string, name: string) {
+export async function createColumn(boardId: string, name: string, color?: string) {
   try {
     const userId = await getUserId();
     if (!userId) throw new Error("Unauthorized");
@@ -259,6 +269,7 @@ export async function createColumn(boardId: string, name: string) {
         boardId,
         name,
         order,
+        color,
       },
     });
 
@@ -313,6 +324,129 @@ export async function renameColumn(columnId: string, name: string) {
     revalidatePath("/dashboard/kanban");
   } catch (error) {
     console.error("SERVER_KANBAN_ERROR [renameColumn]:", error);
+    throw error;
+  }
+}
+
+// ─── CHECKLIST ACTIONS ────────────────────────────────────────────────────────
+
+export async function getChecklist(cardId: string) {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Unauthorized");
+
+    return await prisma.checklistItem.findMany({
+      where: { cardId },
+      orderBy: { order: "asc" },
+    });
+  } catch (error) {
+    console.error("SERVER_KANBAN_ERROR [getChecklist]:", error);
+    throw error;
+  }
+}
+
+export async function addChecklistItem(cardId: string, text: string) {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Unauthorized");
+
+    const lastItem = await prisma.checklistItem.findFirst({
+      where: { cardId },
+      orderBy: { order: "desc" },
+    });
+
+    const order = lastItem ? lastItem.order + 1 : 0;
+
+    const item = await prisma.checklistItem.create({
+      data: {
+        cardId,
+        text,
+        order,
+      },
+    });
+
+    revalidatePath("/dashboard/kanban");
+    return item;
+  } catch (error) {
+    console.error("SERVER_KANBAN_ERROR [addChecklistItem]:", error);
+    throw error;
+  }
+}
+
+export async function toggleChecklistItem(itemId: string) {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Unauthorized");
+
+    const item = await prisma.checklistItem.findUnique({
+      where: { id: itemId },
+    });
+
+    if (!item) throw new Error("Item not found");
+
+    const updated = await prisma.checklistItem.update({
+      where: { id: itemId },
+      data: { isChecked: !item.isChecked },
+    });
+
+    revalidatePath("/dashboard/kanban");
+    return updated;
+  } catch (error) {
+    console.error("SERVER_KANBAN_ERROR [toggleChecklistItem]:", error);
+    throw error;
+  }
+}
+
+export async function updateChecklistItem(itemId: string, text: string) {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Unauthorized");
+
+    const item = await prisma.checklistItem.update({
+      where: { id: itemId },
+      data: { text },
+    });
+
+    revalidatePath("/dashboard/kanban");
+    return item;
+  } catch (error) {
+    console.error("SERVER_KANBAN_ERROR [updateChecklistItem]:", error);
+    throw error;
+  }
+}
+
+export async function deleteChecklistItem(itemId: string) {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Unauthorized");
+
+    await prisma.checklistItem.delete({
+      where: { id: itemId },
+    });
+
+    revalidatePath("/dashboard/kanban");
+  } catch (error) {
+    console.error("SERVER_KANBAN_ERROR [deleteChecklistItem]:", error);
+    throw error;
+  }
+}
+
+export async function reorderChecklist(cardId: string, orderedIds: string[]) {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Unauthorized");
+
+    const updates = orderedIds.map((id, index) => 
+      prisma.checklistItem.update({
+        where: { id },
+        data: { order: index },
+      })
+    );
+
+    await prisma.$transaction(updates);
+    revalidatePath("/dashboard/kanban");
+  } catch (error) {
+    console.error("SERVER_KANBAN_ERROR [reorderChecklist]:", error);
     throw error;
   }
 }

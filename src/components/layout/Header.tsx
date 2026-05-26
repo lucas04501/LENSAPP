@@ -74,6 +74,17 @@ export function Header({ initialNotifications = [] }: { initialNotifications?: a
           {rank.name}
         </span>
 
+        {/* Notes Toggle */}
+        <button 
+          onClick={togglePanel}
+          className={cn(
+            "p-1 transition-colors relative",
+            isNotesOpen ? "text-[#7C3AED]" : "text-[#4B5563] hover:text-white"
+          )}
+        >
+          <NotebookPen className="w-4 h-4" />
+        </button>
+
         {/* Bell */}
         <div className="relative">
           <NotificationPanel 

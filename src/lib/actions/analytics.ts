@@ -1,141 +1,124 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { startOfDay, subDays, format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
+import { 
+  startOfDay, subDays, format, startOfWeek, endOfWeek, 
+  eachDayOfInterval, startOfMonth, endOfMonth, differenceInDays 
+} from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export async function getAnalyticsData(userId: string) {
   try {
     const now = new Date();
-    
-    // 1. Weekly Data (last 7 days)
-    const last7Days = eachDayOfInterval({
-      start: subDays(now, 6),
-      end: now,
+    const monthStart = startOfMonth(now);
+    const monthEnd = endOfMonth(now);
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 });
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+
+    // 1. Stat Cards Data
+    const monthLogs = await prisma.habitLog.findMany({
+      where: { userId, completedAt: { gte: monthStart, lte: monthEnd } },
+      select: { xpEarned: true }
     });
 
-    const [focusSessions, habitLogs] = await Promise.all([
-      prisma.focusSession.findMany({
-        where: {
-          userId,
-          startedAt: { gte: subDays(startOfDay(now), 7) },
-        },
-      }),
-      prisma.habitLog.findMany({
-        where: {
-          userId,
-          completedAt: { gte: subDays(startOfDay(now), 7) },
-        },
-      }),
-    ]);
-
-    const weeklyData = last7Days.map(date => {
-      const dayStr = format(date, "EEE", { locale: ptBR });
-      const dayStart = startOfDay(date);
-      const dayEnd = new Date(dayStart);
-      dayEnd.setHours(23, 59, 59, 999);
-
-      const focus = focusSessions
-        .filter(s => s.startedAt >= dayStart && s.startedAt <= dayEnd)
-        .reduce((acc, s) => acc + s.durationMin, 0);
-
-      const habitCount = habitLogs
-        .filter(l => l.completedAt >= dayStart && l.completedAt <= dayEnd)
-        .length;
-
-      const xpFromFocus = focusSessions
-        .filter(s => s.startedAt >= dayStart && s.startedAt <= dayEnd)
-        .reduce((acc, s) => acc + s.xpEarned, 0);
-
-      const xpFromHabits = habitLogs
-        .filter(l => l.completedAt >= dayStart && l.completedAt <= dayEnd)
-        .reduce((acc, l) => acc + l.xpEarned, 0);
-
-      return {
-        day: dayStr.toUpperCase().replace('.', ''),
-        foco: focus,
-        habitos: habitCount,
-        xp: xpFromFocus + xpFromHabits,
-      };
+    const monthSessions = await prisma.focusSession.findMany({
+      where: { userId, startedAt: { gte: monthStart, lte: monthEnd } },
+      select: { xpEarned: true }
     });
 
-    // 2. Habit Rates (last 30 days)
-    const thirtyDaysAgo = subDays(startOfDay(now), 30);
-    const habitsWithLogs = await prisma.habit.findMany({
+    const totalXPMonth = monthLogs.reduce((acc, l) => acc + l.xpEarned, 0) + 
+                        monthSessions.reduce((acc, s) => acc + s.xpEarned, 0);
+
+    const weekSessions = await prisma.focusSession.findMany({
+      where: { userId, startedAt: { gte: weekStart, lte: weekEnd } },
+      select: { durationMin: true }
+    });
+    const totalFocusHoursWeek = Number((weekSessions.reduce((acc, s) => acc + s.durationMin, 0) / 60).toFixed(1));
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { totalStreak: true }
+    });
+
+    // Monthly Habit Rate
+    const activeHabits = await prisma.habit.findMany({
       where: { userId, isArchived: false, isActive: true },
       include: {
-        logs: {
-          where: { completedAt: { gte: thirtyDaysAgo } }
-        }
+        logs: { where: { completedAt: { gte: monthStart, lte: monthEnd } } }
       }
     });
 
-    const habitRates = habitsWithLogs.map(h => ({
-      name: h.title,
-      rate: Math.min(Math.round((h.logs.length / 30) * 100), 100)
-    })).sort((a, b) => b.rate - a.rate);
+    const daysPassedInMonth = Math.min(differenceInDays(now, monthStart) + 1, 31);
+    let totalPossibleLogs = activeHabits.length * daysPassedInMonth;
+    let actualLogs = activeHabits.reduce((acc, h) => acc + h.logs.length, 0);
+    const habitRateMonth = totalPossibleLogs > 0 ? Math.round((actualLogs / totalPossibleLogs) * 100) : 0;
 
-    // 3. XP Growth (last 12 weeks)
-    const twelveWeeksAgo = subDays(startOfWeek(now), 12 * 7);
-    const allRecentLogs = await prisma.habitLog.findMany({
+    // 2. XP Growth (12 weeks)
+    const twelveWeeksAgo = subDays(weekStart, 11 * 7);
+    const recentLogs = await prisma.habitLog.findMany({
       where: { userId, completedAt: { gte: twelveWeeksAgo } },
       select: { xpEarned: true, completedAt: true }
     });
-    const allRecentSessions = await prisma.focusSession.findMany({
+    const recentSessions = await prisma.focusSession.findMany({
       where: { userId, startedAt: { gte: twelveWeeksAgo } },
       select: { xpEarned: true, startedAt: true }
     });
 
     const xpGrowth = Array.from({ length: 12 }).map((_, i) => {
-      const weekStart = subDays(startOfWeek(now, { weekStartsOn: 1 }), (11 - i) * 7);
-      const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
+      const wStart = subDays(weekStart, (11 - i) * 7);
+      const wEnd = endOfWeek(wStart, { weekStartsOn: 1 });
       
-      const xpLogs = allRecentLogs
-        .filter(l => l.completedAt >= weekStart && l.completedAt <= weekEnd)
-        .reduce((acc, l) => acc + l.xpEarned, 0);
-      
-      const xpSessions = allRecentSessions
-        .filter(s => s.startedAt >= weekStart && s.startedAt <= weekEnd)
+      const xp = recentLogs
+        .filter(l => l.completedAt >= wStart && l.completedAt <= wEnd)
+        .reduce((acc, l) => acc + l.xpEarned, 0) +
+        recentSessions
+        .filter(s => s.startedAt >= wStart && s.startedAt <= wEnd)
         .reduce((acc, s) => acc + s.xpEarned, 0);
 
-      return {
-        week: `S${i + 1}`,
-        xp: xpLogs + xpSessions
-      };
+      return { week: `S${i + 1}`, xp };
     });
 
-    // 4. Totals
-    const totalFocusWeek = weeklyData.reduce((acc, d) => acc + d.foco, 0);
-    const xpThisWeek = weeklyData.reduce((acc, d) => acc + d.xp, 0);
-    const avgHabitRate = habitRates.length > 0 
-      ? Math.round(habitRates.reduce((acc, h) => acc + h.rate, 0) / habitRates.length)
-      : 0;
+    // 3. Habit-specific rates (last 30 days)
+    const thirtyDaysAgo = subDays(startOfDay(now), 30);
+    const habitRates = activeHabits.map(h => {
+      const logsLast30 = h.logs.filter(l => l.completedAt >= thirtyDaysAgo).length;
+      return {
+        name: h.title,
+        rate: Math.min(Math.round((logsLast30 / 30) * 100), 100)
+      };
+    }).sort((a, b) => b.rate - a.rate);
+
+    // 4. Focus Heatmap (8 weeks)
+    const eightWeeksAgo = subDays(weekStart, 7 * 7);
+    const heatmapSessions = await prisma.focusSession.findMany({
+      where: { userId, startedAt: { gte: eightWeeksAgo } },
+      select: { durationMin: true, startedAt: true }
+    });
+
+    const focusHeatmap = eachDayOfInterval({ start: eightWeeksAgo, end: now }).map(date => {
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+      const focusMin = heatmapSessions
+        .filter(s => s.startedAt >= dayStart && s.startedAt <= dayEnd)
+        .reduce((acc, s) => acc + s.durationMin, 0);
+      return { date, focusMin };
+    });
 
     return {
       success: true,
       data: {
-        weeklyData,
-        habitRates,
+        totalXPMonth,
+        habitRateMonth,
+        totalFocusHoursWeek,
+        currentStreak: user?.totalStreak || 0,
         xpGrowth,
-        totalFocusWeek,
-        avgHabitRate,
-        xpThisWeek
+        habitRates,
+        focusHeatmap
       }
     };
 
   } catch (error) {
     console.error("Analytics Error:", error);
-    return { 
-      success: false, 
-      error: "Falha ao carregar analytics",
-      data: {
-        weeklyData: [],
-        habitRates: [],
-        xpGrowth: [],
-        totalFocusWeek: 0,
-        avgHabitRate: 0,
-        xpThisWeek: 0
-      }
-    };
+    return { success: false, error: "Falha ao carregar analytics" };
   }
 }

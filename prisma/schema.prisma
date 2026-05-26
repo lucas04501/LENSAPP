@@ -57,6 +57,8 @@ model User {
   notifications Notification[]
   routineBlocks RoutineBlock[]
   kanbanBoards  KanbanBoard[]
+  projects      Project[]
+  notes         Note[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -101,10 +103,23 @@ model KanbanCard {
   dueDate     DateTime?
   order       Int
   isArchived  Boolean      @default(false)
+  checklist   ChecklistItem[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
   @@map("kanban_cards")
+}
+
+model ChecklistItem {
+  id         String     @id @default(cuid())
+  cardId     String
+  card       KanbanCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  text       String
+  isChecked  Boolean    @default(false)
+  order      Int        @default(0)
+  createdAt  DateTime   @default(now())
+
+  @@map("checklist_items")
 }
 
 // ─── ROUTINE BLOCK ────────────────────────────────────────────────────────────
@@ -336,6 +351,39 @@ model UserAchievement {
 
   @@unique([userId, achievementId])
   @@map("user_achievements")
+}
+
+// ─── PROJECT ──────────────────────────────────────────────────────────────────
+model Project {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  color       String   @default("#7C3AED")
+  order       Int      @default(0)
+  isArchived  Boolean  @default(false)
+  notes       Note[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+// ─── NOTE ─────────────────────────────────────────────────────────────────────
+model Note {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  title       String   @default("Sem título")
+  content     String   @default("")
+  isPinned    Boolean  @default(false)
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notes")
 }
 
 // ─── ENUMS ────────────────────────────────────────────────────────────────────

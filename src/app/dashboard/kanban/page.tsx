@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { 
-  Plus, MoreVertical, Calendar, AlertCircle, 
-  GripVertical, Trash2, X, Pencil, Check
+  Plus, Calendar, GripVertical, Trash2, X, Pencil,
+  CheckSquare, ChevronDown, Check
 } from "lucide-react";
 import { 
   DndContext, 
@@ -38,13 +38,26 @@ import {
   deleteCard, 
   createColumn, 
   deleteColumn, 
-  renameColumn 
+  renameColumn,
+  addChecklistItem,
+  toggleChecklistItem,
+  updateChecklistItem,
+  deleteChecklistItem,
+  reorderChecklist
 } from "@/lib/actions/kanban";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 // --- Types ---
+type ChecklistItem = {
+  id: string;
+  cardId: string;
+  text: string;
+  isChecked: boolean;
+  order: number;
+};
+
 type Card = {
   id: string;
   columnId: string;
@@ -55,6 +68,7 @@ type Card = {
   priority: string;
   dueDate?: Date;
   order: number;
+  checklist: ChecklistItem[];
 };
 
 type Column = {
@@ -72,6 +86,265 @@ type Board = {
 };
 
 // --- Components ---
+
+function SortableChecklistItem({ 
+  item, 
+  onToggle, 
+  onDelete, 
+  onUpdate,
+  isEditing,
+  setEditing
+}: { 
+  item: ChecklistItem, 
+  onToggle: (id: string) => void,
+  onDelete: (id: string) => void,
+  onUpdate: (id: string, text: string) => void,
+  isEditing: boolean,
+  setEditing: () => void
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
+
+  const [text, setText] = useState(item.text);
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="group flex items-center gap-3 py-1 px-1 hover:bg-white/[0.02] rounded-md transition-colors"
+    >
+      <div {...attributes} {...listeners} className="opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing">
+        <GripVertical className="w-3.5 h-3.5 text-zinc-600" />
+      </div>
+
+      <button 
+        onClick={() => onToggle(item.id)}
+        className={cn(
+          "w-4 h-4 rounded border flex items-center justify-center transition-all shrink-0",
+          item.isChecked 
+            ? "bg-[#7C3AED] border-[#7C3AED]" 
+            : "border-[#374151] bg-transparent hover:border-[#4B5563]"
+        )}
+      >
+        {item.isChecked && <Check className="w-2.5 h-2.5 text-white" strokeWidth={4} />}
+      </button>
+
+      {isEditing ? (
+        <input 
+          autoFocus
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onBlur={() => onUpdate(item.id, text)}
+          onKeyDown={(e) => e.key === "Enter" && onUpdate(item.id, text)}
+          className="flex-1 bg-transparent border-none text-[13px] text-white focus:ring-0 p-0"
+        />
+      ) : (
+        <span 
+          onClick={setEditing}
+          className={cn(
+            "flex-1 text-[13px] transition-all cursor-text truncate",
+            item.isChecked ? "text-[#6B7280] line-through" : "text-[#E5E7EB]"
+          )}
+        >
+          {item.text}
+        </span>
+      )}
+
+      <button 
+        onClick={() => onDelete(item.id)}
+        className="opacity-0 group-hover:opacity-100 p-1 text-zinc-600 hover:text-red-500 transition-all"
+      >
+        <X className="w-3 h-3" />
+      </button>
+    </div>
+  );
+}
+
+function CardChecklist({ 
+  card, 
+  onUpdate 
+}: { 
+  card: Card, 
+  onUpdate: () => void 
+}) {
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [newItemText, setNewItemText] = useState("");
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [items, setItems] = useState<ChecklistItem[]>(card.checklist || []);
+
+  useEffect(() => {
+    setItems(card.checklist || []);
+  }, [card.checklist]);
+
+  const completedCount = items.filter(i => i.isChecked).length;
+  const totalCount = items.length;
+  const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+  const handleToggle = async (itemId: string) => {
+    setItems(prev => prev.map(i => i.id === itemId ? { ...i, isChecked: !i.isChecked } : i));
+    try {
+      await toggleChecklistItem(itemId);
+      onUpdate();
+    } catch (error) {
+      toast.error("Erro ao atualizar item");
+      setItems(card.checklist || []);
+    }
+  };
+
+  const handleAddItem = async () => {
+    if (!newItemText.trim()) return;
+    try {
+      await addChecklistItem(card.id, newItemText);
+      setNewItemText("");
+      onUpdate();
+    } catch (error) {
+      toast.error("Erro ao adicionar item");
+    }
+  };
+
+  const handleDeleteItem = async (itemId: string) => {
+    try {
+      await deleteChecklistItem(itemId);
+      onUpdate();
+    } catch (error) {
+      toast.error("Erro ao excluir item");
+    }
+  };
+
+  const handleUpdateText = async (itemId: string, text: string) => {
+    if (!text.trim()) {
+      setEditingItemId(null);
+      return;
+    }
+    try {
+      await updateChecklistItem(itemId, text);
+      setEditingItemId(null);
+      onUpdate();
+    } catch (error) {
+      toast.error("Erro ao renomear item");
+    }
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = items.findIndex(i => i.id === active.id);
+      const newIndex = items.findIndex(i => i.id === over.id);
+      const newItems = arrayMove(items, oldIndex, newIndex);
+      setItems(newItems);
+      try {
+        await reorderChecklist(card.id, newItems.map(i => i.id));
+        onUpdate();
+      } catch (error) {
+        toast.error("Erro ao reordenar");
+      }
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div 
+        className="group flex items-center justify-between cursor-pointer"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex items-center gap-2">
+          <CheckSquare className="w-3.5 h-3.5 text-[#7C3AED]" />
+          <span className="text-[11px] font-bold text-[#9CA3AF] uppercase tracking-[0.08em]">
+            Checklist
+          </span>
+          {totalCount > 0 && (
+            <span className="text-[10px] text-zinc-500 font-bold ml-1">
+              {completedCount}/{totalCount}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={(e) => { e.stopPropagation(); setIsExpanded(true); }}
+            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-white/5 rounded transition-all"
+          >
+            <Plus className="w-3.5 h-3.5 text-zinc-500 hover:text-white" />
+          </button>
+          <ChevronDown 
+            className={cn("w-3.5 h-3.5 text-zinc-500 transition-transform", !isExpanded && "-rotate-90")} 
+          />
+        </div>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden space-y-3"
+          >
+            {totalCount > 0 && (
+              <div className="h-[3px] w-full bg-[#1E1E2E] rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  className="h-full bg-gradient-to-r from-[#7C3AED] to-[#22C55E]"
+                />
+              </div>
+            )}
+
+            <DndContext 
+              sensors={sensors} 
+              collisionDetection={closestCorners} 
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
+                <div className="space-y-0.5">
+                  {items.map((item) => (
+                    <SortableChecklistItem 
+                      key={item.id} 
+                      item={item} 
+                      onToggle={handleToggle}
+                      onDelete={handleDeleteItem}
+                      onUpdate={handleUpdateText}
+                      isEditing={editingItemId === item.id}
+                      setEditing={() => setEditingItemId(item.id)}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
+
+            <div className="flex items-center gap-3 px-1 mt-2">
+              <Plus className="w-4 h-4 text-[#4B5563]" />
+              <input 
+                value={newItemText}
+                onChange={(e) => setNewItemText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddItem();
+                  if (e.key === "Escape") { setNewItemText(""); (e.target as HTMLInputElement).blur(); }
+                }}
+                placeholder="Adicionar item..."
+                className="flex-1 bg-transparent border-none text-[12px] text-[#E5E7EB] placeholder:text-[#4B5563] focus:ring-0 p-0 border-b border-transparent focus:border-[#7C3AED] transition-colors"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 function KanbanCard({ card, onEdit, onDelete }: { card: Card, onEdit: (c: Card) => void, onDelete: (id: string) => void }) {
   const {
@@ -144,6 +417,22 @@ function KanbanCard({ card, onEdit, onDelete }: { card: Card, onEdit: (c: Card) 
       <div className="flex items-center justify-between pt-1">
         <div className="flex items-center gap-2">
           <div className={cn("w-1.5 h-1.5 rounded-full", priorityColor)} title={`Prioridade: ${card.priority}`} />
+          
+          {card.checklist && card.checklist.length > 0 && (
+            <div className="flex items-center gap-1">
+              <CheckSquare 
+                className={cn(
+                  "w-3 h-3",
+                  card.checklist.every(i => i.isChecked) ? "text-[#22C55E]" : 
+                  card.checklist.some(i => i.isChecked) ? "text-[#F59E0B]" : "text-[#6B7280]"
+                )} 
+              />
+              <span className="text-[10px] text-zinc-500 font-bold">
+                {card.checklist.filter(i => i.isChecked).length}/{card.checklist.length}
+              </span>
+            </div>
+          )}
+
           {card.dueDate && (
             <div className="flex items-center gap-1 text-[10px] text-zinc-500">
               <Calendar className="w-3 h-3" />
@@ -204,16 +493,19 @@ function KanbanColumnComponent({
   };
 
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       className={cn(
-        "flex flex-col w-[280px] shrink-0 bg-[#09090B] rounded-xl overflow-hidden",
+        "flex flex-col w-[280px] shrink-0 bg-[#09090B] rounded-xl overflow-hidden h-fit",
         isDragging && "opacity-50"
       )}
     >
       <div className="flex items-center justify-between p-3">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: column.color }} />
+        <div className="flex items-center gap-2 overflow-hidden">
+          <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: column.color }} />
           {isEditing ? (
             <input
               autoFocus
@@ -221,7 +513,7 @@ function KanbanColumnComponent({
               onChange={(e) => setName(e.target.value)}
               onBlur={handleRename}
               onKeyDown={(e) => e.key === "Enter" && handleRename()}
-              className="bg-black/40 border border-[#7C3AED] rounded px-1.5 py-0.5 text-sm font-bold text-white focus:outline-none"
+              className="bg-black/40 border border-[#7C3AED] rounded px-1.5 py-0.5 text-sm font-bold text-white focus:outline-none w-full"
             />
           ) : (
             <h3 
@@ -231,7 +523,7 @@ function KanbanColumnComponent({
               {column.name}
             </h3>
           )}
-          <span className="px-1.5 py-0.5 rounded-full bg-[#0F0F14] border border-[#1E1E2E] text-[10px] text-zinc-500 font-bold">
+          <span className="px-1.5 py-0.5 rounded-full bg-[#0F0F14] border border-[#1E1E2E] text-[10px] text-zinc-500 font-bold shrink-0">
             {cards.length}
           </span>
         </div>
@@ -269,10 +561,146 @@ function KanbanColumnComponent({
   );
 }
 
+function NewColumnInline({ boardId, onCreated }: { boardId: string, onCreated: () => void }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [name, setName] = useState("");
+  const [color, setColor] = useState("#7C3AED");
+  const [showColors, setShowColors] = useState(false);
+
+  const COLORS = [
+    { value: "#7C3AED", name: "purple" },
+    { value: "#EF4444", name: "red" },
+    { value: "#22C55E", name: "green" },
+    { value: "#3B82F6", name: "blue" },
+    { value: "#F59E0B", name: "amber" },
+    { value: "#6B7280", name: "gray" },
+  ];
+
+  const handleCreate = async () => {
+    if (!name.trim()) return;
+    try {
+      await createColumn(boardId, name, color);
+      setName("");
+      setColor("#7C3AED");
+      setIsExpanded(false);
+      setShowColors(false);
+      onCreated();
+    } catch (error) {
+      console.error("CLIENT_KANBAN_ERROR [createColumn]:", error);
+      toast.error("Erro ao criar coluna");
+    }
+  };
+
+  const handleCancel = () => {
+    setName("");
+    setColor("#7C3AED");
+    setIsExpanded(false);
+    setShowColors(false);
+  };
+
+  return (
+    <motion.div
+      layout
+      layoutId="new-column"
+      className={cn(
+        "flex flex-col w-[280px] shrink-0 rounded-xl transition-all duration-200 h-fit",
+        !isExpanded 
+          ? "border border-dashed border-[#1E1E2E] hover:border-[#7C3AED] hover:bg-[#7C3AED]/[0.04] cursor-pointer group p-8 items-center justify-center gap-2" 
+          : "bg-[#7C3AED]/[0.06] border border-[#7C3AED] p-4 cursor-default"
+      )}
+      onClick={() => !isExpanded && setIsExpanded(true)}
+    >
+      <AnimatePresence mode="wait">
+        {!isExpanded ? (
+          <motion.div
+            key="ghost"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col items-center gap-2"
+          >
+            <Plus className="w-5 h-5 text-[#4B5563] group-hover:text-[#7C3AED] transition-colors" />
+            <span className="text-[12px] text-[#4B5563] group-hover:text-[#7C3AED] transition-colors">Nova coluna</span>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="w-full space-y-4"
+          >
+            <input
+              autoFocus
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setShowColors(true);
+                if (e.key === "Escape") handleCancel();
+              }}
+              placeholder="Nome da coluna"
+              className="w-full bg-transparent border-none text-[15px] font-medium text-white placeholder:text-zinc-600 focus:ring-0 p-0"
+            />
+
+            <AnimatePresence>
+              {showColors && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="space-y-3 overflow-hidden"
+                >
+                  <label className="text-[10px] uppercase font-bold text-[#6B7280] tracking-widest">Cor</label>
+                  <div className="flex items-center justify-between">
+                    {COLORS.map((c) => (
+                      <button
+                        key={c.value}
+                        onClick={() => setColor(c.value)}
+                        className={cn(
+                          "w-7 h-7 rounded-full transition-all relative",
+                          color === c.value && "scale-110 ring-2 ring-white ring-offset-2 ring-offset-[#09090B]"
+                        )}
+                        style={{ backgroundColor: c.value }}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="flex items-center gap-2 pt-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCreate();
+                }}
+                disabled={!name.trim()}
+                className="px-3.5 py-1.5 rounded-md text-[12px] font-bold text-white transition-all shadow-lg"
+                style={{ backgroundColor: color }}
+              >
+                Criar
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCancel();
+                }}
+                className="px-3.5 py-1.5 rounded-md text-[12px] border border-[#1E1E2E] text-[#6B7280] hover:text-white hover:bg-white/5 transition-all"
+              >
+                Cancelar
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 // --- Main Page ---
 
 export default function KanbanPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const [board, setBoard] = useState<Board | null>(null);
@@ -338,20 +766,6 @@ export default function KanbanPage() {
     } catch (error) {
       console.error("CLIENT_KANBAN_ERROR [handleDeleteCard]:", error);
       toast.error("Erro ao excluir card");
-    }
-  };
-
-  const handleAddColumn = async () => {
-    if (!board) return;
-    const name = prompt("Nome da coluna:");
-    if (!name) return;
-    try {
-      await createColumn(board.id, name);
-      toast.success("Coluna criada");
-      loadBoard();
-    } catch (error) {
-      console.error("CLIENT_KANBAN_ERROR [handleAddColumn]:", error);
-      toast.error("Erro ao criar coluna");
     }
   };
 
@@ -464,6 +878,13 @@ export default function KanbanPage() {
           const newIndex = prev.columns.findIndex(c => c.id === overId);
           return { ...prev, columns: arrayMove(prev.columns, oldIndex, newIndex) };
         });
+
+        try {
+          // You might need a moveColumn action here if orders are persisted
+          // await moveColumn(activeId, newIndex + 1);
+        } catch (error) {
+          console.error("CLIENT_KANBAN_ERROR [moveColumn]:", error);
+        }
       }
       return;
     }
@@ -472,17 +893,11 @@ export default function KanbanPage() {
       const overCard = over.data.current?.card;
       const targetColumnId = over.data.current?.type === "Column" ? overId : overCard.columnId;
 
-      // Find final position
       const finalColumn = board?.columns.find(c => c.id === targetColumnId);
       if (!finalColumn) return;
 
-      let newOrder = 1;
       const cardIndex = finalColumn.cards.findIndex(c => c.id === activeId);
-      if (cardIndex !== -1) {
-        newOrder = cardIndex + 1;
-      } else {
-        newOrder = finalColumn.cards.length + 1;
-      }
+      const newOrder = cardIndex !== -1 ? cardIndex + 1 : finalColumn.cards.length + 1;
 
       try {
         await moveCard(activeId, targetColumnId, newOrder);
@@ -508,17 +923,9 @@ export default function KanbanPage() {
 
   return (
     <div className="min-h-screen bg-[#09090B] text-white p-4 lg:p-8 flex flex-col gap-8">
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Kanban</h1>
-          <p className="text-zinc-400 text-sm">Arraste os cards entre as colunas</p>
-        </div>
-        <button
-          onClick={handleAddColumn}
-          className="px-4 py-2 border border-[#1E1E2E] bg-[#0F0F14] rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-[#15151A] transition-all"
-        >
-          + Nova coluna
-        </button>
+      <header>
+        <h1 className="text-2xl font-bold">Kanban</h1>
+        <p className="text-zinc-400 text-sm">Arraste os cards entre as colunas</p>
       </header>
 
       <div className="flex-1 overflow-x-auto no-scrollbar pb-4">
@@ -562,6 +969,13 @@ export default function KanbanPage() {
                 />
               ))}
             </SortableContext>
+            
+            {board && (
+              <NewColumnInline 
+                boardId={board.id} 
+                onCreated={loadBoard} 
+              />
+            )}
           </div>
 
           <DragOverlay dropAnimation={{

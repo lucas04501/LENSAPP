@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { DashboardClientWrapper } from "@/components/layout/DashboardClientWrapper";
+import { NotesPanel } from "@/components/layout/NotesPanel";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getNotifications } from "@/lib/actions/notifications";
@@ -29,6 +30,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       </div>
       <CommandPalette />
       <DashboardClientWrapper />
+      <NotesPanel />
     </div>
   );
 }
