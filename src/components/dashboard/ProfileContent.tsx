@@ -13,6 +13,7 @@ import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 interface ProfileContentProps {
   data: any;
