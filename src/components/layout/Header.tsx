@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, Zap, Bell } from "lucide-react";
+import { Search, Zap, Bell, NotebookPen } from "lucide-react";
 import { useUIStore } from "@/store";
 import { getRankByXP, getXPProgress, getLevelByXP } from "@/types";
 import { useSession } from "next-auth/react";
