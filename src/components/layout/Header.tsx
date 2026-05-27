@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Search, Zap, Bell, NotebookPen } from "lucide-react";
-import { useUIStore } from "@/store";
+import { useUIStore, useNotesPanelStore } from "@/store";
 import { getRankByXP, getXPProgress, getLevelByXP } from "@/types";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import { NotificationPanel } from "./NotificationPanel";
 export function Header({ initialNotifications = [] }: { initialNotifications?: any[] }) {
   const { data: session } = useSession();
   const { openCommandPalette } = useUIStore();
+  const { togglePanel, isOpen: isNotesOpen } = useNotesPanelStore();
   const [notifications, setNotifications] = useState<any[]>(initialNotifications);
 
   const user = session?.user as any;

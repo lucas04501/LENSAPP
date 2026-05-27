@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { getRankByXP } from "@/types";
 import { 
   startOfDay, endOfDay, subDays, format, eachDayOfInterval, 
   startOfWeek, endOfWeek, isSameDay, isFuture 

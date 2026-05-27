@@ -62,17 +62,17 @@ export function NotesPanel() {
 
   const fetchProjects = async () => {
     const res = await getProjects(userId);
-    if (res.success) setProjects(res.data);
+    if (res.success && res.data) setProjects(res.data);
   };
 
   const fetchNotes = async () => {
     const res = await getNotes(userId, activeProjectId);
-    if (res.success) setNotes(res.data);
+    if (res.success && res.data) setNotes(res.data);
   };
 
   const handleCreateNote = async () => {
     const res = await createNote(userId, activeProjectId);
-    if (res.success) {
+    if (res.success && res.data) {
       await fetchNotes();
       setActiveNote(res.data.id);
     }

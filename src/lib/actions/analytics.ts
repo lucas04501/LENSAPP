@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { 
-  startOfDay, subDays, format, startOfWeek, endOfWeek, 
+  startOfDay, endOfDay, subDays, format, startOfWeek, endOfWeek, 
   eachDayOfInterval, startOfMonth, endOfMonth, differenceInDays 
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
