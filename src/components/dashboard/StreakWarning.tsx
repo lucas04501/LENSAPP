@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -36,7 +36,7 @@ export function StreakWarning({ pendingHabitsCount, totalStreak }: StreakWarning
     };
 
     checkVisibility();
-    const interval = setInterval(checkVisibility, 60000); // Check every minute
+    const interval = setInterval(checkVisibility, 60000); 
     
     return () => clearInterval(interval);
   }, [pendingHabitsCount, totalStreak]);
@@ -52,38 +52,38 @@ export function StreakWarning({ pendingHabitsCount, totalStreak }: StreakWarning
       {isVisible && !isDismissed && (
         <motion.div
           initial={{ height: 0, opacity: 0, marginBottom: 0 }}
-          animate={{ height: "auto", opacity: 1, marginBottom: 20 }}
+          animate={{ height: "auto", opacity: 1, marginBottom: 24 }}
           exit={{ height: 0, opacity: 0, marginBottom: 0 }}
           className="overflow-hidden"
         >
-          <div className="relative bg-[#0F0F14] border border-[#EF4444]/20 rounded-md p-4 flex items-center gap-4 group">
-            <div className="w-8 h-8 rounded bg-[#EF4444]/10 flex items-center justify-center shrink-0">
-              <AlertTriangle className="w-4 h-4 text-[#EF4444]" />
+          <div className="relative bg-red-500/5 backdrop-blur-md border border-red-500/20 rounded-[1.5rem] p-6 flex items-center gap-6 group">
+            <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+              <AlertTriangle className="w-5 h-5 text-red-500" />
             </div>
             
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-semibold text-white uppercase tracking-wider">
-                STREAK AT RISK
+              <p className="text-[10px] font-black text-red-500 uppercase tracking-[0.3em] mb-1">
+                Alerta de Consistência
               </p>
-              <p className="text-[12px] text-[#4B5563] mt-0.5 leading-relaxed">
-                You have <span className="text-white font-semibold">{pendingHabitsCount}</span> pending {pendingHabitsCount === 1 ? 'habit' : 'habits'}. Your <span className="text-white font-semibold">{totalStreak} day streak</span> is in danger.
+              <p className="text-[13px] text-zinc-400 leading-relaxed italic">
+                Sua sequência de <span className="text-white font-bold">{totalStreak} dias</span> está em risco. Você ainda tem <span className="text-white font-bold">{pendingHabitsCount} hábitos</span> pendentes hoje.
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <Link
                 href="/dashboard/habits"
-                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded bg-[#EF4444] text-white text-[10px] font-semibold uppercase tracking-wider hover:bg-[#DC2626] transition-all active:scale-95 whitespace-nowrap"
+                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-red-500 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-red-600 transition-all active:scale-95 whitespace-nowrap shadow-[0_0_20px_rgba(239,68,68,0.3)]"
               >
-                Review habits
-                <ChevronRight className="w-3 h-3" />
+                Resolver Agora
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
               
               <button
                 onClick={handleDismiss}
-                className="p-1.5 rounded hover:bg-white/5 text-[#4B5563] hover:text-white transition-all"
+                className="p-2 rounded-full hover:bg-white/5 text-zinc-600 hover:text-white transition-all"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -92,3 +92,4 @@ export function StreakWarning({ pendingHabitsCount, totalStreak }: StreakWarning
     </AnimatePresence>
   );
 }
+

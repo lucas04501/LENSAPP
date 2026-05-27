@@ -8,6 +8,7 @@ export async function getGoals(userId: string) {
   try {
     const goals = await prisma.goal.findMany({
       where: { userId },
+      include: { steps: { orderBy: { order: "asc" } } },
       orderBy: { targetDate: "asc" },
     });
     return { success: true, data: goals };
@@ -17,18 +18,65 @@ export async function getGoals(userId: string) {
   }
 }
 
+export async function toggleGoalStep(stepId: string, userId: string) {
+  try {
+    const step = await prisma.goalStep.findUnique({
+      where: { id: stepId },
+      include: { goal: true }
+    });
+
+    if (!step || step.goal.userId !== userId) {
+      return { success: false, error: "Etapa não encontrada" };
+    }
+
+    const updatedStep = await prisma.goalStep.update({
+      where: { id: stepId },
+      data: { isCompleted: !step.isCompleted }
+    });
+
+    // Recalculate goal progress
+    const allSteps = await prisma.goalStep.findMany({
+      where: { goalId: step.goalId }
+    });
+
+    const completedCount = allSteps.filter(s => s.isCompleted).length;
+    const progress = allSteps.length > 0 
+      ? Math.round((completedCount / allSteps.length) * 100) 
+      : step.goal.progress;
+
+    await updateProgress(step.goalId, progress, userId);
+
+    revalidatePath("/dashboard/goals");
+    return { success: true, data: updatedStep };
+  } catch (error) {
+    console.error("Error toggling goal step:", error);
+    return { success: false, error: "Falha ao atualizar etapa" };
+  }
+}
+
 export async function createGoal(data: {
   title: string;
   description?: string;
   category: any;
   targetDate: Date;
   xpReward: number;
+  steps?: string[];
 }, userId: string) {
   try {
     const goal = await prisma.goal.create({
       data: {
-        ...data,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        targetDate: data.targetDate,
+        xpReward: data.xpReward,
         userId,
+        steps: data.steps ? {
+          create: data.steps.filter(s => s.trim() !== "").map((s, i) => ({
+            title: s,
+            order: i,
+          }))
+        } : undefined
       },
     });
     revalidatePath("/dashboard/goals");

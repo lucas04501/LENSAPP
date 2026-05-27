@@ -303,12 +303,26 @@ model Goal {
   progress    Int        @default(0)  // 0-100 percentual
   isCompleted Boolean    @default(false)
   xpReward    Int        @default(100)
+  steps       GoalStep[]
 
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
   @@map("goals")
 }
+
+model GoalStep {
+  id          String   @id @default(cuid())
+  goalId      String
+  goal        Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  title       String
+  isCompleted Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@map("goal_steps")
+}
+
 
 // ─── JOURNAL ENTRY (Diário diário) ───────────────────────────────────────────
 model JournalEntry {

@@ -25,7 +25,7 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
     targetDays: [1, 2, 3, 4, 5, 6, 7],
     targetCount: 1,
     xpReward: 10,
-    color: "#7C3AED",
+    color: "#A855F7",
   });
 
   const isEdit = !!habit;
@@ -39,12 +39,12 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
         targetDays: habit.targetDays || [1, 2, 3, 4, 5, 6, 7],
         targetCount: habit.targetCount || 1,
         xpReward: habit.xpReward || 10,
-        color: habit.color || "#7C3AED",
+        color: habit.color || "#A855F7",
       });
     }
   }, [habit]);
 
-  const categories = ["HEALTH", "MIND", "WORK", "SOCIAL", "FINANCE", "CREATIVE", "OTHER"];
+  const categories = ["SAÚDE", "MENTE", "TRABALHO", "SOCIAL", "FINANÇAS", "CRIATIVO", "OUTRO"];
   const days = [
     { label: "S", val: 1 }, { label: "T", val: 2 }, { label: "Q", val: 3 },
     { label: "Q", val: 4 }, { label: "S", val: 5 }, { label: "S", val: 6 }, { label: "D", val: 7 }
@@ -58,26 +58,26 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
       if (isEdit) {
         const res = await updateHabit(habit.id, userId, data);
         if (res.success) {
-          toast.success("Objective updated");
+          toast.success("Hábito atualizado");
           setOpen(false);
           onSuccess?.();
         } else {
-          toast.error(res.error || "Update failure");
+          toast.error(res.error || "Erro ao atualizar");
         }
       } else {
         const res = await createHabit(data, userId);
         if (res.success) {
-          toast.success("Objective initialized");
+          toast.success("Novo hábito criado");
           res.unlockedAchievements?.forEach(showAchievementToast);
           setOpen(false);
           setData({ ...data, title: "" });
           onSuccess?.();
         } else {
-          toast.error(res.error || "Initialization failure");
+          toast.error(res.error || "Erro ao criar");
         }
       }
     } catch (error) {
-      toast.error("Process error");
+      toast.error("Erro no processamento");
     } finally {
       setLoading(false);
     }
@@ -96,53 +96,50 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         {trigger || (
-          <button className="w-full flex items-center gap-2 h-10 px-4 rounded-md border border-[#1A1A1A] border-dashed text-[#4B5563] hover:border-purple/50 hover:text-white transition-all text-[11px] font-bold uppercase tracking-widest mt-6">
-            <Plus className="w-3.5 h-3.5" />
-            Append New Objective
+          <button className="w-full flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-white/5 bg-white/[0.02] text-zinc-500 hover:text-white hover:bg-white/[0.05] transition-all text-[10px] font-black uppercase tracking-[0.2em] mt-8 group">
+            <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            Adicionar Novo Objetivo
           </button>
         )}
       </Dialog.Trigger>
       
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] animate-in fade-in duration-200" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[200] animate-in fade-in duration-300" />
         <Dialog.Content className={cn(
-          "fixed z-[101] bg-black border border-[#1A1A1A] shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col",
-          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md md:h-auto md:rounded-md p-8"
+          "fixed z-[201] bg-[#050505] border border-white/10 shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col",
+          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md md:h-auto md:rounded-[2.5rem] p-8 md:p-10"
         )}>
           <div className="flex items-center justify-between mb-10">
-            <div className="flex items-center gap-4">
-              <div className="w-1 h-8 bg-purple rounded-full" />
-              <div>
-                <Dialog.Title className="text-lg font-bold text-white uppercase tracking-tight">
-                  {isEdit ? "Mod Protocol" : "New Objective"}
-                </Dialog.Title>
-                <p className="text-[10px] text-[#4B5563] font-bold uppercase tracking-widest mt-1">
-                  {isEdit ? "Adjust parameters for peak efficiency" : "Initialize a new neural pathway"}
-                </p>
-              </div>
+            <div>
+              <Dialog.Title className="text-2xl font-black text-white italic uppercase tracking-tighter">
+                {isEdit ? "Editar Hábito" : "Novo Hábito"}
+              </Dialog.Title>
+              <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.3em] mt-1">
+                {isEdit ? "Ajuste os parâmetros" : "Inicie uma nova rotina"}
+              </p>
             </div>
             <Dialog.Close asChild>
-              <button className="p-1.5 hover:bg-white/5 rounded transition-all text-[#4B5563] active:scale-95">
-                <X className="w-4 h-4" />
+              <button className="p-2 hover:bg-white/5 rounded-full transition-all text-zinc-600 hover:text-white active:scale-95">
+                <X className="w-5 h-5" />
               </button>
             </Dialog.Close>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8 flex-1">
+          <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Routine Identifier</label>
+              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Identificador</label>
               <input
                 type="text"
                 required
-                placeholder="Enter objective name..."
+                placeholder="Ex: Treino de Força"
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
-                className="w-full h-11 bg-black border border-[#1A1A1A] rounded-md px-5 text-sm font-mono text-zinc-300 placeholder:text-[#2D2D3A] focus:outline-none focus:border-purple/50 transition-all"
+                className="w-full h-12 bg-white/[0.02] border border-white/5 rounded-2xl px-5 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-500/50 transition-all"
               />
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Cycle Frequency</label>
+              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Frequência Semanal</label>
               <div className="flex justify-between gap-2">
                 {days.map((day) => (
                   <button
@@ -150,10 +147,10 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
                     type="button"
                     onClick={() => toggleDay(day.val)}
                     className={cn(
-                      "flex-1 h-9 rounded-sm text-[10px] font-bold transition-all border flex items-center justify-center uppercase",
+                      "flex-1 h-10 rounded-xl text-[10px] font-black transition-all border flex items-center justify-center uppercase",
                       data.targetDays.includes(day.val)
-                        ? "bg-purple text-white border-purple"
-                        : "bg-black text-[#4B5563] border-[#1A1A1A] hover:border-purple/30"
+                        ? "bg-purple-500 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                        : "bg-transparent text-zinc-600 border-white/5 hover:border-purple-500/30"
                     )}
                   >
                     {day.label}
@@ -163,7 +160,7 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-bold text-[#4B5563] uppercase tracking-widest ml-1">Classification</label>
+              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Categoria</label>
               <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
                 {categories.map((cat) => (
                   <button
@@ -171,10 +168,10 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
                     type="button"
                     onClick={() => setData({ ...data, category: cat })}
                     className={cn(
-                      "h-9 px-3 rounded-sm text-[9px] font-bold transition-all border uppercase tracking-widest",
+                      "h-10 px-3 rounded-xl text-[9px] font-black transition-all border uppercase tracking-widest",
                       data.category === cat
-                        ? "bg-white/5 text-white border-white/20"
-                        : "bg-black text-[#4B5563] border-[#1A1A1A] hover:border-white/10"
+                        ? "bg-white/10 text-white border-white/20"
+                        : "bg-transparent text-zinc-700 border-white/5 hover:border-white/10"
                     )}
                   >
                     {cat}
@@ -187,9 +184,9 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
               <button
                 type="submit"
                 disabled={loading || !data.title}
-                className="w-full h-11 bg-purple text-white font-bold rounded-md transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.2em] text-[11px]"
+                className="w-full h-14 bg-purple-500 text-white font-black rounded-2xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.3em] text-[11px] shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
               >
-                {loading ? "Syncing..." : (isEdit ? "Update Parameters" : "Commit Protocol")}
+                {loading ? "Sincronizando..." : (isEdit ? "Salvar Alterações" : "Ativar Hábito")}
               </button>
             </div>
           </form>
@@ -198,3 +195,4 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
     </Dialog.Root>
   );
 }
+

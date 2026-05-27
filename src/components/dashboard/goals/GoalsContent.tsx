@@ -2,87 +2,153 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Plus, Target, Zap, Clock } from "lucide-react";
 import { AddGoalModal } from "./AddGoalModal";
 import { GoalCard } from "./GoalCard";
+import { differenceInDays } from "date-fns";
 
 interface GoalsContentProps {
   goals: any[];
   userId: string;
 }
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
 export function GoalsContent({ goals, userId }: GoalsContentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const activeGoals = goals.filter(g => !g.isCompleted);
   const completedGoals = goals.filter(g => g.isCompleted);
+  
   const totalMetas = goals.length;
   const overallProgress = totalMetas > 0 
-    ? Math.round((completedGoals.length / totalMetas) * 100)
+    ? Math.round((goals.reduce((acc, g) => acc + g.progress, 0) / (totalMetas * 100)) * 100)
     : 0;
 
+  // Find next deadline
+  const nextDeadlineGoal = activeGoals.reduce((prev, curr) => {
+    const prevDays = differenceInDays(new Date(prev.targetDate), new Date());
+    const currDays = differenceInDays(new Date(curr.targetDate), new Date());
+    return currDays < prevDays ? curr : prev;
+  }, activeGoals[0]);
+
+  const daysToNextDeadline = nextDeadlineGoal 
+    ? differenceInDays(new Date(nextDeadlineGoal.targetDate), new Date())
+    : null;
+
   return (
-    <div className="space-y-10 pb-20 max-w-5xl mx-auto selection:bg-purple-500/30 font-sans">
+    <motion.div 
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="space-y-12 pb-24 max-w-6xl mx-auto"
+    >
       {/* ── Header ── */}
-      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-[#1A1A1A]">
-        <div>
-          <h1 className="text-[22px] font-semibold text-white uppercase tracking-wider">Mission Command // Objectives</h1>
-          <p className="text-[#4B5563] text-[11px] mt-1 uppercase font-semibold tracking-[0.15em]">
-            <span className="text-purple">{completedGoals.length}</span> of <span className="text-white">{totalMetas}</span> secondary targets neutralized
-          </p>
-        </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="h-9 px-5 rounded-md border border-purple/50 bg-purple/10 text-white font-bold text-[11px] uppercase tracking-widest hover:bg-purple/20 transition-all flex items-center gap-2"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          Initialize Mission
-        </button>
-      </header>
-
-      {/* ── Global Metrics ── */}
-      <div className="space-y-3">
-        <div className="flex justify-between text-[10px] font-semibold uppercase tracking-widest text-[#4B5563]">
-          <span>Operational Success Rate</span>
-          <span className="text-purple font-mono">{overallProgress}%</span>
-        </div>
-        <div className="h-1 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${overallProgress}%` }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="h-full bg-gradient-to-r from-purple-600 to-red-500 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-          />
-        </div>
-      </div>
-
-      {/* ── Missions List ── */}
-      <div className="flex flex-col">
-        <div className="grid grid-cols-12 gap-4 px-4 py-3 text-[10px] font-bold text-[#2D2D3A] uppercase tracking-widest border-b border-[#1A1A1A]">
-          <div className="col-span-1 flex justify-center">STATUS</div>
-          <div className="col-span-6">OBJECTIVE PARAMETERS</div>
-          <div className="col-span-2 text-center">DEADLINE</div>
-          <div className="col-span-2 text-center">REWARD</div>
-          <div className="col-span-1 text-right">OPS</div>
-        </div>
-
-        {goals.length === 0 ? (
-          <div className="py-20 text-center border border-dashed border-[#1A1A1A] rounded-md mt-4">
-            <p className="text-[10px] font-mono text-[#2D2D3A] uppercase tracking-[0.2em]">NO ACTIVE MISSIONS FOUND.</p>
+      <motion.header variants={item} className="flex flex-col gap-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-[32px] font-black text-white italic uppercase tracking-tighter">Metas</h1>
+            <p className="text-zinc-600 text-[10px] mt-1 uppercase font-black tracking-[0.3em]">
+              {completedGoals.length} de {totalMetas} metas com progresso 
+              {daysToNextDeadline !== null && (
+                <span className="text-zinc-500 ml-2 border-l border-white/10 pl-2">
+                  Próximo prazo em {daysToNextDeadline} dias
+                </span>
+              )}
+            </p>
           </div>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="h-12 px-8 rounded-full bg-purple-500 text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-purple-600 transition-all active:scale-95 shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Nova meta
+          </button>
+        </div>
+
+        {/* Global Progress */}
+        <div className="space-y-4 bg-white/[0.02] backdrop-blur-md border border-white/5 rounded-[2rem] p-8">
+          <div className="flex justify-between items-end">
+            <div className="flex items-baseline gap-3">
+              <span className="text-4xl font-black text-white italic tabular-nums">{overallProgress}%</span>
+              <span className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em]">Sucesso Operacional</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Ativas</span>
+                <span className="text-sm font-bold text-white tabular-nums">{activeGoals.length}</span>
+              </div>
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Concluídas</span>
+                <span className="text-sm font-bold text-purple-500 tabular-nums">{completedGoals.length}</span>
+              </div>
+            </div>
+          </div>
+          <div className="h-1.5 w-full bg-white/[0.03] rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${overallProgress}%` }}
+              transition={{ duration: 1.5, ease: "circOut" }}
+              className="h-full bg-gradient-to-r from-purple-600 to-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.3)]"
+            />
+          </div>
+        </div>
+      </motion.header>
+
+      {/* ── Active Goals ── */}
+      <section className="space-y-8">
+        <motion.div variants={item} className="flex items-center gap-4">
+          <h2 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.5em]">Em Andamento</h2>
+          <div className="h-px flex-1 bg-white/5" />
+        </motion.div>
+
+        {activeGoals.length === 0 ? (
+          <motion.div variants={item} className="py-20 text-center border border-dashed border-white/5 rounded-[2.5rem] bg-white/[0.01]">
+            <p className="text-[10px] font-black text-zinc-700 uppercase tracking-[0.3em]">Nenhuma meta ativa no momento.</p>
+          </motion.div>
         ) : (
-          <div className="flex flex-col">
-            {goals.map((goal) => (
-              <GoalCard key={goal.id} goal={goal} userId={userId} />
+          <div className="grid grid-cols-1 gap-6">
+            {activeGoals.map((goal) => (
+              <motion.div key={goal.id} variants={item}>
+                <GoalCard goal={goal} userId={userId} />
+              </motion.div>
             ))}
           </div>
         )}
-      </div>
+      </section>
+
+      {/* ── Completed Goals ── */}
+      {completedGoals.length > 0 && (
+        <section className="space-y-8 opacity-60 hover:opacity-100 transition-opacity duration-500">
+          <motion.div variants={item} className="flex items-center gap-4">
+            <h2 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.5em]">Concluídas</h2>
+            <div className="h-px flex-1 bg-white/5" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-6">
+            {completedGoals.map((goal) => (
+              <motion.div key={goal.id} variants={item}>
+                <GoalCard goal={goal} userId={userId} />
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <AddGoalModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         userId={userId}
       />
-    </div>
+    </motion.div>
   );
 }
+
