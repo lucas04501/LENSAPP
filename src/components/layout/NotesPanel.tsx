@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ChevronLeft, ChevronRight, Plus, MoreHorizontal, 
+  ChevronLeft, ChevronRight, ChevronDown, Plus, MoreHorizontal, 
   ArrowLeft, Pin, Trash2, Settings2, Check, Search, 
   Layers, StickyNote, Sparkles, Hash
 } from "lucide-react";
