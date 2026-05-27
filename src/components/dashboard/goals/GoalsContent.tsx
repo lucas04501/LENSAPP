@@ -34,11 +34,13 @@ export function GoalsContent({ goals, userId }: GoalsContentProps) {
     : 0;
 
   // Find next deadline
-  const nextDeadlineGoal = activeGoals.reduce((prev, curr) => {
-    const prevDays = differenceInDays(new Date(prev.targetDate), new Date());
-    const currDays = differenceInDays(new Date(curr.targetDate), new Date());
-    return currDays < prevDays ? curr : prev;
-  }, activeGoals[0]);
+  const nextDeadlineGoal = activeGoals.length > 0 
+    ? activeGoals.reduce((prev, curr) => {
+        const prevDays = differenceInDays(new Date(prev.targetDate), new Date());
+        const currDays = differenceInDays(new Date(curr.targetDate), new Date());
+        return currDays < prevDays ? curr : prev;
+      }, activeGoals[0])
+    : null;
 
   const daysToNextDeadline = nextDeadlineGoal 
     ? differenceInDays(new Date(nextDeadlineGoal.targetDate), new Date())
