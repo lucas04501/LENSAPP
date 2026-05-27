@@ -319,7 +319,8 @@ export function HabitsContent({ initialHabits, userId }: HabitsContentProps) {
                   })}
                 </div>
               </motion.div>
-            ))
+            );
+          })
           )}
         </AnimatePresence>
       </div>
