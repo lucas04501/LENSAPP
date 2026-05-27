@@ -193,28 +193,39 @@ export function HabitsContent({ initialHabits, userId }: HabitsContentProps) {
               <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em]">Nenhum hábito encontrado nesta frequência</p>
             </motion.div>
           ) : (
-            filtered.map((habit, i) => (
-              <motion.div
-                key={habit.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ delay: i * 0.05 }}
-                className={cn(
-                  "relative group bg-[#0F0F14] border border-white/5 rounded-[2rem] p-6 transition-all duration-500 hover:border-white/10",
-                  habit.todayDone && "bg-zinc-900/40"
-                )}
-              >
-                <div className="flex items-start justify-between mb-8">
-                  <div className="flex items-center gap-4">
-                    <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center text-2xl transition-all duration-500",
-                      habit.todayDone ? "bg-purple-600/10 grayscale opacity-50" : "bg-purple-600/5 shadow-[0_0_20px_rgba(147,51,234,0.05)]"
-                    )}>
-                      {habit.icon}
-                    </div>
-                    <div className="space-y-1">
+              filtered.map((habit, i) => {
+              const weeklyPerformance = Math.round(
+                (habit.weeklyStatus.filter((s: any) => s.isDone).length / 7) * 100
+              );
+              const isHighPerformance = weeklyPerformance >= 70;
+
+              return (
+                <motion.div
+                  key={habit.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ delay: i * 0.05 }}
+                  className={cn(
+                    "relative group bg-[#0F0F14] border border-white/5 rounded-[2rem] p-6 transition-all duration-500 hover:border-white/10",
+                    habit.todayDone && "bg-zinc-900/40"
+                  )}
+                >
+                  <div className="flex items-start justify-between mb-8">
+                    <div className="flex items-center gap-4">
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center text-[16px] font-black transition-all duration-500 tabular-nums border",
+                        habit.todayDone 
+                          ? "bg-purple-600/10 border-purple-500/10" 
+                          : "bg-white/[0.02] border-white/5 shadow-[0_0_20px_rgba(0,0,0,0.2)]",
+                        isHighPerformance 
+                          ? "text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.4)] border-purple-500/20" 
+                          : "text-zinc-600 border-transparent"
+                      )}>
+                        {weeklyPerformance}%
+                      </div>
+                      <div className="space-y-1">
                       <h3 className={cn(
                         "text-sm font-bold uppercase tracking-tight transition-all duration-500",
                         habit.todayDone ? "text-zinc-500 line-through" : "text-white"
