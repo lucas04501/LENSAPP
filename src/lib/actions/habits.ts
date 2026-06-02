@@ -203,6 +203,8 @@ export async function createHabit(data: {
   color?: string;
   category?: any;
   xpReward: number;
+  targetDays?: number[];
+  targetCount?: number;
 }, userId: string) {
   try {
     const habit = await prisma.habit.create({

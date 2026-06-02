@@ -44,7 +44,15 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
     }
   }, [habit]);
 
-  const categories = ["SAÚDE", "MENTE", "TRABALHO", "SOCIAL", "FINANÇAS", "CRIATIVO", "OUTRO"];
+  const categories = [
+    { label: "SAÚDE", val: "HEALTH" },
+    { label: "MENTE", val: "MIND" },
+    { label: "TRABALHO", val: "WORK" },
+    { label: "SOCIAL", val: "SOCIAL" },
+    { label: "FINANÇAS", val: "FINANCE" },
+    { label: "CRIATIVO", val: "CREATIVE" },
+    { label: "OUTRO", val: "OTHER" },
+  ];
   const days = [
     { label: "S", val: 1 }, { label: "T", val: 2 }, { label: "Q", val: 3 },
     { label: "Q", val: 4 }, { label: "S", val: 5 }, { label: "S", val: 6 }, { label: "D", val: 7 }
@@ -52,6 +60,10 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!data.title.trim()) {
+      toast.error("O título é obrigatório");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -70,13 +82,22 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
           toast.success("Novo hábito criado");
           res.unlockedAchievements?.forEach(showAchievementToast);
           setOpen(false);
-          setData({ ...data, title: "" });
+          setData({
+            title: "",
+            icon: "target",
+            category: "HEALTH" as any,
+            targetDays: [1, 2, 3, 4, 5, 6, 7],
+            targetCount: 1,
+            xpReward: 10,
+            color: "#A855F7",
+          });
           onSuccess?.();
         } else {
           toast.error(res.error || "Erro ao criar");
         }
       }
     } catch (error) {
+      console.error("Submit error:", error);
       toast.error("Erro no processamento");
     } finally {
       setLoading(false);
@@ -107,7 +128,7 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
         <Dialog.Overlay className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[200] animate-in fade-in duration-300" />
         <Dialog.Content className={cn(
           "fixed z-[201] bg-[#050505] border border-white/10 shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col",
-          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md md:h-auto md:rounded-[2.5rem] p-8 md:p-10"
+          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md max-h-[90vh] md:h-auto md:rounded-[2.5rem] p-8 md:p-10 overflow-y-auto no-scrollbar"
         )}>
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -134,6 +155,11 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
                 placeholder="Ex: Treino de Força"
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && data.title) {
+                    // Enter is handled by form onSubmit, but we can be explicit if needed
+                  }
+                }}
                 className="w-full h-12 bg-white/[0.02] border border-white/5 rounded-2xl px-5 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-500/50 transition-all"
               />
             </div>
@@ -164,17 +190,17 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
               <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
                 {categories.map((cat) => (
                   <button
-                    key={cat}
+                    key={cat.val}
                     type="button"
-                    onClick={() => setData({ ...data, category: cat })}
+                    onClick={() => setData({ ...data, category: cat.val })}
                     className={cn(
                       "h-10 px-3 rounded-xl text-[9px] font-black transition-all border uppercase tracking-widest",
-                      data.category === cat
+                      data.category === cat.val
                         ? "bg-white/10 text-white border-white/20"
                         : "bg-transparent text-zinc-700 border-white/5 hover:border-white/10"
                     )}
                   >
-                    {cat}
+                    {cat.label}
                   </button>
                 ))}
               </div>

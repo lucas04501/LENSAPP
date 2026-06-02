@@ -28,7 +28,26 @@ import { useRouter } from "next/navigation";
 import { format, startOfWeek, addDays, isSameDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-const CATEGORIES = ["Todos", "HEALTH", "MIND", "WORK", "SOCIAL", "FINANCE", "CREATIVE", "OTHER"];
+const CATEGORIES = [
+  { label: "Todos", val: "Todos" },
+  { label: "Saúde", val: "HEALTH" },
+  { label: "Mente", val: "MIND" },
+  { label: "Trabalho", val: "WORK" },
+  { label: "Social", val: "SOCIAL" },
+  { label: "Finanças", val: "FINANCE" },
+  { label: "Criativo", val: "CREATIVE" },
+  { label: "Outro", val: "OTHER" },
+];
+
+const CATEGORY_LABELS: Record<string, string> = {
+  HEALTH: "Saúde",
+  MIND: "Mente",
+  WORK: "Trabalho",
+  SOCIAL: "Social",
+  FINANCE: "Finanças",
+  CREATIVE: "Criativo",
+  OTHER: "Outro",
+};
 
 interface HabitsContentProps {
   initialHabits: any[];
@@ -164,16 +183,16 @@ export function HabitsContent({ initialHabits, userId }: HabitsContentProps) {
       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
         {CATEGORIES.map(cat => (
           <button
-            key={cat}
-            onClick={() => setFilter(cat)}
+            key={cat.val}
+            onClick={() => setFilter(cat.val)}
             className={cn(
               "h-8 px-4 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all whitespace-nowrap border shrink-0",
-              filter === cat
+              filter === cat.val
                 ? "bg-white text-black border-white"
                 : "border-white/5 bg-zinc-900/50 text-zinc-500 hover:text-zinc-300 hover:border-white/10"
             )}
           >
-            {cat === "Todos" ? "Todos" : cat}
+            {cat.label}
           </button>
         ))}
       </div>
@@ -233,7 +252,9 @@ export function HabitsContent({ initialHabits, userId }: HabitsContentProps) {
                         {habit.title}
                       </h3>
                       <div className="flex items-center gap-3">
-                        <span className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">{habit.category}</span>
+                        <span className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">
+                          {CATEGORY_LABELS[habit.category] || habit.category}
+                        </span>
                         <div className="flex items-center gap-1">
                           <Flame className={cn("w-3 h-3", habit.currentStreak > 0 ? "text-red-500" : "text-zinc-700")} />
                           <span className={cn("text-[10px] font-black italic", habit.currentStreak > 0 ? "text-white" : "text-zinc-700")}>
