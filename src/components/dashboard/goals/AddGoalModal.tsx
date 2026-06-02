@@ -114,10 +114,10 @@ export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProp
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[200] animate-in fade-in duration-300" />
+        <Dialog.Overlay className="fixed inset-0 bg-zinc-950/80 backdrop-blur-md z-[200] animate-in fade-in duration-300" />
         <Dialog.Content className={cn(
-          "fixed z-[201] bg-[#050505] border border-white/10 shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col",
-          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl md:h-[90vh] md:rounded-[2.5rem] p-8 md:p-10 overflow-y-auto no-scrollbar"
+          "fixed z-[201] bg-black border border-zinc-800/80 shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col",
+          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl md:h-[90vh] md:rounded-[2rem] p-8 md:p-10 overflow-y-auto no-scrollbar"
         )}>
           
           <div className="flex items-center justify-between mb-10">
@@ -138,50 +138,50 @@ export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProp
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Identificador</label>
+              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Identificador</label>
               <input
                 type="text"
                 required
                 placeholder="Ex: Dominar Next.js"
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
-                className="w-full h-12 bg-white/[0.02] border border-white/5 rounded-2xl px-5 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-500/50 transition-all"
+                className="w-full h-12 bg-zinc-950 border border-zinc-900 rounded-xl px-5 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all"
               />
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Descrição</label>
+              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Descrição</label>
               <textarea
                 value={data.description}
                 onChange={(e) => setData({ ...data, description: e.target.value })}
                 rows={2}
                 placeholder="Detalhes adicionais da missão..."
-                className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-5 py-4 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-500/50 transition-all resize-none"
+                className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-5 py-4 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all resize-none"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Setor</label>
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Setor</label>
                 <select
                   value={data.category}
                   onChange={(e) => setData({ ...data, category: e.target.value })}
-                  className="w-full h-12 bg-white/[0.02] border border-white/5 rounded-2xl px-5 text-sm font-medium text-white focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer"
+                  className="w-full h-12 bg-zinc-950 border border-zinc-900 rounded-xl px-5 text-sm font-medium text-white focus:outline-none focus:border-purple-600 transition-all appearance-none cursor-pointer"
                 >
                   {CATEGORIES.map(c => (
-                    <option key={c} value={c} className="bg-[#050505]">{c}</option>
+                    <option key={c} value={c} className="bg-zinc-950">{c}</option>
                   ))}
                 </select>
               </div>
 
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Prazo Final</label>
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Prazo Final</label>
                 <input
                   type="date"
                   required
                   value={data.targetDate}
                   onChange={(e) => setData({ ...data, targetDate: e.target.value })}
-                  className="w-full h-12 bg-white/[0.02] border border-white/5 rounded-2xl px-5 text-sm font-medium text-white focus:outline-none focus:border-purple-500/50 transition-all [color-scheme:dark]"
+                  className="w-full h-12 bg-zinc-950 border border-zinc-900 rounded-xl px-5 text-sm font-medium text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all [color-scheme:dark]"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProp
             {!isEdit && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between ml-1">
-                  <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em]">Etapas do Projeto</label>
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Etapas do Projeto</label>
                   <button 
                     type="button" 
                     onClick={addStep}
@@ -210,7 +210,7 @@ export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProp
                         placeholder={`Etapa ${i + 1}`}
                         value={step}
                         onChange={(e) => updateStep(i, e.target.value)}
-                        className="flex-1 h-10 bg-white/[0.01] border border-white/5 rounded-xl px-4 text-xs font-medium text-zinc-300 focus:border-purple-500/30 transition-all"
+                        className="flex-1 h-10 bg-zinc-950 border border-zinc-900 rounded-xl px-4 text-xs font-medium text-zinc-300 focus:outline-none focus:border-purple-600/50 transition-all"
                       />
                       <button 
                         type="button"
@@ -222,7 +222,7 @@ export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProp
                     </div>
                   ))}
                   {steps.length === 0 && (
-                    <p className="text-[10px] text-zinc-800 italic ml-1">Defina etapas para acompanhar seu progresso.</p>
+                    <p className="text-[10px] text-zinc-800 italic ml-1 font-bold uppercase tracking-widest opacity-50">Defina etapas para acompanhar seu progresso.</p>
                   )}
                 </div>
               </div>
@@ -232,9 +232,9 @@ export function AddGoalModal({ isOpen, onClose, userId, goal }: AddGoalModalProp
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 bg-purple-500 text-white font-black rounded-2xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.3em] text-[11px] shadow-[0_0_30px_rgba(168,85,247,0.2)]"
+                className="w-full h-14 bg-purple-600 text-white font-black rounded-xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.3em] text-[11px] shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:bg-purple-700 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
               >
-                {loading ? "PROCESSANDO..." : (isEdit ? "Salvar Alterações" : "Ativar Objetivo")}
+                {loading ? "Sincronizando..." : (isEdit ? "Salvar Alterações" : "Ativar Objetivo")}
               </button>
             </div>
           </form>

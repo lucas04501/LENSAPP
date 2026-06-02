@@ -125,10 +125,10 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
       </Dialog.Trigger>
       
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[200] animate-in fade-in duration-300" />
+        <Dialog.Overlay className="fixed inset-0 bg-zinc-950/80 backdrop-blur-md z-[200] animate-in fade-in duration-300" />
         <Dialog.Content className={cn(
-          "fixed z-[201] bg-[#050505] border border-white/10 shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col",
-          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md max-h-[90vh] md:h-auto md:rounded-[2.5rem] p-8 md:p-10 overflow-y-auto no-scrollbar"
+          "fixed z-[201] bg-black border border-zinc-800 shadow-2xl animate-in zoom-in-95 duration-300 flex flex-col",
+          "inset-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md max-h-[90vh] md:h-auto md:rounded-[2rem] p-8 md:p-10 overflow-y-auto no-scrollbar"
         )}>
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -148,24 +148,19 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Identificador</label>
+              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Identificador</label>
               <input
                 type="text"
                 required
                 placeholder="Ex: Treino de Força"
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && data.title) {
-                    // Enter is handled by form onSubmit, but we can be explicit if needed
-                  }
-                }}
-                className="w-full h-12 bg-white/[0.02] border border-white/5 rounded-2xl px-5 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-500/50 transition-all"
+                className="w-full h-12 bg-zinc-900/30 border border-zinc-800 rounded-xl px-5 text-sm font-medium text-white placeholder:text-zinc-700 focus:outline-none focus:border-purple-500/50 transition-all"
               />
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Frequência Semanal</label>
+              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Frequência Semanal</label>
               <div className="flex justify-between gap-2">
                 {days.map((day) => (
                   <button
@@ -173,10 +168,10 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
                     type="button"
                     onClick={() => toggleDay(day.val)}
                     className={cn(
-                      "flex-1 h-10 rounded-xl text-[10px] font-black transition-all border flex items-center justify-center uppercase",
+                      "w-10 h-10 rounded-full text-[10px] font-bold transition-all border flex items-center justify-center uppercase",
                       data.targetDays.includes(day.val)
-                        ? "bg-purple-500 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-                        : "bg-transparent text-zinc-600 border-white/5 hover:border-purple-500/30"
+                        ? "bg-purple-600 text-white border-purple-600 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                        : "bg-zinc-900/50 text-zinc-500 border-zinc-800 hover:border-zinc-700"
                     )}
                   >
                     {day.label}
@@ -186,7 +181,7 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] ml-1">Categoria</label>
+              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Categoria</label>
               <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
                 {categories.map((cat) => (
                   <button
@@ -194,10 +189,10 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
                     type="button"
                     onClick={() => setData({ ...data, category: cat.val })}
                     className={cn(
-                      "h-10 px-3 rounded-xl text-[9px] font-black transition-all border uppercase tracking-widest",
+                      "h-10 px-3 rounded-xl text-[9px] font-bold transition-all border uppercase tracking-widest",
                       data.category === cat.val
                         ? "bg-white/10 text-white border-white/20"
-                        : "bg-transparent text-zinc-700 border-white/5 hover:border-white/10"
+                        : "bg-zinc-900/50 text-zinc-500 border-zinc-800 hover:border-zinc-700"
                     )}
                   >
                     {cat.label}
@@ -210,9 +205,9 @@ export function AddHabitModal({ userId, habit, trigger, onSuccess }: AddHabitMod
               <button
                 type="submit"
                 disabled={loading || !data.title}
-                className="w-full h-14 bg-purple-500 text-white font-black rounded-2xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.3em] text-[11px] shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
+                className="w-full h-14 bg-purple-600 text-white font-black rounded-xl transition-all active:scale-[0.98] disabled:opacity-30 uppercase tracking-[0.3em] text-[11px] shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:bg-purple-700 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
               >
-                {loading ? "Sincronizando..." : (isEdit ? "Salvar Alterações" : "Ativar Hábito")}
+                {loading ? "Sincronizando..." : (isEdit ? "Salvar Alterações" : "Criar Hábito")}
               </button>
             </div>
           </form>

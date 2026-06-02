@@ -262,7 +262,7 @@ export default function RoutinePage() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative w-full max-w-lg bg-[#0F0F14] border border-[#1E1E2E] rounded-2xl shadow-2xl overflow-hidden"
+                className="relative w-full max-w-lg bg-black/60 backdrop-blur-xl border border-zinc-800/80 rounded-[2rem] shadow-2xl overflow-hidden"
               >
                 <form onSubmit={async (e) => {
                   e.preventDefault();
@@ -300,68 +300,73 @@ export default function RoutinePage() {
                     console.error("CLIENT_ROUTINE_ERROR [saveBlock]:", error);
                     toast.error("Erro ao salvar bloco");
                   }
-                }} className="p-6 space-y-6">
+                }} className="p-8 space-y-8">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold">
-                      {editingBlock ? "Editar Bloco" : "Novo Bloco de Rotina"}
-                    </h2>
+                    <div>
+                      <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
+                        {editingBlock ? "Editar Bloco" : "Novo Bloco de Rotina"}
+                      </h2>
+                      <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.3em] mt-1">
+                        Sincronize sua performance
+                      </p>
+                    </div>
                     <button 
                       type="button"
                       onClick={() => setIsModalOpen(false)}
-                      className="p-1 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-white transition-colors"
+                      className="p-2 rounded-full hover:bg-white/5 text-zinc-600 hover:text-white transition-all active:scale-95"
                     >
                       <X className="w-5 h-5" />
                     </button>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Título</label>
+                  <div className="space-y-6">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Identificador</label>
                       <input
                         name="title"
                         required
                         defaultValue={editingBlock?.title}
                         placeholder="Ex: Ritual Matinal"
-                        className="w-full bg-black/40 border border-[#1E1E2E] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                        className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-5 py-3 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Início</label>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Início</label>
                         <input
                           name="startTime"
                           type="time"
                           required
                           defaultValue={editingBlock?.startTime || "08:00"}
-                          className="w-full bg-black/40 border border-[#1E1E2E] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                          className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-5 py-3 text-sm font-medium text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Fim</label>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Fim</label>
                         <input
                           name="endTime"
                           type="time"
                           required
                           defaultValue={editingBlock?.endTime || "09:00"}
-                          className="w-full bg-black/40 border border-[#1E1E2E] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                          className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-5 py-3 text-sm font-medium text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all"
                         />
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Descrição</label>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Nota de Missão</label>
                       <textarea
                         name="description"
                         rows={2}
                         defaultValue={editingBlock?.description}
                         placeholder="O que você fará nesse tempo?"
-                        className="w-full bg-black/40 border border-[#1E1E2E] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#7C3AED] transition-colors resize-none"
+                        className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-5 py-3 text-sm font-medium text-white placeholder:text-zinc-800 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600/30 transition-all resize-none"
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Dias da Semana</label>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Sincronização Diária</label>
                       <div className="flex flex-wrap gap-2">
                         {DAYS.map((day) => (
                           <label key={day.id} className="relative cursor-pointer group">
@@ -372,20 +377,20 @@ export default function RoutinePage() {
                               defaultChecked={editingBlock ? editingBlock.days.includes(day.id) : day.id <= 5}
                               className="peer sr-only"
                             />
-                            <div className="px-3 py-1.5 rounded-lg border border-[#1E1E2E] bg-black/20 text-[11px] font-medium text-zinc-500 peer-checked:bg-[#7C3AED]/10 peer-checked:border-[#7C3AED] peer-checked:text-[#7C3AED] transition-all group-hover:border-zinc-700">
-                              {day.label}
+                            <div className="w-10 h-10 rounded-full border border-zinc-800 bg-zinc-950/50 text-[10px] font-bold text-zinc-600 flex items-center justify-center uppercase peer-checked:bg-purple-600 peer-checked:border-purple-600 peer-checked:text-white peer-checked:shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all group-hover:border-zinc-700">
+                              {day.label.charAt(0)}
                             </div>
                           </label>
                         ))}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Cor</label>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Assinatura Visual</label>
                         <div className="flex gap-2">
                           {COLORS.map((c) => (
-                            <label key={c.id} className="relative cursor-pointer">
+                            <label key={c.id} className="relative cursor-pointer group">
                               <input
                                 type="radio"
                                 name="color"
@@ -394,19 +399,19 @@ export default function RoutinePage() {
                                 className="peer sr-only"
                               />
                               <div 
-                                className="w-6 h-6 rounded-full border-2 border-transparent peer-checked:border-white/50 transition-all scale-100 peer-checked:scale-110"
+                                className="w-6 h-6 rounded-full border-2 border-transparent peer-checked:border-white/50 transition-all scale-100 peer-checked:scale-110 group-hover:scale-110 shadow-lg"
                                 style={{ backgroundColor: c.hex }}
                               />
                             </label>
                           ))}
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Categoria</label>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Categoria</label>
                         <select
                           name="category"
                           defaultValue={editingBlock?.category || "Outro"}
-                          className="w-full bg-black/40 border border-[#1E1E2E] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#7C3AED] appearance-none"
+                          className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-4 py-2.5 text-sm font-medium text-white focus:outline-none focus:border-purple-600 transition-all appearance-none"
                         >
                           {CATEGORIES.map(cat => (
                             <option key={cat} value={cat}>{cat}</option>
@@ -416,22 +421,22 @@ export default function RoutinePage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-3 pt-4 border-t border-[#1E1E2E]">
+                  <div className="flex gap-4 pt-6 border-t border-zinc-900">
                     {editingBlock && (
                       <button
                         type="button"
                         onClick={() => handleDeleteBlock(editingBlock.id)}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-sm font-semibold hover:bg-red-500/10 transition-colors flex items-center justify-center gap-2"
+                        className="flex-1 h-14 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-red-500/10 transition-all flex items-center justify-center gap-2 active:scale-95"
                       >
                         <Trash2 className="w-4 h-4" />
-                        Excluir
+                        Remover
                       </button>
                     )}
                     <button
                       type="submit"
-                      className="flex-[2] px-4 py-2.5 rounded-xl bg-[#7C3AED] text-white text-sm font-semibold hover:bg-[#6D28D9] transition-all shadow-lg shadow-purple-500/20"
+                      className="flex-[2] h-14 rounded-xl bg-purple-600 text-white text-[11px] font-black uppercase tracking-[0.2em] hover:bg-purple-700 transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] active:scale-95"
                     >
-                      {editingBlock ? "Salvar Alterações" : "Criar Bloco"}
+                      {editingBlock ? "Atualizar Protocolo" : "Ativar Bloco"}
                     </button>
                   </div>
                 </form>
