@@ -100,5 +100,16 @@ export const authOptions: NextAuthOptions = {
   },
   useSecureCookies: process.env.NODE_ENV === "production",
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
+  debug: true,
+  logger: {
+    error(code, metadata) {
+      console.error("NEXTAUTH_ERROR", code, metadata);
+    },
+    warn(code) {
+      console.warn("NEXTAUTH_WARN", code);
+    },
+    debug(code, metadata) {
+      console.log("NEXTAUTH_DEBUG", code, metadata);
+    },
+  },
 };
