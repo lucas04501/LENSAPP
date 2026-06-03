@@ -65,13 +65,23 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.username = user.username;
         token.totalStreak = user.totalStreak;
-        token.avatarUrl = user.avatarUrl;
         token.xp = user.xp;
         token.level = user.level;
+        
+        // Segurança: Evitar que URLs de avatar gigantes (Base64) estourem o cookie de 4KB
+        const avatarUrl = user.avatarUrl as string;
+        if (avatarUrl && avatarUrl.length > 2000) {
+          token.avatarUrl = "/avatar-placeholder.png"; // Fallback se for Base64 gigante
+        } else {
+          token.avatarUrl = avatarUrl;
+        }
       }
 
       if (trigger === "update" && session) {
-        if (session.avatarUrl) token.avatarUrl = session.avatarUrl;
+        if (session.avatarUrl) {
+          // Também validar no update
+          token.avatarUrl = session.avatarUrl.length > 2000 ? token.avatarUrl : session.avatarUrl;
+        }
         if (session.xp) token.xp = session.xp;
         if (session.level) token.level = session.level;
       }
