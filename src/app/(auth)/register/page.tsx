@@ -51,6 +51,10 @@ export default function RegisterPage() {
           redirect: false,
         });
 
+        if (callback?.error) {
+          console.error("Post-registration login error:", callback.error);
+        }
+
         if (callback?.ok && !callback?.error) {
           router.push("/dashboard");
         } else {

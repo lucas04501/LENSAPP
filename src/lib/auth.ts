@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
       // Quando o usuário faz login, 'user' contém os dados retornados pelo authorize
       if (user) {
         token.id = user.id;
+        token.sub = user.id; // Garantir que sub também tenha o ID
         token.username = user.username;
         token.totalStreak = user.totalStreak;
         token.avatarUrl = user.avatarUrl;
@@ -72,25 +73,31 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
+        const userId = (token.id || token.sub) as string;
+        session.user.id = userId;
         
-        // Fetch fresh user data from DB on each session request
-        const user = await prisma.user.findUnique({
-          where: { id: token.id as string },
-          select: { avatarUrl: true, username: true, xp: true, level: true, totalStreak: true }
-        });
+        try {
+          // Fetch fresh user data from DB on each session request
+          const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { avatarUrl: true, username: true, xp: true, level: true, totalStreak: true }
+          });
 
-        if (user) {
-          session.user.avatarUrl = user.avatarUrl;
-          session.user.username = user.username;
-          session.user.xp = user.xp;
-          session.user.level = user.level;
-          session.user.totalStreak = user.totalStreak;
+          if (user) {
+            session.user.avatarUrl = user.avatarUrl;
+            session.user.username = user.username;
+            session.user.xp = user.xp;
+            session.user.level = user.level;
+            session.user.totalStreak = user.totalStreak;
+          }
+        } catch (error) {
+          console.error("Error fetching user session data:", error);
+          // Don't throw, just return the session with basic info from token
         }
       }
       return session;
     },
   },
   useSecureCookies: process.env.NODE_ENV === "production",
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-dev-only",
 };

@@ -28,6 +28,7 @@ export default function LoginPage() {
       });
 
       if (callback?.error) {
+        console.error("Login error:", callback.error);
         toast.error("Credenciais inválidas");
       }
 
@@ -35,8 +36,9 @@ export default function LoginPage() {
         toast.success("Login realizado com sucesso!");
         router.push("/dashboard");
       }
-    } catch (error) {
-      toast.error("Ocorreu um erro ao entrar");
+    } catch (error: any) {
+      console.error("Login exception:", error);
+      toast.error(error?.message || "Ocorreu um erro ao entrar");
     } finally {
       setLoading(false);
     }
