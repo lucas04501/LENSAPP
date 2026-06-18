@@ -6,7 +6,29 @@
 
 @layer base {
   :root {
-    --background: #050505;
+    --background: 0 0% 2%;
+    --foreground: 0 0% 97%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 97%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 97%;
+    --primary: 270 91% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 97%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 63%;
+    --accent: 0 0% 9%;
+    --accent-foreground: 0 0% 97%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
+    --ring: 270 91% 65%;
+    --radius: 0.75rem;
+
+    /* LENS Design System (Legacy/Custom) */
+    --lens-background: #050505;
     --surface: #0D0D0D;
     --surface-2: #111111;
     --purple: #A855F7;
@@ -33,7 +55,9 @@
   }
   *::-webkit-scrollbar-thumb:hover { background: #A855F730; }
 
-  html { scroll-behavior: smooth; }
+  html { 
+    scroll-behavior: smooth; 
+  }
 
   body {
     background-color: #050505;
@@ -179,3 +203,13 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+.animate-pulse-slow { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-ping-slow { animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite; }
